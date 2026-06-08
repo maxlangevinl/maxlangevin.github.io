@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maximiliano Langevin — Pintor</title>
+<meta name="description" content="Maximiliano Langevin Larraín — Pintor realista chileno. Retratos al óleo, xilografía e ilustración.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #1a1714; --parchment: #f5f1eb; --warm: #e8e0d4;
+  --gold: #9e7c4a; --gold-light: #c4a472; --muted: #7a7066; --white: #fefdfb;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Raleway', sans-serif; background: var(--white); color: var(--ink); font-weight: 300; overflow-x: hidden; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 3rem; background: rgba(254,253,251,0.96); backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent; transition: border-color 0.3s;
+}
+nav.scrolled { border-bottom-color: var(--warm); }
+.nav-logo { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--ink); }
+.nav-logo img { width: 32px; height: 32px; object-fit: contain; }
+.nav-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+.nav-right { display: flex; align-items: center; gap: 2rem; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--ink); }
+
+/* Language toggle */
+.lang-btn {
+  font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted);
+  background: none; border: 1px solid var(--warm); padding: 0.3rem 0.65rem;
+  cursor: pointer; font-family: 'Raleway', sans-serif; font-weight: 400;
+  transition: all 0.2s;
+}
+.lang-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Hamburger */
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 1.5px; background: var(--ink); transition: all 0.3s; }
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* Mobile nav drawer */
+.mobile-nav { display: none; position: fixed; top: 60px; left: 0; right: 0; background: rgba(254,253,251,0.98); z-index: 99; padding: 1.5rem 2rem 2rem; border-bottom: 1px solid var(--warm); }
+.mobile-nav.open { display: block; }
+.mobile-nav ul { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+.mobile-nav a { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+
+/* ── HERO ── */
+.hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; padding-top: 62px; }
+.hero-left { display: flex; flex-direction: column; justify-content: center; padding: 5rem 4rem 5rem 8vw; }
+.hero-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.4rem; }
+.hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 5.5vw, 5.5rem); font-weight: 300; line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 2rem; }
+.hero-name em { display: block; font-style: italic; color: var(--gold); }
+.hero-desc { font-size: 0.88rem; line-height: 2; color: var(--muted); max-width: 38ch; margin-bottom: 3rem; }
+.hero-cta { display: inline-flex; align-items: center; gap: 0.8rem; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 0.3rem; transition: color 0.2s; }
+.hero-cta:hover { color: var(--gold); }
+.hero-cta::after { content: '→'; }
+.hero-right { position: relative; overflow: hidden; min-height: 60vh; background: var(--parchment); }
+.hero-right img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity 0.3s ease; }
+.hero-caption { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: #fff; background: rgba(26,23,20,0.72); padding: 0.3rem 0.85rem; backdrop-filter: blur(6px); z-index: 1; }
+
+/* ── CATEGORIES ── */
+.categories { display: grid; grid-template-columns: repeat(5,1fr); border-top: 1px solid var(--warm); border-bottom: 1px solid var(--warm); }
+.cat-card { padding: 2rem 1.6rem; border-right: 1px solid var(--warm); text-decoration: none; color: var(--ink); display: block; transition: background 0.3s; }
+.cat-card:last-child { border-right: none; }
+.cat-card:hover { background: var(--parchment); }
+.cat-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--gold-light); opacity: 0.5; line-height: 1; margin-bottom: 0.5rem; }
+.cat-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; margin-bottom: 0.2rem; }
+.cat-sub { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+
+/* ── GALLERY SECTION ── */
+.gallery-section { padding: 5.5rem 5vw; }
+.gallery-section.alt { background: var(--parchment); }
+.section-header { display: flex; align-items: baseline; gap: 1.4rem; margin-bottom: 2.8rem; }
+.section-num { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 300; line-height: 1.1; }
+.section-line { flex: 1; height: 1px; background: var(--warm); margin-left: 1rem; }
+
+/* ── MASONRY ── */
+.masonry { columns: 3; column-gap: 1rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 1rem; position: relative; overflow: hidden; cursor: pointer; }
+.masonry-item img { width: 100%; height: auto; display: block; transition: transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94); }
+.masonry-item:hover img { transform: scale(1.03); }
+.masonry-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.2rem 1rem; background: linear-gradient(transparent, rgba(26,23,20,0.82)); transform: translateY(100%); transition: transform 0.38s; color: white; }
+.masonry-item:hover .masonry-overlay { transform: translateY(0); }
+.m-title { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; }
+.m-meta { font-size: 0.6rem; letter-spacing: 0.13em; text-transform: uppercase; opacity: 0.72; margin-top: 0.2rem; }
+.no-img-card { width: 100%; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.9rem; background: var(--ink); position: relative; }
+.no-img-play { width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid var(--gold-light); display: flex; align-items: center; justify-content: center; color: var(--gold-light); font-size: 1.1rem; padding-left: 3px; flex-shrink: 0; transition: background 0.2s; }
+.no-img-card:hover .no-img-play { background: var(--gold); border-color: var(--gold); color: white; }
+.no-img-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--gold-light); }
+.no-img-sub { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+.no-img-link { font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 0.2rem; }
+
+/* ── ABOUT ── */
+.about-section { padding: 7rem 8vw; background: var(--parchment); display: grid; grid-template-columns: 1fr 1.8fr; gap: 7rem; align-items: start; }
+.about-left { position: sticky; top: 90px; }
+.about-photo { width: 100%; aspect-ratio: 3/4; overflow: hidden; margin-bottom: 2rem; }
+.about-photo img { width: 100%; height: 100%; object-fit: cover; }
+.about-label { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: block; }
+.about-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.05; }
+.about-name em { font-style: italic; color: var(--gold); }
+.about-detail { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-top: 1.5rem; display: block; }
+.about-quote { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.15rem, 1.9vw, 1.6rem); font-style: italic; font-weight: 300; line-height: 1.6; color: var(--ink); border-left: 2px solid var(--gold); padding-left: 1.4rem; margin-bottom: 2.5rem; }
+.about-body p { font-size: 0.91rem; line-height: 2; color: var(--muted); margin-bottom: 1.2rem; }
+
+/* ── CONTACT ── */
+.contact-section { background: var(--ink); color: var(--white); text-align: center; padding: 7rem 8vw; }
+.contact-label { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1rem; display: block; }
+.contact-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; }
+.contact-email { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.3rem, 2.8vw, 2.2rem); font-style: italic; color: var(--gold-light); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; display: inline-block; margin: 2rem 0 3rem; }
+.contact-email:hover { border-bottom-color: var(--gold-light); }
+.wa-btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: #25D366; color: white; text-decoration: none;
+  padding: 0.65rem 1.6rem; font-size: 0.65rem; letter-spacing: 0.18em;
+  text-transform: uppercase; font-family: 'Raleway', sans-serif;
+  margin: 0 0 3rem; transition: background 0.2s; font-weight: 500;
+  border-radius: 50px;
+}
+.wa-btn:hover { background: #1da851; }
+.social-links { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.social-link { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.social-link:hover { color: var(--gold-light); }
+
+/* ── FOOTER ── */
+footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.07); padding: 1.6rem 8vw; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.62rem; letter-spacing: 0.1em; }
+
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(10,8,6,0.97); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal-overlay.open { display: flex; }
+.modal { max-width: 1100px; width: 100%; display: grid; grid-template-columns: 1.4fr 1fr; background: var(--white); max-height: 92vh; overflow: hidden; position: relative; }
+.modal-img-area { background: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 450px; position: relative; overflow: hidden; }
+.modal-img-area img { width: 100%; height: auto; max-height: 75vh; object-fit: contain; display: block; }
+.modal-img-caption { font-size: 0.7rem; line-height: 1.5; color: rgba(255,255,255,0.55); text-align: center; padding: 0.7rem 1rem 0.5rem; font-style: italic; min-height: 2.5rem; }
+.modal-info { padding: 2.2rem 2.2rem 1.5rem; display: flex; flex-direction: column; overflow-y: auto; }
+.modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-style: italic; font-weight: 300; line-height: 1.15; margin-bottom: 0.3rem; }
+.modal-year { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.modal-tech { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.2rem; }
+.modal-dims { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.3rem; }
+.modal-desc { font-size: 0.84rem; line-height: 1.9; color: var(--muted); padding-bottom: 1.2rem; }
+.carousel-footer { margin-top: auto; padding-top: 1.2rem; border-top: 1px solid var(--warm); }
+.carousel-nav { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
+.c-btn { background: none; border: 1px solid var(--warm); color: var(--ink); width: 32px; height: 32px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+.c-btn:hover:not(:disabled) { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.c-btn:disabled { opacity: 0.22; cursor: default; }
+.c-counter { font-size: 0.68rem; letter-spacing: 0.14em; color: var(--muted); }
+.c-thumbs { display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.2rem; }
+.c-thumb { width: 44px; height: 44px; object-fit: cover; cursor: pointer; opacity: 0.45; transition: opacity 0.2s; flex-shrink: 0; border: 2px solid transparent; }
+.c-thumb.active { opacity: 1; border-color: var(--gold); }
+.modal-prev, .modal-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(26,23,20,0.45); border: none; color: white; font-size: 1.1rem; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: background 0.2s; }
+.modal-prev:hover, .modal-next:hover { background: rgba(26,23,20,0.8); }
+.modal-prev { left: 0.6rem; }
+.modal-next { right: 0.6rem; }
+.modal-prev:disabled, .modal-next:disabled { opacity: 0.2; cursor: default; }
+.modal-close { position: fixed; top: 1rem; right: 1.5rem; background: none; border: none; color: var(--white); font-size: 1.8rem; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; z-index: 300; line-height: 1; }
+.modal-close:hover { opacity: 1; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) { .masonry { columns: 2; } }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { min-height: 65vw; }
+  .hero-left { padding: 3.5rem 6vw; }
+  .categories { grid-template-columns: repeat(3,1fr); }
+  .cat-card:nth-child(3) { border-right: none; }
+  .about-section { grid-template-columns: 1fr; gap: 3rem; }
+  .about-left { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+  .about-photo { margin-bottom: 0; }
+  .modal { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
+  .modal-img-area { min-height: 260px; }
+  .modal-img-area img { max-height: 50vh; }
+  .gallery-section { padding: 4rem 4vw; }
+}
+
+@media (max-width: 640px) {
+  .categories { grid-template-columns: 1fr 1fr; }
+  .cat-card:nth-child(2) { border-right: none; }
+  .cat-card:nth-child(3) { border-right: 1px solid var(--warm); }
+  .cat-card:nth-child(4) { border-right: none; }
+  .cat-card:nth-child(5) { border-right: none; }
+  .masonry { columns: 1; }
+  .hero-left { padding: 3rem 5vw; }
+  .about-left { grid-template-columns: 1fr; }
+  .social-links { gap: 1.5rem; }
+  .gallery-section { padding: 3.5rem 5vw; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#top" class="nav-logo">
+    <img src="https://cdn.myportfolio.com/04c5512a-5640-41c6-84cb-7d735f6ffb2c/9896f395-3bbc-49af-b983-3ceef95a0d29_rwc_0x0x427x427x4096.png?h=b064b776f94dcd2628d819684c59c99e" alt="ML">
+    <span class="nav-logo-text">Maximiliano Langevin</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#pinturas" data-i18n="nav_paintings">Pinturas</a></li>
+      <li><a href="#dibujos" data-i18n="nav_drawings">Dibujos</a></li>
+      <li><a href="#xilografia" data-i18n="nav_xilo">Xilografía</a></li>
+      <li><a href="#ilustracion" data-i18n="nav_illus">Ilustración</a></li>
+      <li><a href="#about" data-i18n="nav_about">Biografía</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contacto</a></li>
+    </ul>
+    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">EN</button>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <ul>
+    <li><a href="#pinturas" onclick="closeMenu()" data-i18n="nav_paintings">Pinturas</a></li>
+    <li><a href="#dibujos" onclick="closeMenu()" data-i18n="nav_drawings">Dibujos</a></li>
+    <li><a href="#xilografia" onclick="closeMenu()" data-i18n="nav_xilo">Xilografía</a></li>
+    <li><a href="#ilustracion" onclick="closeMenu()" data-i18n="nav_illus">Ilustración</a></li>
+    <li><a href="#about" onclick="closeMenu()" data-i18n="nav_about">Biografía</a></li>
+    <li><a href="#contact" onclick="closeMenu()" data-i18n="nav_contact">Contacto</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-left">
+    <p class="hero-label" data-i18n="hero_label">Pintor realista — Santiago, Chile</p>
+    <h1 class="hero-name">Maximiliano<br><em>Langevin</em></h1>
+    <p class="hero-desc" data-i18n="hero_desc">Retratos al óleo que exploran la humanidad de sus retratados. Un trabajo sostenido entre la tradición clásica y la mirada contemporánea.</p>
+    <a href="#pinturas" class="hero-cta" data-i18n="hero_cta">Ver pinturas</a>
+  </div>
+  <div class="hero-right">
+    <img id="hero-img" src="https://cdn.myportfolio.com/04c5512a-5640-41c6-84cb-7d735f6ffb2c/12f0fc5b-81fe-45ae-ab76-d1ae684bb0ff_rw_1920.png?h=9ec0ccfbdb85d6fd3fc2916084ef58b1" alt="Veteran George">
+    <span class="hero-caption" id="hero-caption">Veteran George — 2024</span>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<div class="categories">
+  <a href="#pinturas" class="cat-card"><div class="cat-num">10</div><div class="cat-name" data-i18n="cat_paintings">Pinturas</div><div class="cat-sub" data-i18n="cat_paintings_sub">Óleo sobre tela y lino</div></a>
+  <a href="#dibujos" class="cat-card"><div class="cat-num">02</div><div class="cat-name" data-i18n="cat_drawings">Dibujos</div><div class="cat-sub" data-i18n="cat_drawings_sub">Estudios y copias</div></a>
+  <a href="#xilografia" class="cat-card"><div class="cat-num">03</div><div class="cat-name" data-i18n="cat_xilo">Xilografía</div><div class="cat-sub" data-i18n="cat_xilo_sub">Técnica en madera</div></a>
+  <a href="#ilustracion" class="cat-card"><div class="cat-num">07</div><div class="cat-name" data-i18n="cat_illus">Ilustración</div><div class="cat-sub" data-i18n="cat_illus_sub">Digital y animación</div></a>
+  <a href="#creaciones" class="cat-card"><div class="cat-num">03</div><div class="cat-name" data-i18n="cat_creat">Creaciones</div><div class="cat-sub" data-i18n="cat_creat_sub">Cerámica y objetos</div></a>
+</div>
+
+<!-- GALLERY SECTIONS -->
+<section class="gallery-section" id="pinturas"><div class="section-header"><span class="section-num">01</span><h2 class="section-title" data-i18n="cat_paintings">Pinturas</h2><div class="section-line"></div></div><div class="masonry" id="grid-Pinturas"></div></section>
+<section class="gallery-section alt" id="dibujos"><div class="section-header"><span class="section-num">02</span><h2 class="section-title" data-i18n="cat_drawings">Dibujos</h2><div class="section-line"></div></div><div class="masonry" id="grid-Dibujos"></div></section>
+<section class="gallery-section" id="xilografia"><div class="section-header"><span class="section-num">03</span><h2 class="section-title" data-i18n="cat_xilo">Xilografía</h2><div class="section-line"></div></div><div class="masonry" id="grid-Xilografía"></div></section>
+<section class="gallery-section alt" id="ilustracion"><div class="section-header"><span class="section-num">04</span><h2 class="section-title" data-i18n="cat_illus">Ilustración</h2><div class="section-line"></div></div><div class="masonry" id="grid-Ilustración"></div></section>
+<section class="gallery-section" id="creaciones"><div class="section-header"><span class="section-num">05</span><h2 class="section-title" data-i18n="cat_creat">Creaciones</h2><div class="section-line"></div></div><div class="masonry" id="grid-Creaciones"></div></section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-left">
+    <div class="about-photo"><img src="https://cdn.myportfolio.com/04c5512a-5640-41c6-84cb-7d735f6ffb2c/b1755006-be87-445b-a068-a30a23c844ee_rw_1920.jpg?h=f7120f057253eef6086f9e222c1fa93a" alt="Maximiliano Langevin"></div>
+    <span class="about-label" data-i18n="about_label">Biografía</span>
+    <h2 class="about-name">Maximiliano<br><em>Langevin</em></h2>
+    <span class="about-detail">Santiago, Chile · 1996</span>
+  </div>
+  <div class="about-right">
+    <p class="about-quote" data-i18n="about_quote">«Los retratos son una forma de inmortalizar al sujeto. Mi objetivo es capturar lo que va más allá de lo que se ve.»</p>
+    <div class="about-body" id="about-body"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <h2 class="contact-title" data-i18n="contact_title">Contacto</h2>
+  <a href="mailto:maxlangevinl@gmail.com" class="contact-email">maxlangevinl@gmail.com</a>
+  <a href="https://wa.me/56999999999" id="wa-btn" class="wa-btn" target="_blank" rel="noopener">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span data-i18n="wa_btn">Contactar por WhatsApp</span>
+  </a>
+  <div class="social-links">
+    <a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener" class="social-link">Instagram</a>
+    <a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener" class="social-link">Behance</a>
+    <a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener" class="social-link">LinkedIn</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2024 Maximiliano Langevin</span>
+  <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.78rem;color:var(--gold-light)">Langevinci®</span>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <button class="modal-close" id="modal-close">×</button>
+  <div class="modal">
+    <div class="modal-img-area" id="modal-img-area">
+      <img id="modal-img" src="" alt="">
+      <button class="modal-prev" id="modal-prev">‹</button>
+      <button class="modal-next" id="modal-next">›</button>
+      <div class="modal-img-caption" id="modal-img-caption"></div>
+    </div>
+    <div class="modal-info">
+      <div>
+        <h3 class="modal-title" id="modal-title"></h3>
+        <p class="modal-year" id="modal-year"></p>
+        <p class="modal-tech" id="modal-tech"></p>
+        <p class="modal-dims" id="modal-dims"></p>
+        <p class="modal-desc" id="modal-desc"></p>
+      </div>
+      <div class="carousel-footer" id="carousel-footer">
+        <div class="carousel-nav">
+          <button class="c-btn" id="c-prev">‹</button>
+          <span class="c-counter" id="c-counter">1 / 1</span>
+          <button class="c-btn" id="c-next">›</button>
+        </div>
+        <div class="c-thumbs" id="c-thumbs"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── WHATSAPP — reemplaza con tu número real (código país sin +, sin espacios) ──
+const WA_NUMBER = '56999999999';
+document.getElementById('wa-btn').href = `https://wa.me/${WA_NUMBER}`;
+
+// ── TRANSLATIONS ──
+const T = {
+  es: {
+    nav_paintings:'Pinturas', nav_drawings:'Dibujos', nav_xilo:'Xilografía',
+    nav_illus:'Ilustración', nav_about:'Biografía', nav_contact:'Contacto',
+    hero_label:'Pintor realista — Santiago, Chile',
+    hero_desc:'Retratos al óleo que exploran la humanidad de sus retratados. Un trabajo sostenido entre la tradición clásica y la mirada contemporánea.',
+    hero_cta:'Ver pinturas',
+    cat_paintings:'Pinturas', cat_paintings_sub:'Óleo sobre tela y lino',
+    cat_drawings:'Dibujos', cat_drawings_sub:'Estudios y copias',
+    cat_xilo:'Xilografía', cat_xilo_sub:'Técnica en madera',
+    cat_illus:'Ilustración', cat_illus_sub:'Digital y animación',
+    cat_creat:'Creaciones', cat_creat_sub:'Cerámica y objetos',
+    about_label:'Biografía',
+    about_quote:'«Los retratos son una forma de inmortalizar al sujeto. Mi objetivo es capturar lo que va más allá de lo que se ve.»',
+    contact_label:'Contacto', contact_title:'Contacto', wa_btn:'Contactar por WhatsApp',
+    no_img_sub:'Animación', view_on:'Ver en Behance',
+  },
+  en: {
+    nav_paintings:'Paintings', nav_drawings:'Drawings', nav_xilo:'Xylography',
+    nav_illus:'Illustration', nav_about:'Biography', nav_contact:'Contact',
+    hero_label:'Realist painter — Santiago, Chile',
+    hero_desc:'Oil portraits exploring the humanity of their subjects. A sustained practice between classical tradition and a contemporary eye.',
+    hero_cta:'View paintings',
+    cat_paintings:'Paintings', cat_paintings_sub:'Oil on canvas & linen',
+    cat_drawings:'Drawings', cat_drawings_sub:'Studies & copies',
+    cat_xilo:'Xylography', cat_xilo_sub:'Woodblock technique',
+    cat_illus:'Illustration', cat_illus_sub:'Digital & animation',
+    cat_creat:'Creations', cat_creat_sub:'Ceramics & objects',
+    about_label:'Biography',
+    about_quote:'"Portraits are a way to immortalize the subject. My goal is to capture what lies beyond what is seen."',
+    contact_label:'Contact', contact_title:'Contact', wa_btn:'Contact via WhatsApp',
+    no_img_sub:'Animation', view_on:'View on Behance',
+  }
+};
+
+const BIO = {
+  es: [
+    'Maximiliano Langevin nació en Santiago, Chile, en 1996. Comenzó a explorar el dibujo y la pintura al óleo en 2019 bajo la tutela del reconocido pintor y muralista Javier Barriga, con quien estudió y refinó su técnica realista durante cinco años.',
+    'En 2024, profundizó su formación con el aclamado pintor hiperrealista Francisco Uzabeaga, desarrollando una técnica más precisa y eficiente que consolidó su estilo único.',
+    'Profesional de la publicidad por oficio y pintor por vocación, ha construido una carrera ligada a la industria del cine, colaborando con empresas como Disney® y la productora chilena ganadora del Oscar, Fábula®. Esta experiencia le aportó conocimientos avanzados en fotografía, composición y dirección de arte que influyen profundamente en su trabajo pictórico.',
+    'Actualmente se desempeña como Director Creativo en Tactica OOH, agencia especializada en innovación en vía pública.',
+    'La mayoría de sus pinturas están basadas en fotografías que él mismo toma. Además, diseña y fabrica accesorios de pintura bajo la marca <em>Langevinci®</em>.',
+  ],
+  en: [
+    'Maximiliano Langevin was born in Santiago, Chile, in 1996. He began exploring drawing and oil painting in 2019 under the guidance of renowned painter and muralist Javier Barriga, studying and refining his realist technique over five years.',
+    'In 2024, he furthered his training with acclaimed hyperrealist painter Francisco Uzabeaga, developing a more precise and efficient technique that solidified his unique style.',
+    'An advertising professional by trade and a painter by vocation, he has built a career closely tied to the film industry, collaborating with companies such as Disney® and the Oscar-winning Chilean production company Fábula®. This experience gave him advanced knowledge in photography, composition and art direction that deeply influences his pictorial work.',
+    'He currently serves as Creative Director at Tactica OOH, an agency specialized in innovation in outdoor advertising.',
+    'Most of his paintings are based on photographs he takes himself. He also designs and manufactures painting accessories under the brand <em>Langevinci®</em>.',
+  ]
+};
+
+let LANG = 'es';
+
+function setLang(lang) {
+  LANG = lang;
+  document.documentElement.lang = lang;
+  document.getElementById('lang-btn').textContent = lang === 'es' ? 'EN' : 'ES';
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+  });
+  // Bio
+  const bio = document.getElementById('about-body');
+  bio.innerHTML = BIO[lang].map(p => `<p>${p}</p>`).join('');
+  // Regenerate gallery cards (for translated tech labels)
+  Object.keys(catGrids).forEach(cat => {
+    const grid = document.getElementById('grid-' + cat);
+    if (grid) { grid.innerHTML = ''; }
+  });
+  WORKS.forEach((w, wi) => buildCard(w, wi));
+  // If modal is open, refresh modal text
+  if (document.getElementById('modal').classList.contains('open') && currentWork !== null) {
+    const cw = currentWork;
+    document.getElementById('modal-tech').textContent = cw.tech[lang] || cw.tech.es;
+    document.getElementById('modal-desc').textContent = cw.desc[lang] || cw.desc.es;
+    if (currentWork.imgs[currentIdx]) {
+      document.getElementById('modal-img-caption').textContent = currentWork.imgs[currentIdx].cap?.[lang] || '';
+    }
+  }
+}
+
+function toggleLang() { setLang(LANG === 'es' ? 'en' : 'es'); }
+
+// ── MOBILE MENU ──
+function toggleMenu() {
+  const m = document.getElementById('mobile-nav');
+  const h = document.getElementById('hamburger');
+  m.classList.toggle('open');
+  h.classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mobile-nav').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+
+// ── WORKS DATA ──
+const B = 'https://cdn.myportfolio.com/04c5512a-5640-41c6-84cb-7d735f6ffb2c/';
+const img = (id, ext, hash, capEs='', capEn='') => ({url:`${B}${id}_${ext}?h=${hash}`, cap:{es:capEs, en:capEn}});
+
+const WORKS = [
+  // ── PINTURAS ──
+  { name:'Veteran George', cat:'Pinturas', year:'2024',
+    tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'28×40 cm',
+    desc:{es:'', en:''},
+    imgs:[img('12f0fc5b-81fe-45ae-ab76-d1ae684bb0ff','rw_1920.png','9ec0ccfbdb85d6fd3fc2916084ef58b1'),
+          img('1d4fa085-54aa-4d4e-a0f7-cf396767b60b','rw_1920.png','c2c28688d3210648ceb39c5c93615bf7'),
+          img('53775163-9012-40b8-a320-67d194368e3b','rw_1920.png','c374fbc674c5da151a2c8abcd91a28a4')] },
+
+  { name:'Consu gato', cat:'Pinturas', year:'2024',
+    tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'71×50 cm',
+    desc:{es:'', en:''},
+    imgs:[img('0aee6503-8b8c-41df-9a46-bf9fc683f400','rw_3840.JPG','9bff8b9b57849ad2eb321e05ee088bd2')] },
+
+  { name:'Marcos 16:16', cat:'Pinturas', year:'WIP',
+    tech:{es:'Óleo sobre tela', en:'Oil on canvas'}, dims:'77,5×102,5 cm',
+    desc:{es:'Obra en proceso', en:'Work in progress'},
+    imgs:[img('7cb5481a-09c3-4fdf-887f-2ba0222a8f9e','rw_3840.jpg','ca3ab6d0ab1c133c0186711343d400c0'),
+          img('1acc3997-25ec-445f-ab56-2965ce4e3def','rw_1920.jpg','4046462707d64bb2a1cc742305d4b4a4'),
+          img('4e5740df-9d79-4694-adc0-1d5630dc9273','rw_3840.JPG','4003b1106c8238c2ebe40f8c98e0a062'),
+          img('14fee1dc-a800-48c5-afc5-2c5d2a9581d9','rw_3840.JPG','599f80e7efb2d8d0d35f16277432e53f'),
+          img('456d4ab6-4d1d-4bf5-952e-329c5619b3bf','rw_3840.JPG','9bf1f36fc5a027d55f409ca319382ee4'),
+          img('0f00e7d2-56a0-4702-ae84-420afcbad8ba','rw_3840.JPG','ca161b7afc26e3f6fd287f20f589d6c9'),
+          img('aff958aa-ee80-46a1-91e3-fbe7f30d0c2a','rw_3840.JPG','a3415f75710e795476982858ad8959cf')] },
+
+  { name:'El Conde', cat:'Pinturas', year:'2024',
+    tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'40×60 cm',
+    desc:{es:'', en:''},
+    imgs:[img('6403318a-68f5-4a28-b68e-7a6474b31202','rw_1920.jpg','2a9de3703246491f71a9ccd82cc23087'),
+          img('ab573f5b-c980-433d-8147-0b71d32b3601','rw_1200.JPG','aefdcd5ee1aeecb06252d036e7da31aa',
+              'Exposición "Polímatas" en Estadio Italiano 2024','Exhibition "Polymaths" at Estadio Italiano 2024'),
+          img('cb4f1ff0-fb52-4667-8545-79bf05d447ea','rw_1200.png','f76fd5047178842f07ff601926e4352e',
+              'Maximiliano Langevin a la izquierda, Francisco Uzabeaga a la derecha. Exposición "Polímatas" en Estadio Italiano 2024',
+              'Maximiliano Langevin (left), Francisco Uzabeaga (right). "Polymaths" exhibition at Estadio Italiano 2024'),
+          img('9db8754d-7ff2-4abf-8785-00a099297a26','rw_3840.png','e8efdbbe5fad2e0048dec322581148b9',
+              'Exposición "Polímatas" en Estadio Italiano 2024','Exhibition "Polymaths" at Estadio Italiano 2024'),
+          img('628e25ae-5172-4075-bace-f1156699a7ac','rw_3840.JPG','25deb8db405b1de99783d5c5fa59b532',
+              'Juan de Dios Larraín (Productor) y Pablo Larraín (Director) de la película "El Conde" con la obra',
+              'Juan de Dios Larraín (Producer) and Pablo Larraín (Director) of the film "El Conde" with the work')] },
+
+  { name:'Santiago', cat:'Pinturas', year:'2024',
+    tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'40×50 cm',
+    desc:{es:'', en:''},
+    imgs:[img('f3f858d3-10f8-4c5c-98aa-e64cffd5a533','rw_1920.jpg','86c5591da255a4c0bce45f3fda5b0e95'),
+          img('4ea15b6e-f5e8-46d6-9bba-6e65b7f1320e','rw_1920.jpg','37dbda830118282fd529b3a0e0811f36'),
+          img('ad9f8637-bd38-4a41-bf96-48f2df4d33d6','rw_1920.jpg','31385f298bc3d51824af5f1fab945a16'),
+          img('040d517a-5e65-4c79-b205-6f5157f40b21','rw_1920.jpg','0963b03c77896e0898270701015d1157')] },
+
+  { name:'Vicente', cat:'Pinturas', year:'2022',
+    tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'40×50 cm',
+    desc:{es:'', en:''},
+    imgs:[img('fa903664-0d36-452f-aa01-08391e3249de','rw_1200.jpg','88bfcd54c569dabd6a8f163a548b3d1f'),
+          img('6746310c-e0ce-4fef-93d0-d8c10a4109eb','rw_1200.jpg','23834798e984a7351c5fa10d7e2df5d2'),
+          img('223b472f-39ea-4134-8048-1e1e738ddd66','rw_1200.jpg','16d93310709c7ba8e93e305e9df5c3f1'),
+          img('ed43d227-e453-4e8c-99ad-95a7a432bba6','rw_1920.jpg','5e3f333b256eebd7cdc25813895c9679'),
+          img('1e0c5a9b-323b-4954-9663-f06b976fca74','rw_1200.jpg','78dfd2557d0e45ee8c6a6129ab828f6e'),
+          img('5d14c6fa-8c0d-4fc7-8f14-622305246ad5','rw_1200.jpg','5ca2571b39e0eaf2250fc5f61b28dfc1'),
+          img('038f5f00-e03c-4a9f-8d0e-a2dfc1911f7b','rw_1920.jpg','d359ac0dfd71bc7407e2113ff9b6d0b3'),
+          img('4d0b8277-0204-475d-88bd-cd007ee2d6a1','rw_1200.jpg','74fd83fbc0a8302a87a085163ed61453')] },
+
+  { name:'En verano', cat:'Pinturas', year:'2022',
+    tech:{es:'Óleo sobre tela', en:'Oil on canvas'}, dims:'85×59 cm',
+    desc:{es:'Reproducción de «En été — La bohémienne» de Renoir (tamaño original de la obra)', en:'Reproduction of Renoir\'s "En été — La bohémienne" (original size of the work)'},
+    imgs:[img('d1043fb7-0438-4c40-8bac-18baee8cfc6d','rw_1200.jpg','7ca1324e6ae9a33825cd9ebf25d32da4'),
+          img('19cabd1d-bdcd-4521-9932-6b787659914c','rw_1200.jpg','e414bdfd90a4a65c9b548e311960076b'),
+          img('5121daf6-8e74-4653-ae4b-138c234cf143','rw_1200.jpg','0af438f99dccb4c2214978345d6314b6'),
+          img('e197ec7c-53e9-4265-b2b6-f69ef05155fb','rw_1200.jpg','255c803a9d2e8f56915c019b39e136f0'),
+          img('8ad0ca7e-0409-4068-9291-fffe4f8fe22d','rw_1920.jpg','2bf285ed200d4199f3fd14ab46e08a94'),
+          img('672a416d-9217-4dc9-8db1-2b5fd3f7d196','rw_1920.jpg','432c6b1baefe5e2eb01fe87ba5b9a1a8'),
+          img('a9b4b3cf-6065-434a-a742-f6e9b4449e69','rw_1920.jpg','7b7b4dea978535246435aa32f31e349e')] },
+
+  { name:'Coti', cat:'Pinturas', year:'2020',
+    tech:{es:'Óleo sobre tela', en:'Oil on canvas'}, dims:'50×40 cm',
+    desc:{es:'', en:''},
+    imgs:[img('d9672a07-89a9-44b1-bbfb-706648421c68','rw_1920.jpg','ef55fbef48dce4318d66fa024791cb3a'),
+          img('40181abe-9fba-445f-88d1-7f0225fa722e','rw_3840.jpg','b1305b4274076601647fff680bc1fbf6'),
+          img('3d238162-62de-40de-abaf-a85f1cb25a3a','rw_3840.jpg','7729c010c74390f275ed97a0f3fe976d'),
+          img('8eecd4a8-fb9a-4709-aa00-0e133e227fb0','rw_3840.jpg','0d1bdada7b7bf9f80ce0635a24e81520')] },
+
+  { name:'Gallagath', cat:'Pinturas', year:'2021',
+    tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'50×70 cm',
+    desc:{es:'', en:''},
+    imgs:[img('f54f64d5-080a-4f31-b7c6-c95e66fd2f7d','rw_1920.png','f302bc21b6078b556254fac2322d418d'),
+          img('5abdc290-28ee-40b0-a96b-eed31c8c696d','rw_3840.jpg','455f22a60a8de96626178d0b1d4cc172'),
+          img('09bfd2e6-a15d-468d-9acd-0b8e3afae7e3','rw_3840.jpg','b1d1d6d110b325894507364c29711504'),
+          img('a64de448-747d-4a0b-9702-d87d8d6c5097','rw_3840.jpg','404cc85cd870830d2cf0d813aec00886'),
+          img('b20d4aa7-a736-42b8-aa8d-7f4a1f1404f7','rw_3840.jpg','21949de68905c35fdd1742fc748c7770'),
+          img('0337e2b4-3027-40e3-b262-bb710ea2f4d5','rw_3840.jpg','e1adea201cc973ae6d2e7b2e55516cb2')] },
+
+  { name:'El Jardín de las Delicias', cat:'Pinturas', year:'2020',
+    tech:{es:'Óleo sobre tela', en:'Oil on canvas'}, dims:'30×40 cm',
+    desc:{es:'Reproducción de un fragmento de El Bosco', en:'Reproduction of a detail from Bosch\'s triptych'},
+    imgs:[img('8cec4780-eb71-413d-8fce-bd66e8e89403','rw_3840.jpg','1e217eb4c277910c98c53215a359f87a'),
+          img('486d5d04-aa50-4409-ab3d-3fdf87ecf49f','rw_3840.jpg','6339668b111d1b55c1d5218b91551651'),
+          img('5bbe0280-08c2-4dff-8e5f-15b06cba6eb5','rw_3840.jpg','009eea9d31b2cc4337401d502e2109be')] },
+
+  // ── DIBUJOS ──
+  { name:'Parmogianino', cat:'Dibujos', year:'2019',
+    tech:{es:'Sanguina sobre papel de algodón', en:'Red chalk on cotton paper'}, dims:'40×29 cm',
+    desc:{es:'Reproducción de un dibujo de Parmigianino', en:'Reproduction of a drawing by Parmigianino'},
+    imgs:[img('5ec52c7f-37e4-49b1-b746-6e2e6f66dfc5','rw_1920.png','dadef2d16b51fcf2521388ca67dbb383'),
+          img('d3883cf2-4ebd-4ba6-bebe-e56091c1a7c4','rw_1920.png','6aa8487f9b30be7e0ec91649a14a2e89'),
+          img('31f11696-76b8-4d0a-9d0c-53733c3a3a03','rw_1920.png','ad81ba97cffa31f2ac04e78486fa65a6'),
+          img('e6d86fef-4d07-431c-ab73-bc69fb13d8f1','rw_1920.png','76b61f6d3205f623d2aa99d2d738a516')] },
+
+  { name:'Bouguereau', cat:'Dibujos', year:'2019',
+    tech:{es:'Lápiz grafito sobre papel de algodón', en:'Graphite pencil on cotton paper'}, dims:'30×23 cm',
+    desc:{es:'Reproducción de un dibujo de Bouguereau', en:'Reproduction of a drawing by Bouguereau'},
+    imgs:[img('9c7ba3ca-4911-43f3-9b99-4d4b20018c6c','rw_1920.png','51c115522cf990171a39702ecd95ff3d'),
+          img('2eafc4aa-b291-4257-883d-d0c1292698e6','rw_1920.png','fe6dfc99636059da96ec0fcf3a9ba860'),
+          img('8fc9edb7-d49b-410a-b4e4-c52802a0f808','rw_1920.png','f0ad46a6ca514b26c82add9b2663292b'),
+          img('1f62a86d-891f-47f8-a927-23ff32091084','rw_1920.png','b4c31eaa0e8cb09209fdb997fe927bd0'),
+          img('b2e4b00c-bc53-4d7c-9c56-3bfc2a88abb1','rw_1920.png','62e3bf965fc8a9fcbf3fb4d73baacbd5')] },
+
+  // ── XILOGRAFÍA ──
+  { name:'La Mosca', cat:'Xilografía', year:'2017',
+    tech:{es:'Xilografía sobre papel Fabriano', en:'Xylography on Fabriano paper'}, dims:'30×70 cm',
+    desc:{es:'', en:''},
+    imgs:[img('41b9387d-cfdf-4973-8487-aff868e0f2ea','rw_1920.png','7f6830c8793b31f3791872d2bc168f6e'),
+          img('90fb2104-75c0-443c-aa0b-c27a2fd1f108','rw_1920.png','ef1e7516d4a11ed16b79e738f9fa7035'),
+          img('451ab62f-41a7-4604-9ea3-1a8466fd361b','rw_1920.png','4c3c309c9b180858eead2a4333087f89'),
+          img('dc0cc9d4-917b-4825-9456-69f9421cbdff','rw_1920.png','86917b6750a2014ca98ab209d6d0d6be'),
+          img('7aab69cd-57ec-46da-9b5f-6b3549181c91','rw_1920.jpg','be6c3b8c8d0006fa77d41b085c177c29'),
+          img('3fa21c5d-0e1d-491e-95cf-fb6ad9f46f8f','rw_3840.jpg','776ab3b3a06561802a861a29f3b7e610')] },
+
+  { name:'Guiseppe', cat:'Xilografía', year:'2017',
+    tech:{es:'Xilografía sobre papel Fabriano', en:'Xylography on Fabriano paper'}, dims:'33×35 cm',
+    desc:{es:'', en:''},
+    imgs:[img('6ff4c6ef-7a5b-4c37-8ee7-19d06e62c1ef','rw_3840.jpg','a24d56cfc863c2ca241ac63bfc8a48eb'),
+          img('9a95b4ca-4026-4eb1-a089-e3d1c37311d7','rw_1920.jpg','b3c90091735a6ee0b63ede86049e7335'),
+          img('d2cb4fbf-4678-46b6-a6d1-623a84092026','rw_3840.jpg','b30981fde45baf6cb1593de8cd04fe47'),
+          img('ea105d0a-9422-4bd5-a2f9-9521e56fa999','rw_3840.jpg','735cad721fa7c2c0384731e9276a4fc7')] },
+
+  { name:'San Jorge y el Dragón', cat:'Xilografía', year:'2017',
+    tech:{es:'Xilografía sobre papel Fabriano', en:'Xylography on Fabriano paper'}, dims:'35×33 cm',
+    desc:{es:'Reproducción del grabado «San Jorge matando al Dragón» de Albrecht Dürer', en:'Reproduction of "Saint George Slaying the Dragon" by Albrecht Dürer'},
+    imgs:[img('2060e62f-621f-4268-85df-4732e279a12b','rw_1920.jpg','7395f4b58830ae286096e0fc8c184aa3'),
+          img('b62d3947-c5b7-4d1e-92d0-f62dba9c3085','rw_1920.jpg','44ba6cc2fb46669445dbe55618fe98ec'),
+          img('4b9400dd-bb01-4e94-93f5-266e37ce411c','rw_1920.jpg','70d75611fcb40ab5968074f10e6fced7'),
+          img('79ef7fc1-b812-4072-afbe-d771b4585d16','rw_1920.jpg','3c8e5408173654ef90c5f8d6dd672efb')] },
+
+  // ── ILUSTRACIÓN ──
+  { name:'Autorretrato', cat:'Ilustración', year:'2018',
+    tech:{es:'Ilustración digital en Photoshop', en:'Digital illustration in Photoshop'}, dims:'',
+    desc:{es:'', en:''},
+    imgs:[img('49d76a06-eed4-4b2f-98d9-0cfc945c74e0','rw_1920.png','9167f7b4c900148878737813ed2938de'),
+          img('59c70fd1-f047-4f44-9d50-88e32d5f5407','rw_1920.png','0545557595fc88778716fd417186233a'),
+          img('5d14b5cc-7961-4cf8-8e48-d9b1d8eec0bc','rw_1920.png','105c88cebf4ee9a6c563b9774d9b89c4'),
+          img('406b96cf-5d0d-4660-afec-30361b929a8c','rw_1920.png','1b1477adfe67ea718abbf8d7af773710'),
+          img('6d03c086-9a39-4eda-bb61-ac969247c299','rw_1920.png','ac2d7348c0f0f4c30f6a70ae90e186c9'),
+          img('763ffeb7-6d4b-44bd-ae07-9c093f9854f8','rw_1920.png','9851fd4b92c49dca9a6fb6a78efd0d2a')] },
+
+  { name:'Wizard Frog', cat:'Ilustración', year:'2020',
+    tech:{es:'Ilustración digital · Animación en After Effects', en:'Digital illustration · Animation in After Effects'}, dims:'',
+    desc:{es:'', en:''},
+    imgs:[img('10e99b34-0d72-4110-b873-6f3fa41eb4da','rw_1920.jpg','9460c699dbedcd234d265cec74d893b0')] },
+
+  { name:'COVITCH-19', cat:'Ilustración', year:'2020',
+    tech:{es:'Ilustración digital · Animación en After Effects', en:'Digital illustration · Animation in After Effects'}, dims:'',
+    desc:{es:'Cómic animado. Ver animación completa en Instagram.', en:'Animated comic. View full animation on Instagram.'},
+    imgs:[img('26e3492d-6e98-4f8c-bc9e-d0979912cdda','rwc_0x192x1920x1920x1920.png','b3966b614c11137ff28d065bc7449695')],
+    link:'https://www.instagram.com/p/CEhGrKED7qL/?img_index=1' },
+
+  { name:'Best Buds', cat:'Ilustración', year:'2020',
+    tech:{es:'Ilustración digital en Photoshop', en:'Digital illustration in Photoshop'}, dims:'',
+    desc:{es:'', en:''},
+    imgs:[img('e593e0af-dbbe-46f7-836f-bdea927719ef','rw_1920.jpg','8a7e8c2c274b86a1eca63c28d061db76')] },
+
+  { name:'Saping', cat:'Ilustración', year:'2021',
+    tech:{es:'Ilustración digital en Photoshop', en:'Digital illustration in Photoshop'}, dims:'',
+    desc:{es:'', en:''},
+    imgs:[img('087d8ee0-901d-4943-bf3b-f19b8e573483','rw_1920.png','ccabf81bc7a9c76c7ced5239740b7ad4'),
+          img('460195ed-7826-4d1b-9a4e-4f50d8a0d6b8','rw_1200.png','3e4a660159cda98d1f5b46fc7a61e1de'),
+          img('7b7e2545-586e-45b6-8892-f7e7f5df541c','rw_1200.jpg','3046fd2b55c9d70b8448229c8b52b426'),
+          img('a134c541-e820-4062-b508-33cd80897631','rw_1200.jpg','731069c31b52bd59a9e4a22620b06d8c')] },
+
+  { name:'Melted', cat:'Ilustración', year:'2021',
+    tech:{es:'Ilustración digital en Photoshop', en:'Digital illustration in Photoshop'}, dims:'',
+    desc:{es:'', en:''},
+    imgs:[img('eb1705a4-c095-4ac3-b7af-b4f36a8bda5b','rw_1920.png','109b0fb9bf231feafeee7809a18164bb')] },
+
+  { name:'High Life', cat:'Ilustración', year:'2020',
+    tech:{es:'Novela gráfica digital', en:'Digital graphic novel'}, dims:'',
+    desc:{es:'Challenge: hacer una novela gráfica en dúo. Junto con Ignacio Villegas creamos una sátira que mantiene nuestro estilo. La profesora quedó tan sorprendida que nos pidió presentarla al resto de la clase.',
+          en:'Challenge: to make a graphic novel in duos. Together with Ignacio Villegas we created a satire in our own style. The teacher was so impressed she asked us to present it to the whole class.'},
+    imgs:[img('dd8787f9-e992-4723-ae76-7da5233f6196','rw_1920.jpg','fa442f1c26b9db94d30135a6a4f6e3b8'),
+          img('d8b1aff5-d7fc-45a0-bce9-35b505b672f3','rw_1920.jpg','225a4c0af5e2f73e17044e2050218c6b'),
+          img('78a6d313-1ef0-4f1b-b9aa-db6fa0dbd54d','rw_1920.jpg','706a305dfd3b4cddb097a58a288dbdc7'),
+          img('10a3d51c-5cbd-430f-9b75-58186f94ccaf','rw_1920.jpg','262702c3f98654adc57d8bcd6de55f7e'),
+          img('5cd54566-3358-454d-8956-3d3b88808e43','rw_1920.jpg','ec54aa0db6e7dc5a2d27b5b0d50380d8')] },
+
+  // ── CREACIONES ──
+  { name:'Sapo Punk', cat:'Creaciones', year:'2022',
+    tech:{es:'Cerámica esmaltada', en:'Glazed ceramic'}, dims:'',
+    desc:{es:'', en:''},
+    imgs:[img('68cceb9f-6e35-4482-8f84-a65d5cd6d82a','rw_1200.jpg','18dec52dc0ac6ce5cad6fab546c20cb3'),
+          img('dc01586c-d989-48e8-b606-307c6b97a119','rw_1920.jpg','d0a64ae2fc27b1a1d35c79585a22f206'),
+          img('76cee091-cc06-4683-9c4f-fd9af5bc50e8','rw_1200.jpg','ab8f9050764a4cdcdfe7a8ea0e2c1a5d'),
+          img('4a9c71ed-fa86-4881-95db-c5299d3d2ac5','rw_1920.jpg','0162bcd58442df40e704b061981fe37f'),
+          img('91f94ca0-4f4b-45c9-8431-5cc6b6f1b536','rw_1200.jpg','e1d2d479dcc6e98485ed59937760f81f'),
+          img('c2db9756-1bc2-4bb2-9ed8-4e33ae8a82a4','rw_1920.jpg','524565f4330521f5ecdef54c07170692')] },
+
+  { name:'En llamas', cat:'Creaciones', year:'2020',
+    tech:{es:'Converse pintadas con lápices Posca', en:'Converse sneakers painted with Posca markers'}, dims:'',
+    desc:{es:'', en:''},
+    imgs:[img('ce22f3d5-be0b-4315-a2c4-7141d1ff1681','rw_1200.jpg','1c52967a9631a11c25ea5cb3ab617dbe')] },
+
+  { name:'Tasapo', cat:'Creaciones', year:'2022',
+    tech:{es:'Taza de cerámica esmaltada', en:'Glazed ceramic mug'}, dims:'',
+    desc:{es:'', en:''},
+    imgs:[img('5c3f41cd-41af-4814-8343-b87561149ce5','rw_1200.jpg','0ed6a3edfafd920df9c362fbce21cd69')] },
+];
+
+// ── BUILD GALLERY CARDS ──
+const catGrids = { 'Pinturas':'grid-Pinturas','Dibujos':'grid-Dibujos','Xilografía':'grid-Xilografía','Ilustración':'grid-Ilustración','Creaciones':'grid-Creaciones' };
+
+function buildCard(w, wi) {
+  const grid = document.getElementById(catGrids[w.cat]);
+  if (!grid) return;
+  const item = document.createElement('div');
+  item.className = 'masonry-item';
+  if (w.imgs.length > 0) {
+    const playIcon = w.link ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="width:48px;height:48px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.7);display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;padding-left:3px;background:rgba(0,0,0,0.3)">&#9654;</div></div>` : '';
+    item.innerHTML = `<img src="${w.imgs[0].url}" alt="${w.name}" loading="lazy">${playIcon}
+      <div class="masonry-overlay">
+        <div class="m-title">${w.name}</div>
+        <div class="m-meta">${w.year}${w.tech[LANG]?' · '+w.tech[LANG]:''}${w.dims?' · '+w.dims:''}</div>
+      </div>`;
+    item.addEventListener('click', () => w.link ? window.open(w.link,'_blank','noopener') : openModal(wi));
+  } else {
+    item.innerHTML = `<div class="no-img-card">
+        <div class="no-img-play">&#9654;</div>
+        <div class="no-img-title">${w.name}</div>
+        <div class="no-img-sub">${w.year} · ${T[LANG].no_img_sub}</div>
+        ${w.behance?`<div class="no-img-link">${T[LANG].view_on}</div>`:''}
+      </div>
+      <div class="masonry-overlay">
+        <div class="m-title">${w.name}</div>
+        <div class="m-meta">${w.year} · ${T[LANG].no_img_sub}</div>
+      </div>`;
+    if (w.behance) {
+      item.addEventListener('click', () => window.open(w.behance, '_blank', 'noopener'));
+    }
+  }
+  grid.appendChild(item);
+}
+
+WORKS.forEach((w, wi) => buildCard(w, wi));
+
+// ── MODAL / CAROUSEL ──
+let currentWork = null, currentIdx = 0;
+
+function openModal(wi) {
+  currentWork = WORKS[wi];
+  currentIdx = 0;
+  document.getElementById('modal-title').textContent = currentWork.name;
+  document.getElementById('modal-year').textContent = currentWork.year;
+  document.getElementById('modal-tech').textContent = currentWork.tech[LANG] || currentWork.tech.es;
+  document.getElementById('modal-dims').textContent = currentWork.dims;
+  document.getElementById('modal-desc').textContent = currentWork.desc[LANG] || currentWork.desc.es;
+  buildThumbs();
+  showSlide(0);
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function buildThumbs() {
+  const thumbs = document.getElementById('c-thumbs');
+  thumbs.innerHTML = '';
+  currentWork.imgs.forEach((img, i) => {
+    const el = document.createElement('img');
+    el.src = img.url; el.className = 'c-thumb'; el.dataset.i = i;
+    el.addEventListener('click', () => showSlide(i));
+    thumbs.appendChild(el);
+  });
+  const multi = currentWork.imgs.length > 1;
+  document.getElementById('carousel-footer').style.display = multi ? 'block' : 'none';
+}
+
+function showSlide(i) {
+  const modalImg = document.getElementById('modal-img');
+  const caption = document.getElementById('modal-img-caption');
+  const prevBtn = document.getElementById('modal-prev');
+  const nextBtn = document.getElementById('modal-next');
+
+  if (!currentWork.imgs.length) {
+    modalImg.style.display = 'none';
+    prevBtn.style.display = 'none'; nextBtn.style.display = 'none';
+    caption.textContent = '';
+    return;
+  }
+  currentIdx = i;
+  const entry = currentWork.imgs[i];
+  modalImg.src = entry.url; modalImg.style.display = 'block';
+  caption.textContent = entry.cap?.[LANG] || '';
+  document.getElementById('c-counter').textContent = `${i+1} / ${currentWork.imgs.length}`;
+  document.querySelectorAll('.c-thumb').forEach(t => t.classList.toggle('active', +t.dataset.i === i));
+  const multi = currentWork.imgs.length > 1;
+  prevBtn.style.display = multi ? 'flex' : 'none';
+  nextBtn.style.display = multi ? 'flex' : 'none';
+  prevBtn.disabled = i === 0;
+  nextBtn.disabled = i === currentWork.imgs.length - 1;
+  document.getElementById('c-prev').disabled = i === 0;
+  document.getElementById('c-next').disabled = i === currentWork.imgs.length - 1;
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+document.getElementById('modal-prev').addEventListener('click', () => showSlide(Math.max(0, currentIdx-1)));
+document.getElementById('modal-next').addEventListener('click', () => showSlide(Math.min(currentWork.imgs.length-1, currentIdx+1)));
+document.getElementById('c-prev').addEventListener('click', () => showSlide(Math.max(0, currentIdx-1)));
+document.getElementById('c-next').addEventListener('click', () => showSlide(Math.min(currentWork.imgs.length-1, currentIdx+1)));
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('modal').classList.contains('open')) return;
+  if (e.key==='Escape') closeModal();
+  if (e.key==='ArrowLeft') showSlide(Math.max(0, currentIdx-1));
+  if (e.key==='ArrowRight') showSlide(Math.min((currentWork?.imgs.length||1)-1, currentIdx+1));
+});
+
+// ── HERO CAROUSEL ──
+const heroSlides = WORKS
+  .filter(w => w.cat === 'Pinturas' && w.imgs.length > 0)
+  .map(w => ({ url: w.imgs[0].url, name: w.name, year: w.year }));
+
+let heroIdx = 0;
+
+function advanceHero() {
+  heroIdx = (heroIdx + 1) % heroSlides.length;
+  const heroImg = document.getElementById('hero-img');
+  const heroCap = document.getElementById('hero-caption');
+  heroImg.style.opacity = '0';
+  setTimeout(() => {
+    heroImg.src = heroSlides[heroIdx].url;
+    heroImg.alt = heroSlides[heroIdx].name;
+    heroCap.textContent = `${heroSlides[heroIdx].name} — ${heroSlides[heroIdx].year}`;
+    heroImg.style.opacity = '1';
+  }, 300);
+}
+
+setInterval(advanceHero, 5000);
+
+// ── INIT ──
+const detectedLang = (navigator.language || navigator.userLanguage || 'es').startsWith('es') ? 'es' : 'en';
+setLang(detectedLang);
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 20));
+</script>
+</body>
+</html>
