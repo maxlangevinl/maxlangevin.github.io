@@ -205,7 +205,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.07); p
 <!-- NAV -->
 <nav id="nav">
   <a href="#top" class="nav-logo">
-    <img src="https://cdn.myportfolio.com/04c5512a-5640-41c6-84cb-7d735f6ffb2c/9896f395-3bbc-49af-b983-3ceef95a0d29_rwc_0x0x427x427x4096.png?h=b064b776f94dcd2628d819684c59c99e" alt="ML">
+    <img src="images/logo_ml.png" alt="ML">
     <span class="nav-logo-text">Maximiliano Langevin</span>
   </a>
   <div class="nav-right">
@@ -245,7 +245,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.07); p
     <a href="#pinturas" class="hero-cta" data-i18n="hero_cta">Ver pinturas</a>
   </div>
   <div class="hero-right">
-    <img id="hero-img" src="https://cdn.myportfolio.com/04c5512a-5640-41c6-84cb-7d735f6ffb2c/12f0fc5b-81fe-45ae-ab76-d1ae684bb0ff_rw_1920.png?h=9ec0ccfbdb85d6fd3fc2916084ef58b1" alt="Veteran George">
+    <img id="hero-img" src="images/pinturas/veteran_george_1.jpg" alt="Veteran George">
     <span class="hero-caption" id="hero-caption">Veteran George — 2024</span>
   </div>
 </section>
@@ -269,7 +269,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.07); p
 <!-- ABOUT -->
 <section class="about-section" id="about">
   <div class="about-left">
-    <div class="about-photo"><img src="https://cdn.myportfolio.com/04c5512a-5640-41c6-84cb-7d735f6ffb2c/b1755006-be87-445b-a068-a30a23c844ee_rw_1920.jpg?h=f7120f057253eef6086f9e222c1fa93a" alt="Maximiliano Langevin"></div>
+    <div class="about-photo"><img src="images/maximiliano_langevin.jpg" alt="Maximiliano Langevin"></div>
     <span class="about-label" data-i18n="about_label">Biografía</span>
     <h2 class="about-name">Maximiliano<br><em>Langevin</em></h2>
     <span class="about-detail">Santiago, Chile · 1996</span>
@@ -433,38 +433,38 @@ function closeMenu() {
 }
 
 // ── WORKS DATA ──
-const B = 'https://cdn.myportfolio.com/04c5512a-5640-41c6-84cb-7d735f6ffb2c/';
-const img = (id, ext, hash, capEs='', capEn='') => ({url:`${B}${id}_${ext}?h=${hash}`, cap:{es:capEs, en:capEn}});
+// Images hosted locally in images/
+const img = (url, capEs='', capEn='') => ({url, cap:{es:capEs, en:capEn}});
 
 const WORKS = [
   // ── PINTURAS ──
   { name:'Veteran George', cat:'Pinturas', year:'2024',
     tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'28×40 cm',
     desc:{es:'', en:''},
-    imgs:[img('12f0fc5b-81fe-45ae-ab76-d1ae684bb0ff','rw_1920.png','9ec0ccfbdb85d6fd3fc2916084ef58b1'),
-          img('1d4fa085-54aa-4d4e-a0f7-cf396767b60b','rw_1920.png','c2c28688d3210648ceb39c5c93615bf7'),
-          img('53775163-9012-40b8-a320-67d194368e3b','rw_1920.png','c374fbc674c5da151a2c8abcd91a28a4')] },
+    imgs:[img('images/pinturas/veteran_george_1.jpg'),
+          img('images/pinturas/veteran_george_2.jpg'),
+          img('images/pinturas/veteran_george_3.jpg')] },
 
   { name:'Consu gato', cat:'Pinturas', year:'2024',
     tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'71×50 cm',
     desc:{es:'', en:''},
-    imgs:[img('0aee6503-8b8c-41df-9a46-bf9fc683f400','rw_3840.JPG','9bff8b9b57849ad2eb321e05ee088bd2')] },
+    imgs:[img('images/pinturas/consu_gato.jpg')] },
 
   { name:'Marcos 16:16', cat:'Pinturas', year:'WIP',
     tech:{es:'Óleo sobre tela', en:'Oil on canvas'}, dims:'77,5×102,5 cm',
     desc:{es:'Obra en proceso', en:'Work in progress'},
-    imgs:[img('7cb5481a-09c3-4fdf-887f-2ba0222a8f9e','rw_3840.jpg','ca3ab6d0ab1c133c0186711343d400c0'),
-          img('1acc3997-25ec-445f-ab56-2965ce4e3def','rw_1920.jpg','4046462707d64bb2a1cc742305d4b4a4'),
-          img('4e5740df-9d79-4694-adc0-1d5630dc9273','rw_3840.JPG','4003b1106c8238c2ebe40f8c98e0a062'),
-          img('14fee1dc-a800-48c5-afc5-2c5d2a9581d9','rw_3840.JPG','599f80e7efb2d8d0d35f16277432e53f'),
-          img('456d4ab6-4d1d-4bf5-952e-329c5619b3bf','rw_3840.JPG','9bf1f36fc5a027d55f409ca319382ee4'),
-          img('0f00e7d2-56a0-4702-ae84-420afcbad8ba','rw_3840.JPG','ca161b7afc26e3f6fd287f20f589d6c9'),
-          img('aff958aa-ee80-46a1-91e3-fbe7f30d0c2a','rw_3840.JPG','a3415f75710e795476982858ad8959cf')] },
+    imgs:[img('images/pinturas/marcos_16_16_1.jpg'),
+          img('images/pinturas/marcos_16_16_2.jpg'),
+          img('images/pinturas/marcos_16_16_3.jpg'),
+          img('images/pinturas/marcos_16_16_4.jpg'),
+          img('images/pinturas/marcos_16_16_5.jpg'),
+          img('images/pinturas/marcos_16_16_6.jpg'),
+          img('images/pinturas/marcos_16_16_7.jpg')] },
 
   { name:'El Conde', cat:'Pinturas', year:'2024',
     tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'40×60 cm',
     desc:{es:'', en:''},
-    imgs:[img('6403318a-68f5-4a28-b68e-7a6474b31202','rw_1920.jpg','2a9de3703246491f71a9ccd82cc23087'),
+    imgs:[img('images/pinturas/el_conde_1.jpg'),
           img('ab573f5b-c980-433d-8147-0b71d32b3601','rw_1200.JPG','aefdcd5ee1aeecb06252d036e7da31aa',
               'Exposición "Polímatas" en Estadio Italiano 2024','Exhibition "Polymaths" at Estadio Italiano 2024'),
           img('cb4f1ff0-fb52-4667-8545-79bf05d447ea','rw_1200.png','f76fd5047178842f07ff601926e4352e',
@@ -479,174 +479,174 @@ const WORKS = [
   { name:'Santiago', cat:'Pinturas', year:'2024',
     tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'40×50 cm',
     desc:{es:'', en:''},
-    imgs:[img('f3f858d3-10f8-4c5c-98aa-e64cffd5a533','rw_1920.jpg','86c5591da255a4c0bce45f3fda5b0e95'),
-          img('4ea15b6e-f5e8-46d6-9bba-6e65b7f1320e','rw_1920.jpg','37dbda830118282fd529b3a0e0811f36'),
-          img('ad9f8637-bd38-4a41-bf96-48f2df4d33d6','rw_1920.jpg','31385f298bc3d51824af5f1fab945a16'),
-          img('040d517a-5e65-4c79-b205-6f5157f40b21','rw_1920.jpg','0963b03c77896e0898270701015d1157')] },
+    imgs:[img('images/pinturas/santiago_1.jpg'),
+          img('images/pinturas/santiago_2.jpg'),
+          img('images/pinturas/santiago_3.jpg'),
+          img('images/pinturas/santiago_4.jpg')] },
 
   { name:'Vicente', cat:'Pinturas', year:'2022',
     tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'40×50 cm',
     desc:{es:'', en:''},
-    imgs:[img('fa903664-0d36-452f-aa01-08391e3249de','rw_1200.jpg','88bfcd54c569dabd6a8f163a548b3d1f'),
-          img('6746310c-e0ce-4fef-93d0-d8c10a4109eb','rw_1200.jpg','23834798e984a7351c5fa10d7e2df5d2'),
-          img('223b472f-39ea-4134-8048-1e1e738ddd66','rw_1200.jpg','16d93310709c7ba8e93e305e9df5c3f1'),
-          img('ed43d227-e453-4e8c-99ad-95a7a432bba6','rw_1920.jpg','5e3f333b256eebd7cdc25813895c9679'),
-          img('1e0c5a9b-323b-4954-9663-f06b976fca74','rw_1200.jpg','78dfd2557d0e45ee8c6a6129ab828f6e'),
-          img('5d14c6fa-8c0d-4fc7-8f14-622305246ad5','rw_1200.jpg','5ca2571b39e0eaf2250fc5f61b28dfc1'),
-          img('038f5f00-e03c-4a9f-8d0e-a2dfc1911f7b','rw_1920.jpg','d359ac0dfd71bc7407e2113ff9b6d0b3'),
-          img('4d0b8277-0204-475d-88bd-cd007ee2d6a1','rw_1200.jpg','74fd83fbc0a8302a87a085163ed61453')] },
+    imgs:[img('images/pinturas/vicente_1.jpg'),
+          img('images/pinturas/vicente_2.jpg'),
+          img('images/pinturas/vicente_3.jpg'),
+          img('images/pinturas/vicente_4.jpg'),
+          img('images/pinturas/vicente_5.jpg'),
+          img('images/pinturas/vicente_6.jpg'),
+          img('images/pinturas/vicente_7.jpg'),
+          img('images/pinturas/vicente_8.jpg')] },
 
   { name:'En verano', cat:'Pinturas', year:'2022',
     tech:{es:'Óleo sobre tela', en:'Oil on canvas'}, dims:'85×59 cm',
     desc:{es:'Reproducción de «En été — La bohémienne» de Renoir (tamaño original de la obra)', en:'Reproduction of Renoir\'s "En été — La bohémienne" (original size of the work)'},
-    imgs:[img('d1043fb7-0438-4c40-8bac-18baee8cfc6d','rw_1200.jpg','7ca1324e6ae9a33825cd9ebf25d32da4'),
-          img('19cabd1d-bdcd-4521-9932-6b787659914c','rw_1200.jpg','e414bdfd90a4a65c9b548e311960076b'),
-          img('5121daf6-8e74-4653-ae4b-138c234cf143','rw_1200.jpg','0af438f99dccb4c2214978345d6314b6'),
-          img('e197ec7c-53e9-4265-b2b6-f69ef05155fb','rw_1200.jpg','255c803a9d2e8f56915c019b39e136f0'),
-          img('8ad0ca7e-0409-4068-9291-fffe4f8fe22d','rw_1920.jpg','2bf285ed200d4199f3fd14ab46e08a94'),
-          img('672a416d-9217-4dc9-8db1-2b5fd3f7d196','rw_1920.jpg','432c6b1baefe5e2eb01fe87ba5b9a1a8'),
-          img('a9b4b3cf-6065-434a-a742-f6e9b4449e69','rw_1920.jpg','7b7b4dea978535246435aa32f31e349e')] },
+    imgs:[img('images/pinturas/en_verano_1.jpg'),
+          img('images/pinturas/en_verano_2.jpg'),
+          img('images/pinturas/en_verano_3.jpg'),
+          img('images/pinturas/en_verano_4.jpg'),
+          img('images/pinturas/en_verano_5.jpg'),
+          img('images/pinturas/en_verano_6.jpg'),
+          img('images/pinturas/en_verano_7.jpg')] },
 
   { name:'Coti', cat:'Pinturas', year:'2020',
     tech:{es:'Óleo sobre tela', en:'Oil on canvas'}, dims:'50×40 cm',
     desc:{es:'', en:''},
-    imgs:[img('d9672a07-89a9-44b1-bbfb-706648421c68','rw_1920.jpg','ef55fbef48dce4318d66fa024791cb3a'),
-          img('40181abe-9fba-445f-88d1-7f0225fa722e','rw_3840.jpg','b1305b4274076601647fff680bc1fbf6'),
-          img('3d238162-62de-40de-abaf-a85f1cb25a3a','rw_3840.jpg','7729c010c74390f275ed97a0f3fe976d'),
-          img('8eecd4a8-fb9a-4709-aa00-0e133e227fb0','rw_3840.jpg','0d1bdada7b7bf9f80ce0635a24e81520')] },
+    imgs:[img('images/pinturas/coti_1.jpg'),
+          img('images/pinturas/coti_2.jpg'),
+          img('images/pinturas/coti_3.jpg'),
+          img('images/pinturas/coti_4.jpg')] },
 
   { name:'Gallagath', cat:'Pinturas', year:'2021',
     tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'50×70 cm',
     desc:{es:'', en:''},
-    imgs:[img('f54f64d5-080a-4f31-b7c6-c95e66fd2f7d','rw_1920.png','f302bc21b6078b556254fac2322d418d'),
-          img('5abdc290-28ee-40b0-a96b-eed31c8c696d','rw_3840.jpg','455f22a60a8de96626178d0b1d4cc172'),
-          img('09bfd2e6-a15d-468d-9acd-0b8e3afae7e3','rw_3840.jpg','b1d1d6d110b325894507364c29711504'),
-          img('a64de448-747d-4a0b-9702-d87d8d6c5097','rw_3840.jpg','404cc85cd870830d2cf0d813aec00886'),
-          img('b20d4aa7-a736-42b8-aa8d-7f4a1f1404f7','rw_3840.jpg','21949de68905c35fdd1742fc748c7770'),
-          img('0337e2b4-3027-40e3-b262-bb710ea2f4d5','rw_3840.jpg','e1adea201cc973ae6d2e7b2e55516cb2')] },
+    imgs:[img('images/pinturas/gallagath_1.jpg'),
+          img('images/pinturas/gallagath_2.jpg'),
+          img('images/pinturas/gallagath_3.jpg'),
+          img('images/pinturas/gallagath_4.jpg'),
+          img('images/pinturas/gallagath_5.jpg'),
+          img('images/pinturas/gallagath_6.jpg')] },
 
   { name:'El Jardín de las Delicias', cat:'Pinturas', year:'2020',
     tech:{es:'Óleo sobre tela', en:'Oil on canvas'}, dims:'30×40 cm',
     desc:{es:'Reproducción de un fragmento de El Bosco', en:'Reproduction of a detail from Bosch\'s triptych'},
-    imgs:[img('8cec4780-eb71-413d-8fce-bd66e8e89403','rw_3840.jpg','1e217eb4c277910c98c53215a359f87a'),
-          img('486d5d04-aa50-4409-ab3d-3fdf87ecf49f','rw_3840.jpg','6339668b111d1b55c1d5218b91551651'),
-          img('5bbe0280-08c2-4dff-8e5f-15b06cba6eb5','rw_3840.jpg','009eea9d31b2cc4337401d502e2109be')] },
+    imgs:[img('images/pinturas/el_jardin_de_las_delicias_1.jpg'),
+          img('images/pinturas/el_jardin_de_las_delicias_2.jpg'),
+          img('images/pinturas/el_jardin_de_las_delicias_3.jpg')] },
 
   // ── DIBUJOS ──
   { name:'Parmogianino', cat:'Dibujos', year:'2019',
     tech:{es:'Sanguina sobre papel de algodón', en:'Red chalk on cotton paper'}, dims:'40×29 cm',
     desc:{es:'Reproducción de un dibujo de Parmigianino', en:'Reproduction of a drawing by Parmigianino'},
-    imgs:[img('5ec52c7f-37e4-49b1-b746-6e2e6f66dfc5','rw_1920.png','dadef2d16b51fcf2521388ca67dbb383'),
-          img('d3883cf2-4ebd-4ba6-bebe-e56091c1a7c4','rw_1920.png','6aa8487f9b30be7e0ec91649a14a2e89'),
-          img('31f11696-76b8-4d0a-9d0c-53733c3a3a03','rw_1920.png','ad81ba97cffa31f2ac04e78486fa65a6'),
-          img('e6d86fef-4d07-431c-ab73-bc69fb13d8f1','rw_1920.png','76b61f6d3205f623d2aa99d2d738a516')] },
+    imgs:[img('images/dibujos/parmogianino_1.jpg'),
+          img('images/dibujos/parmogianino_2.jpg'),
+          img('images/dibujos/parmogianino_3.jpg'),
+          img('images/dibujos/parmogianino_4.jpg')] },
 
   { name:'Bouguereau', cat:'Dibujos', year:'2019',
     tech:{es:'Lápiz grafito sobre papel de algodón', en:'Graphite pencil on cotton paper'}, dims:'30×23 cm',
     desc:{es:'Reproducción de un dibujo de Bouguereau', en:'Reproduction of a drawing by Bouguereau'},
-    imgs:[img('9c7ba3ca-4911-43f3-9b99-4d4b20018c6c','rw_1920.png','51c115522cf990171a39702ecd95ff3d'),
-          img('2eafc4aa-b291-4257-883d-d0c1292698e6','rw_1920.png','fe6dfc99636059da96ec0fcf3a9ba860'),
-          img('8fc9edb7-d49b-410a-b4e4-c52802a0f808','rw_1920.png','f0ad46a6ca514b26c82add9b2663292b'),
-          img('1f62a86d-891f-47f8-a927-23ff32091084','rw_1920.png','b4c31eaa0e8cb09209fdb997fe927bd0'),
-          img('b2e4b00c-bc53-4d7c-9c56-3bfc2a88abb1','rw_1920.png','62e3bf965fc8a9fcbf3fb4d73baacbd5')] },
+    imgs:[img('images/dibujos/bouguereau_1.jpg'),
+          img('images/dibujos/bouguereau_2.jpg'),
+          img('images/dibujos/bouguereau_3.jpg'),
+          img('images/dibujos/bouguereau_4.jpg'),
+          img('images/dibujos/bouguereau_5.jpg')] },
 
   // ── XILOGRAFÍA ──
   { name:'La Mosca', cat:'Xilografía', year:'2017',
     tech:{es:'Xilografía sobre papel Fabriano', en:'Xylography on Fabriano paper'}, dims:'30×70 cm',
     desc:{es:'', en:''},
-    imgs:[img('41b9387d-cfdf-4973-8487-aff868e0f2ea','rw_1920.png','7f6830c8793b31f3791872d2bc168f6e'),
-          img('90fb2104-75c0-443c-aa0b-c27a2fd1f108','rw_1920.png','ef1e7516d4a11ed16b79e738f9fa7035'),
-          img('451ab62f-41a7-4604-9ea3-1a8466fd361b','rw_1920.png','4c3c309c9b180858eead2a4333087f89'),
-          img('dc0cc9d4-917b-4825-9456-69f9421cbdff','rw_1920.png','86917b6750a2014ca98ab209d6d0d6be'),
-          img('7aab69cd-57ec-46da-9b5f-6b3549181c91','rw_1920.jpg','be6c3b8c8d0006fa77d41b085c177c29'),
-          img('3fa21c5d-0e1d-491e-95cf-fb6ad9f46f8f','rw_3840.jpg','776ab3b3a06561802a861a29f3b7e610')] },
+    imgs:[img('images/xilografia/la_mosca_1.jpg'),
+          img('images/xilografia/la_mosca_2.jpg'),
+          img('images/xilografia/la_mosca_3.jpg'),
+          img('images/xilografia/la_mosca_4.jpg'),
+          img('images/xilografia/la_mosca_5.jpg'),
+          img('images/xilografia/la_mosca_6.jpg')] },
 
   { name:'Guiseppe', cat:'Xilografía', year:'2017',
     tech:{es:'Xilografía sobre papel Fabriano', en:'Xylography on Fabriano paper'}, dims:'33×35 cm',
     desc:{es:'', en:''},
-    imgs:[img('6ff4c6ef-7a5b-4c37-8ee7-19d06e62c1ef','rw_3840.jpg','a24d56cfc863c2ca241ac63bfc8a48eb'),
-          img('9a95b4ca-4026-4eb1-a089-e3d1c37311d7','rw_1920.jpg','b3c90091735a6ee0b63ede86049e7335'),
-          img('d2cb4fbf-4678-46b6-a6d1-623a84092026','rw_3840.jpg','b30981fde45baf6cb1593de8cd04fe47'),
-          img('ea105d0a-9422-4bd5-a2f9-9521e56fa999','rw_3840.jpg','735cad721fa7c2c0384731e9276a4fc7')] },
+    imgs:[img('images/xilografia/guiseppe_1.jpg'),
+          img('images/xilografia/guiseppe_2.jpg'),
+          img('images/xilografia/guiseppe_3.jpg'),
+          img('images/xilografia/guiseppe_4.jpg')] },
 
   { name:'San Jorge y el Dragón', cat:'Xilografía', year:'2017',
     tech:{es:'Xilografía sobre papel Fabriano', en:'Xylography on Fabriano paper'}, dims:'35×33 cm',
     desc:{es:'Reproducción del grabado «San Jorge matando al Dragón» de Albrecht Dürer', en:'Reproduction of "Saint George Slaying the Dragon" by Albrecht Dürer'},
-    imgs:[img('2060e62f-621f-4268-85df-4732e279a12b','rw_1920.jpg','7395f4b58830ae286096e0fc8c184aa3'),
-          img('b62d3947-c5b7-4d1e-92d0-f62dba9c3085','rw_1920.jpg','44ba6cc2fb46669445dbe55618fe98ec'),
-          img('4b9400dd-bb01-4e94-93f5-266e37ce411c','rw_1920.jpg','70d75611fcb40ab5968074f10e6fced7'),
-          img('79ef7fc1-b812-4072-afbe-d771b4585d16','rw_1920.jpg','3c8e5408173654ef90c5f8d6dd672efb')] },
+    imgs:[img('images/xilografia/san_jorge_y_el_dragon_1.jpg'),
+          img('images/xilografia/san_jorge_y_el_dragon_2.jpg'),
+          img('images/xilografia/san_jorge_y_el_dragon_3.jpg'),
+          img('images/xilografia/san_jorge_y_el_dragon_4.jpg')] },
 
   // ── ILUSTRACIÓN ──
   { name:'Autorretrato', cat:'Ilustración', year:'2018',
     tech:{es:'Ilustración digital en Photoshop', en:'Digital illustration in Photoshop'}, dims:'',
     desc:{es:'', en:''},
-    imgs:[img('49d76a06-eed4-4b2f-98d9-0cfc945c74e0','rw_1920.png','9167f7b4c900148878737813ed2938de'),
-          img('59c70fd1-f047-4f44-9d50-88e32d5f5407','rw_1920.png','0545557595fc88778716fd417186233a'),
-          img('5d14b5cc-7961-4cf8-8e48-d9b1d8eec0bc','rw_1920.png','105c88cebf4ee9a6c563b9774d9b89c4'),
-          img('406b96cf-5d0d-4660-afec-30361b929a8c','rw_1920.png','1b1477adfe67ea718abbf8d7af773710'),
-          img('6d03c086-9a39-4eda-bb61-ac969247c299','rw_1920.png','ac2d7348c0f0f4c30f6a70ae90e186c9'),
-          img('763ffeb7-6d4b-44bd-ae07-9c093f9854f8','rw_1920.png','9851fd4b92c49dca9a6fb6a78efd0d2a')] },
+    imgs:[img('images/ilustracion/autorretrato_1.jpg'),
+          img('images/ilustracion/autorretrato_2.jpg'),
+          img('images/ilustracion/autorretrato_3.jpg'),
+          img('images/ilustracion/autorretrato_4.jpg'),
+          img('images/ilustracion/autorretrato_5.jpg'),
+          img('images/ilustracion/autorretrato_6.jpg')] },
 
   { name:'Wizard Frog', cat:'Ilustración', year:'2020',
     tech:{es:'Ilustración digital · Animación en After Effects', en:'Digital illustration · Animation in After Effects'}, dims:'',
     desc:{es:'', en:''},
-    imgs:[img('10e99b34-0d72-4110-b873-6f3fa41eb4da','rw_1920.jpg','9460c699dbedcd234d265cec74d893b0')] },
+    imgs:[img('images/ilustracion/wizard_frog.jpg')] },
 
   { name:'COVITCH-19', cat:'Ilustración', year:'2020',
     tech:{es:'Ilustración digital · Animación en After Effects', en:'Digital illustration · Animation in After Effects'}, dims:'',
     desc:{es:'Cómic animado. Ver animación completa en Instagram.', en:'Animated comic. View full animation on Instagram.'},
-    imgs:[img('26e3492d-6e98-4f8c-bc9e-d0979912cdda','rwc_0x192x1920x1920x1920.png','b3966b614c11137ff28d065bc7449695')],
+    imgs:[img('images/ilustracion/covitch_19.jpg')],
     link:'https://www.instagram.com/p/CEhGrKED7qL/?img_index=1' },
 
   { name:'Best Buds', cat:'Ilustración', year:'2020',
     tech:{es:'Ilustración digital en Photoshop', en:'Digital illustration in Photoshop'}, dims:'',
     desc:{es:'', en:''},
-    imgs:[img('e593e0af-dbbe-46f7-836f-bdea927719ef','rw_1920.jpg','8a7e8c2c274b86a1eca63c28d061db76')] },
+    imgs:[img('images/ilustracion/best_buds.jpg')] },
 
   { name:'Saping', cat:'Ilustración', year:'2021',
     tech:{es:'Ilustración digital en Photoshop', en:'Digital illustration in Photoshop'}, dims:'',
     desc:{es:'', en:''},
-    imgs:[img('087d8ee0-901d-4943-bf3b-f19b8e573483','rw_1920.png','ccabf81bc7a9c76c7ced5239740b7ad4'),
-          img('460195ed-7826-4d1b-9a4e-4f50d8a0d6b8','rw_1200.png','3e4a660159cda98d1f5b46fc7a61e1de'),
-          img('7b7e2545-586e-45b6-8892-f7e7f5df541c','rw_1200.jpg','3046fd2b55c9d70b8448229c8b52b426'),
-          img('a134c541-e820-4062-b508-33cd80897631','rw_1200.jpg','731069c31b52bd59a9e4a22620b06d8c')] },
+    imgs:[img('images/ilustracion/saping_1.jpg'),
+          img('images/ilustracion/saping_2.jpg'),
+          img('images/ilustracion/saping_3.jpg'),
+          img('images/ilustracion/saping_4.jpg')] },
 
   { name:'Melted', cat:'Ilustración', year:'2021',
     tech:{es:'Ilustración digital en Photoshop', en:'Digital illustration in Photoshop'}, dims:'',
     desc:{es:'', en:''},
-    imgs:[img('eb1705a4-c095-4ac3-b7af-b4f36a8bda5b','rw_1920.png','109b0fb9bf231feafeee7809a18164bb')] },
+    imgs:[img('images/ilustracion/melted.jpg')] },
 
   { name:'High Life', cat:'Ilustración', year:'2020',
     tech:{es:'Novela gráfica digital', en:'Digital graphic novel'}, dims:'',
     desc:{es:'Challenge: hacer una novela gráfica en dúo. Junto con Ignacio Villegas creamos una sátira que mantiene nuestro estilo. La profesora quedó tan sorprendida que nos pidió presentarla al resto de la clase.',
           en:'Challenge: to make a graphic novel in duos. Together with Ignacio Villegas we created a satire in our own style. The teacher was so impressed she asked us to present it to the whole class.'},
-    imgs:[img('dd8787f9-e992-4723-ae76-7da5233f6196','rw_1920.jpg','fa442f1c26b9db94d30135a6a4f6e3b8'),
-          img('d8b1aff5-d7fc-45a0-bce9-35b505b672f3','rw_1920.jpg','225a4c0af5e2f73e17044e2050218c6b'),
-          img('78a6d313-1ef0-4f1b-b9aa-db6fa0dbd54d','rw_1920.jpg','706a305dfd3b4cddb097a58a288dbdc7'),
-          img('10a3d51c-5cbd-430f-9b75-58186f94ccaf','rw_1920.jpg','262702c3f98654adc57d8bcd6de55f7e'),
-          img('5cd54566-3358-454d-8956-3d3b88808e43','rw_1920.jpg','ec54aa0db6e7dc5a2d27b5b0d50380d8')] },
+    imgs:[img('images/ilustracion/high_life_1.jpg'),
+          img('images/ilustracion/high_life_2.jpg'),
+          img('images/ilustracion/high_life_3.jpg'),
+          img('images/ilustracion/high_life_4.jpg'),
+          img('images/ilustracion/high_life_5.jpg')] },
 
   // ── CREACIONES ──
   { name:'Sapo Punk', cat:'Creaciones', year:'2022',
     tech:{es:'Cerámica esmaltada', en:'Glazed ceramic'}, dims:'',
     desc:{es:'', en:''},
-    imgs:[img('68cceb9f-6e35-4482-8f84-a65d5cd6d82a','rw_1200.jpg','18dec52dc0ac6ce5cad6fab546c20cb3'),
-          img('dc01586c-d989-48e8-b606-307c6b97a119','rw_1920.jpg','d0a64ae2fc27b1a1d35c79585a22f206'),
-          img('76cee091-cc06-4683-9c4f-fd9af5bc50e8','rw_1200.jpg','ab8f9050764a4cdcdfe7a8ea0e2c1a5d'),
-          img('4a9c71ed-fa86-4881-95db-c5299d3d2ac5','rw_1920.jpg','0162bcd58442df40e704b061981fe37f'),
-          img('91f94ca0-4f4b-45c9-8431-5cc6b6f1b536','rw_1200.jpg','e1d2d479dcc6e98485ed59937760f81f'),
-          img('c2db9756-1bc2-4bb2-9ed8-4e33ae8a82a4','rw_1920.jpg','524565f4330521f5ecdef54c07170692')] },
+    imgs:[img('images/creaciones/sapo_punk_1.jpg'),
+          img('images/creaciones/sapo_punk_2.jpg'),
+          img('images/creaciones/sapo_punk_3.jpg'),
+          img('images/creaciones/sapo_punk_4.jpg'),
+          img('images/creaciones/sapo_punk_5.jpg'),
+          img('images/creaciones/sapo_punk_6.jpg')] },
 
   { name:'En llamas', cat:'Creaciones', year:'2020',
     tech:{es:'Converse pintadas con lápices Posca', en:'Converse sneakers painted with Posca markers'}, dims:'',
     desc:{es:'', en:''},
-    imgs:[img('ce22f3d5-be0b-4315-a2c4-7141d1ff1681','rw_1200.jpg','1c52967a9631a11c25ea5cb3ab617dbe')] },
+    imgs:[img('images/creaciones/en_llamas.jpg')] },
 
   { name:'Tasapo', cat:'Creaciones', year:'2022',
     tech:{es:'Taza de cerámica esmaltada', en:'Glazed ceramic mug'}, dims:'',
     desc:{es:'', en:''},
-    imgs:[img('5c3f41cd-41af-4814-8343-b87561149ce5','rw_1200.jpg','0ed6a3edfafd920df9c362fbce21cd69')] },
+    imgs:[img('images/creaciones/tasapo.jpg')] },
 ];
 
 // ── BUILD GALLERY CARDS ──
