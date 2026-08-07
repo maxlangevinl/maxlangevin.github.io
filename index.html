@@ -245,8 +245,8 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.07); p
     <a href="#pinturas" class="hero-cta" data-i18n="hero_cta">Ver pinturas</a>
   </div>
   <div class="hero-right">
-    <img id="hero-img" src="images/pinturas/veteran_george_1.jpg" alt="Veteran George">
-    <span class="hero-caption" id="hero-caption">Veteran George — 2024</span>
+    <img id="hero-img" src="images/pinturas/karin_goldberg_1.jpg" alt="Karin Goldberg">
+    <span class="hero-caption" id="hero-caption">Karin Goldberg — 2025</span>
   </div>
 </section>
 
@@ -438,6 +438,18 @@ const img = (url, capEs='', capEn='') => ({url, cap:{es:capEs, en:capEn}});
 
 const WORKS = [
   // ── PINTURAS ──
+  { name:'Karin Goldberg', cat:'Pinturas', year:'2025',
+    tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'48×68 cm',
+    desc:{es:'', en:''},
+    imgs:[img('images/pinturas/karin_goldberg_1.jpg'),
+          img('images/pinturas/karin_goldberg_2.jpg'),
+          img('images/pinturas/karin_goldberg_3.jpg'),
+          img('images/pinturas/karin_goldberg_4.jpg'),
+          img('images/pinturas/karin_goldberg_5.jpg'),
+          img('images/pinturas/karin_goldberg_6.jpg'),
+          img('images/pinturas/karin_goldberg_7.jpg'),
+          img('images/pinturas/karin_goldberg_8.jpg')] },
+
   { name:'Veteran George', cat:'Pinturas', year:'2024',
     tech:{es:'Óleo sobre lino', en:'Oil on linen'}, dims:'28×40 cm',
     desc:{es:'', en:''},
