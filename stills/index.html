@@ -192,7 +192,7 @@
             <option value="20x30">20 × 30 cm</option>
             <option value="a5">A5 · 14,8 × 21 cm</option>
             <option value="a4">A4 · 21 × 29,7 cm</option>
-            <option value="4x6in">4 × 6 in · 10,2 × 15,2 cm</option>
+            <option value="4x6in">6 in (4 × 6 in) · 10,2 × 15,2 cm</option>
             <option value="5x7in">5 × 7 in · 12,7 × 17,8 cm</option>
             <option value="6x8in">6 × 8 in · 15,2 × 20,3 cm</option>
             <option value="8x10in">8 × 10 in · 20,3 × 25,4 cm</option>
@@ -290,7 +290,7 @@
   const MM_PER_IN = 25.4;
   const OUT_DPI = 300;
   const MAX_ZOOM = 5;
-  const STORE_KEY = 'stills-bano-v1';
+  const STORE_KEY = 'stills-bano-v2';
 
   const PAPERS = {
     carta:  { label: 'carta',  w: 215.9, h: 279.4 },
@@ -306,7 +306,8 @@
     [2.76, '2.76:1'], [2.39, '2.39:1'], [2.2, '2.20:1'], [2, '2:1'], [1.85, '1.85:1'],
     [16 / 9, '16:9'], [1.66, '1.66:1'], [1.5, '3:2'], [1.375, '1.37:1'], [4 / 3, '4:3'], [1, '1:1'],
   ];
-  const DEFAULTS = { preset: '13x18', s: 130, l: 180, orient: 'h', lip: 4, paper: 'carta', margin: 5, gap: 5 };
+  // Default: the 6 in film-strip frame (4 × 6 in photo, about 14,4 × 9,5 cm visible).
+  const DEFAULTS = { preset: '4x6in', s: 101.6, l: 152.4, orient: 'h', lip: 4, paper: 'carta', margin: 3.5, gap: 5 };
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
