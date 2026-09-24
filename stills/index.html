@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stills del Baño</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #F1F3F1;
+    --surface: #FFFFFF;
+    --surface-2: #E6EAE7;
+    --ink: #14171A;
+    --muted: #59626A;
+    --line: #D2D8D4;
+    --accent: #00708F;
+    --accent-ink: #FFFFFF;
+    --mark: #C0135C;
+    --good: #1D7A48; --good-bg: #E1F2E8;
+    --warn: #93580A; --warn-bg: #FBEEDA;
+    --bad: #B42318;  --bad-bg: #FBE3E0;
+    --stage: #1B1F22;
+    --stage-mark: #F2689F;
+    --shadow: 0 1px 2px rgba(20,23,26,.06), 0 6px 20px rgba(20,23,26,.07);
+    --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0E1113; --surface: #161A1D; --surface-2: #1F2428; --ink: #E6E9E7; --muted: #9AA3A9; --line: #2C3337;
+      --accent: #56C2DD; --accent-ink: #06232B; --mark: #F2689F;
+      --good: #66CF95; --good-bg: #12291D; --warn: #E8AC4B; --warn-bg: #2E2310; --bad: #F2837A; --bad-bg: #341815;
+      --stage: #08090A; --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0E1113; --surface: #161A1D; --surface-2: #1F2428; --ink: #E6E9E7; --muted: #9AA3A9; --line: #2C3337;
+    --accent: #56C2DD; --accent-ink: #06232B; --mark: #F2689F;
+    --good: #66CF95; --good-bg: #12291D; --warn: #E8AC4B; --warn-bg: #2E2310; --bad: #F2837A; --bad-bg: #341815;
+    --stage: #08090A; --shadow: none;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 72px; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+
+  /* Header with printer's crop marks around the name */
+  .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 40px; padding-bottom: 24px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .marked { position: relative; display: inline-block; max-width: calc(100% - 28px); padding: 6px 4px 2px; margin: 14px; }
+  .marked::before {
+    content: ""; position: absolute; inset: -14px; pointer-events: none;
+    --c: linear-gradient(var(--mark), var(--mark));
+    background:
+      var(--c) left 0 top 14px / 9px 1.5px no-repeat, var(--c) left 14px top 0 / 1.5px 9px no-repeat,
+      var(--c) right 0 top 14px / 9px 1.5px no-repeat, var(--c) right 14px top 0 / 1.5px 9px no-repeat,
+      var(--c) left 0 bottom 14px / 9px 1.5px no-repeat, var(--c) left 14px bottom 0 / 1.5px 9px no-repeat,
+      var(--c) right 0 bottom 14px / 9px 1.5px no-repeat, var(--c) right 14px bottom 0 / 1.5px 9px no-repeat;
+  }
+  h1 { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 8.5vw, 72px); line-height: .88; letter-spacing: .01em; text-transform: uppercase; margin: 0; }
+  .lede { max-width: 54ch; margin: 0; color: var(--muted); text-wrap: pretty; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  .layout { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 32px; align-items: start; }
+  @media (max-width: 900px) {
+    .layout { display: flex; flex-direction: column; gap: 36px; }
+    .panel, main { display: contents; }
+    #boxFrame { order: 1; } #secScenes { order: 2; } #secSheets { order: 3; } #boxPrint { order: 4; } #secSources { order: 5; }
+  }
+
+  .panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: flex; flex-direction: column; gap: 16px; }
+  @media (max-width: 900px) { .panel { position: static; } }
+  .box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+
+  .step { display: flex; align-items: baseline; gap: 10px; margin: 0; font-size: 17px; font-weight: 600; letter-spacing: .01em; text-wrap: balance; }
+  .step .num { font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1; color: var(--accent); min-width: 14px; }
+  main .step { font-size: 20px; }
+  main .step .num { font-size: 32px; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field > label, .label { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  label output { font-family: var(--mono); letter-spacing: 0; text-transform: none; color: var(--ink); font-weight: 500; float: right; }
+  select, input[type="number"], input[type="text"] {
+    font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; width: 100%; min-width: 0;
+  }
+  input[type="number"] { font-family: var(--mono); }
+  input[type="range"] { width: 100%; accent-color: var(--accent); margin: 4px 0; }
+  .pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: end; }
+  .pair .x { padding-bottom: 9px; color: var(--muted); font-family: var(--mono); }
+  .pair2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hint { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--bg); }
+  .seg button { font: inherit; font-size: 13px; border: 0; background: transparent; color: var(--muted); padding: 6px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+  .seg .glyph { display: inline-block; border: 1.5px solid currentColor; border-radius: 1px; }
+  .glyph.h { width: 14px; height: 10px; } .glyph.v { width: 10px; height: 14px; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+
+  .btn, .ghost { font: inherit; font-size: 14px; border-radius: 8px; cursor: pointer; padding: 8px 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .ghost { background: transparent; }
+  .ghost:hover, .btn:hover { border-color: var(--accent); }
+  .ghost.danger:hover { border-color: var(--bad); color: var(--bad); }
+  .primary { font: inherit; font-weight: 600; font-size: 15px; width: 100%; padding: 12px 16px; border-radius: 9px; border: 0; background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+  .primary:disabled { opacity: .55; cursor: progress; }
+  .linkbtn { font: inherit; font-size: 13px; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+
+  .need { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 13px; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); }
+  .need dt { color: var(--muted); }
+  .need dd { margin: 0; text-align: right; }
+
+  .summary { font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+  .summary .big { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; }
+  .rules { margin: 0; padding-left: 18px; font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
+  .rules strong { color: var(--ink); }
+  .alert { font-size: 13px; padding: 10px 12px; border-radius: 8px; background: var(--bad-bg); color: var(--bad); margin: 0; }
+
+  main { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
+  main section { display: flex; flex-direction: column; gap: 16px; }
+
+  .drop { border: 1.5px dashed var(--line); border-radius: 12px; padding: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; background: var(--surface); transition: border-color .15s, background .15s; }
+  .drop.over { border-color: var(--accent); background: var(--surface-2); }
+  .drop p { margin: 0; }
+  .drop .hint { max-width: 60ch; }
+  .sample-note { margin: 0; font-size: 13px; color: var(--muted); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 18px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow); }
+  .stage { display: block; width: 100%; height: 280px; background: var(--stage); cursor: grab; touch-action: none; }
+  .stage.grabbing { cursor: grabbing; }
+  .card-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .title { font-weight: 600; }
+  .meta { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .badge { font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 3px 8px; border-radius: 99px; white-space: nowrap; }
+  .badge.good { color: var(--good); background: var(--good-bg); }
+  .badge.warn { color: var(--warn); background: var(--warn-bg); }
+  .badge.bad  { color: var(--bad);  background: var(--bad-bg); }
+  .chip { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+  .zoomrow { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
+  .zoomrow .label { font-size: 11px; }
+  .card-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+  .card-actions .right { display: flex; gap: 8px; }
+  .card-actions .ghost { font-size: 13px; padding: 6px 10px; }
+
+  .sheets-summary { margin: 0; color: var(--muted); }
+  .sheets { display: flex; flex-wrap: wrap; gap: 24px; }
+  .sheet { margin: 0; display: flex; flex-direction: column; gap: 8px; width: 200px; max-width: 100%; }
+  .sheet canvas { display: block; width: 100%; height: auto; border-radius: 2px; box-shadow: 0 0 0 1px var(--line), var(--shadow); }
+  .sheet figcaption { font-size: 13px; }
+  .sheet figcaption b { font-weight: 600; }
+  .sheet ol { margin: 4px 0 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
+
+  .sources { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  .sources h2 { margin: 0; font-size: 18px; font-weight: 600; }
+  .sources ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 14px 24px; }
+  .sources li { display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+  .sources li a { font-weight: 600; }
+  .sources li span { color: var(--muted); font-size: 13px; }
+
+  .toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 9px; font-size: 14px; max-width: calc(100% - 32px); box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+  @media (prefers-reduced-motion: reduce) { .drop { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="marked"><h1>Stills del Baño</h1></div>
+    <p class="lede">Encuadra cada escena a la medida exacta de tu marco y descarga un PDF en hoja carta listo para imprimir. <strong>La imagen solo se recorta: nunca se estira ni se deforma.</strong></p>
+  </header>
+
+  <div class="layout">
+    <aside class="panel">
+      <div class="box" id="boxFrame">
+        <h2 class="step"><span class="num">1</span>Tu marco</h2>
+        <div class="field">
+          <label for="preset">Medida de la foto</label>
+          <select id="preset">
+            <option value="10x15">10 × 15 cm</option>
+            <option value="13x18">13 × 18 cm</option>
+            <option value="15x20">15 × 20 cm</option>
+            <option value="15x21">15 × 21 cm</option>
+            <option value="20x25">20 × 25 cm</option>
+            <option value="20x30">20 × 30 cm</option>
+            <option value="a5">A5 · 14,8 × 21 cm</option>
+            <option value="a4">A4 · 21 × 29,7 cm</option>
+            <option value="4x6in">4 × 6 in · 10,2 × 15,2 cm</option>
+            <option value="5x7in">5 × 7 in · 12,7 × 17,8 cm</option>
+            <option value="6x8in">6 × 8 in · 15,2 × 20,3 cm</option>
+            <option value="8x10in">8 × 10 in · 20,3 × 25,4 cm</option>
+            <option value="custom">Otra medida</option>
+          </select>
+        </div>
+        <div class="pair">
+          <div class="field"><label for="fa">Lado corto (cm)</label><input id="fa" type="number" inputmode="decimal" step="0.1" min="3" max="60"></div>
+          <span class="x">×</span>
+          <div class="field"><label for="fb">Lado largo (cm)</label><input id="fb" type="number" inputmode="decimal" step="0.1" min="3" max="60"></div>
+        </div>
+        <p class="hint">Mide el vidrio o el cartón de atrás del marco: esa es la medida que se imprime. Si el marco trae paspartú, usa la medida de foto que indica el fabricante.</p>
+
+        <div class="field">
+          <span class="label" id="orientLabel">Orientación de fotos nuevas</span>
+          <div class="row">
+            <div class="seg" role="group" aria-labelledby="orientLabel" id="orientSeg">
+              <button type="button" data-o="h" aria-pressed="true"><span class="glyph h"></span>Horizontal</button>
+              <button type="button" data-o="v" aria-pressed="false"><span class="glyph v"></span>Vertical</button>
+            </div>
+            <button type="button" class="linkbtn" id="applyAll">Aplicar a todas</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="lip">Borde que tapa el marco <output id="lipOut" for="lip">4 mm</output></label>
+          <input id="lip" type="range" min="0" max="12" step="0.5">
+          <p class="hint">Solo es una guía en pantalla (la franja más oscura dentro del recuadro). Lo que quede ahí se esconde bajo el marco.</p>
+        </div>
+
+        <dl class="need mono" id="need"></dl>
+      </div>
+
+      <div class="box" id="boxPrint">
+        <h2 class="step"><span class="num">4</span>Imprimir</h2>
+        <div class="field">
+          <label for="paper">Papel</label>
+          <select id="paper">
+            <option value="carta">Carta · 21,6 × 27,9 cm</option>
+            <option value="oficio">Oficio · 21,6 × 33 cm</option>
+            <option value="a4">A4 · 21 × 29,7 cm</option>
+          </select>
+        </div>
+        <div class="pair2">
+          <div class="field"><label for="margin">Margen (mm)</label><input id="margin" type="number" inputmode="decimal" step="0.5" min="0" max="30"></div>
+          <div class="field"><label for="gap">Separación (mm)</label><input id="gap" type="number" inputmode="decimal" step="0.5" min="0" max="30"></div>
+        </div>
+        <div class="summary" id="summary"></div>
+        <button type="button" class="primary" id="pdfBtn">Descargar PDF para imprimir</button>
+        <ul class="rules" id="rules"></ul>
+      </div>
+    </aside>
+
+    <main>
+      <section id="secScenes" aria-labelledby="s2">
+        <h2 class="step" id="s2"><span class="num">2</span>Tus escenas</h2>
+        <div class="drop" id="drop">
+          <p><strong>Arrastra tus stills aquí</strong> o pégalas con Ctrl+V.</p>
+          <label class="btn" for="file">Elegir imágenes</label>
+          <input id="file" type="file" accept="image/*" multiple hidden>
+          <p class="hint">Arrastra dentro de cada foto para encuadrarla y acerca con la rueda del mouse, pellizcando o con el control. Las imágenes no salen de tu computador.</p>
+        </div>
+        <p class="sample-note" id="sampleNote">Estás viendo dos ejemplos. Se quitan solos cuando subes tus imágenes.</p>
+        <div class="cards" id="cards"></div>
+      </section>
+
+      <section id="secSheets" aria-labelledby="s3">
+        <h2 class="step" id="s3"><span class="num">3</span>Así quedan las hojas</h2>
+        <p class="sheets-summary" id="sheetsSummary"></p>
+        <div class="sheets" id="sheets"></div>
+      </section>
+
+      <section class="sources" id="secSources" aria-labelledby="src">
+        <h2 id="src">Dónde sacar stills en buena resolución</h2>
+        <p class="hint">Recortar una escena panorámica (2.39:1) para un marco vertical deja cerca de un tercio de su ancho. Parte de imágenes 4K o Blu-ray siempre que puedas.</p>
+        <ul>
+          <li><a href="https://www.themoviedb.org" target="_blank" rel="noopener">TMDB</a><span>Busca la película o serie → Medios → Fondos. Muchas en 3840 × 2160, gratis.</span></li>
+          <li><a href="https://film-grab.com" target="_blank" rel="noopener">FILMGRAB</a><span>Selección curada de fotogramas de cine, casi todos a 1920 px. Gratis.</span></li>
+          <li><a href="https://fancaps.net" target="_blank" rel="noopener">Fancaps</a><span>Capturas de cada episodio de series y de películas. Ideal para series.</span></li>
+          <li><a href="https://movie-screencaps.com" target="_blank" rel="noopener">Movie-Screencaps</a><span>Miles de capturas cuadro a cuadro, en 1080p y a veces 4K.</span></li>
+          <li><a href="https://www.blu-ray.com" target="_blank" rel="noopener">Blu-ray.com</a><span>Las reseñas traen capturas del disco a resolución completa.</span></li>
+          <li><a href="https://shotdeck.com" target="_blank" rel="noopener">ShotDeck</a><span>Biblioteca profesional de fotogramas. De pago, la mejor calidad.</span></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  const MM_PER_IN = 25.4;
+  const OUT_DPI = 300;
+  const MAX_ZOOM = 5;
+  const STORE_KEY = 'stills-bano-v1';
+
+  const PAPERS = {
+    carta:  { label: 'carta',  w: 215.9, h: 279.4 },
+    oficio: { label: 'oficio', w: 215.9, h: 330.2 },
+    a4:     { label: 'A4',     w: 210,   h: 297 },
+  };
+  const PRESETS = {
+    '10x15': [100, 150], '13x18': [130, 180], '15x20': [150, 200], '15x21': [150, 210],
+    '20x25': [200, 250], '20x30': [200, 300], 'a5': [148, 210], 'a4': [210, 297],
+    '4x6in': [101.6, 152.4], '5x7in': [127, 177.8], '6x8in': [152.4, 203.2], '8x10in': [203.2, 254],
+  };
+  const RATIOS = [
+    [2.76, '2.76:1'], [2.39, '2.39:1'], [2.2, '2.20:1'], [2, '2:1'], [1.85, '1.85:1'],
+    [16 / 9, '16:9'], [1.66, '1.66:1'], [1.5, '3:2'], [1.375, '1.37:1'], [4 / 3, '4:3'], [1, '1:1'],
+  ];
+  const DEFAULTS = { preset: '13x18', s: 130, l: 180, orient: 'h', lip: 4, paper: 'carta', margin: 5, gap: 5 };
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const num = (n, d = 1) => n.toLocaleString('es-CL', { maximumFractionDigits: d });
+  const cm = mm => num(mm / 10, 1);
+  const tick = () => new Promise(r => setTimeout(r, 0));
+
+  // ---------- settings ----------
+  const cfg = loadCfg();
+  function loadCfg() {
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { saved = {}; }
+    const c = Object.assign({}, DEFAULTS);
+    for (const k of Object.keys(DEFAULTS)) {
+      const v = saved[k];
+      if (typeof DEFAULTS[k] === 'number' && Number.isFinite(v)) c[k] = v;
+      if (typeof DEFAULTS[k] === 'string' && typeof v === 'string') c[k] = v;
+    }
+    if (!PAPERS[c.paper]) c.paper = DEFAULTS.paper;
+    if (c.orient !== 'h' && c.orient !== 'v') c.orient = 'h';
+    if (!(c.s >= 30 && c.l >= 30)) { c.s = DEFAULTS.s; c.l = DEFAULTS.l; c.preset = DEFAULTS.preset; }
+    return c;
+  }
+  function saveCfg() { try { localStorage.setItem(STORE_KEY, JSON.stringify(cfg)); } catch (e) { /* storage unavailable */ } }
+
+  // Print size of a photo in mm for a given orientation: 'h' = landscape, 'v' = portrait.
+  function trim(orient) { return orient === 'h' ? { tw: cfg.l, th: cfg.s } : { tw: cfg.s, th: cfg.l }; }
+
+  // ---------- items ----------
+  let items = [];
+  let seq = 0;
+  const cards = new Map();
+
+  function newItem(src, w, h, name, extra = {}) {
+    return Object.assign({ id: ++seq, src, w, h, name, orient: cfg.orient, zoom: 1, cx: 0.5, cy: 0.5, sample: false, url: null }, extra);
+  }
+
+  // The crop is a rectangle in source pixels with exactly the frame's aspect ratio.
+  // It is only ever scaled uniformly, so the picture can be cropped but never stretched.
+  function cropRect(it) {
+    const { tw, th } = trim(it.orient);
+    const aspect = tw / th;
+    const cw = Math.min(it.w, it.h * aspect) / it.zoom;
+    const ch = cw / aspect;
+    const x = clamp(it.cx * it.w - cw / 2, 0, it.w - cw);
+    const y = clamp(it.cy * it.h - ch / 2, 0, it.h - ch);
+    return { x, y, w: cw, h: ch };
+  }
+  function settle(it) {
+    it.zoom = clamp(it.zoom, 1, MAX_ZOOM);
+    const r = cropRect(it);
+    it.cx = (r.x + r.w / 2) / it.w;
+    it.cy = (r.y + r.h / 2) / it.h;
+  }
+
+  // Render one photo at print size. When the slot on the sheet is turned the other way,
+  // the finished picture is rotated 90° (still no stretching).
+  function renderItem(it, slotOrient, dpi) {
+    const { tw, th } = trim(it.orient);
+    const pw = Math.max(1, Math.round(tw / MM_PER_IN * dpi));
+    const ph = Math.max(1, Math.round(th / MM_PER_IN * dpi));
+    const r = cropRect(it);
+    let sw = r.w, sh = sw * ph / pw;
+    if (sh > it.h) { sh = it.h; sw = sh * pw / ph; }
+    const sx = clamp(r.x + (r.w - sw) / 2, 0, it.w - sw);
+    const sy = clamp(r.y + (r.h - sh) / 2, 0, it.h - sh);
+    const c = document.createElement('canvas');
+    c.width = pw; c.height = ph;
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(it.src, sx, sy, sw, sh, 0, 0, pw, ph);
+    if (tw === th || slotOrient === it.orient) return c;
+    const rc = document.createElement('canvas');
+    rc.width = ph; rc.height = pw;
+    const rctx = rc.getContext('2d');
+    rctx.translate(ph, 0);
+    rctx.rotate(Math.PI / 2);
+    rctx.drawImage(c, 0, 0);
+    return rc;
+  }
+
+  function ratioLabel(w, h) {
+    const r = Math.max(w, h) / Math.min(w, h);
+    let best = null, bestErr = Infinity;
+    for (const [v, label] of RATIOS) {
+      const err = Math.abs(Math.log(r / v));
+      if (err < bestErr) { bestErr = err; best = label; }
+    }
+    const label = bestErr < 0.025 ? best : num(r, 2).replace(',', '.') + ':1';
+    return h > w ? label + ' vertical' : label;
+  }
+
+  // ---------- sheet layout ----------
+  function fit(avail, size, gap) { return size > avail + 1e-6 ? 0 : Math.floor((avail + gap + 1e-6) / (size + gap)); }
+  function grid(ox, oy, aw, ah, w, h, gap, maxRows = Infinity, maxCols = Infinity) {
+    const cols = Math.min(fit(aw, w, gap), maxCols), rows = Math.min(fit(ah, h, gap), maxRows), out = [];
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) out.push({ x: ox + i * (w + gap), y: oy + j * (h + gap), w, h });
+    return out;
+  }
+  // Tries plain grids of each orientation, then mixes (some rows or columns one way,
+  // the rest turned) and keeps whichever fits the most photos on one sheet.
+  function bestSlots(W, H, s, l, gap) {
+    const P = [s, l], L = [l, s];
+    let best = [];
+    const consider = arr => { if (arr.length > best.length) best = arr; };
+    consider(grid(0, 0, W, H, L[0], L[1], gap));
+    consider(grid(0, 0, W, H, P[0], P[1], gap));
+    for (const [A, B] of [[L, P], [P, L]]) {
+      const rows = fit(H, A[1], gap);
+      for (let k = 1; k <= rows; k++) {
+        const used = k * (A[1] + gap);
+        consider(grid(0, 0, W, H, A[0], A[1], gap, k).concat(grid(0, used, W, H - used, B[0], B[1], gap)));
+      }
+      const cols = fit(W, A[0], gap);
+      for (let k = 1; k <= cols; k++) {
+        const used = k * (A[0] + gap);
+        consider(grid(0, 0, W, H, A[0], A[1], gap, Infinity, k).concat(grid(used, 0, W - used, H, B[0], B[1], gap)));
+      }
+    }
+    return best.map(b => Object.assign({}, b));
+  }
+  function computeLayout() {
+    const paper = PAPERS[cfg.paper];
+    const W = paper.w - 2 * cfg.margin, H = paper.h - 2 * cfg.margin;
+    const slots = W > 0 && H > 0 ? bestSlots(W, H, cfg.s, cfg.l, cfg.gap) : [];
+    let top = 0, bottom = 0;
+    if (slots.length) {
+      const maxX = Math.max(...slots.map(b => b.x + b.w));
+      const maxY = Math.max(...slots.map(b => b.y + b.h));
+      const ox = cfg.margin + (W - maxX) / 2, oy = cfg.margin + (H - maxY) / 2;
+      for (const b of slots) { b.x += ox; b.y += oy; b.o = b.w > b.h ? 'h' : b.w < b.h ? 'v' : 'sq'; }
+      top = oy; bottom = oy + maxY;
+    }
+    return { paper, slots, top, bottom };
+  }
+  function paginate(layout) {
+    const n = layout.slots.length, pages = [];
+    if (!n) return pages;
+    for (let i = 0; i < items.length; i += n) {
+      const chunk = items.slice(i, i + n);
+      const free = layout.slots.map((slot, idx) => ({ slot, idx, used: false }));
+      const placed = [], rest = [];
+      for (const it of chunk) {
+        const f = free.find(f => !f.used && (f.slot.o === it.orient || f.slot.o === 'sq'));
+        if (f) { f.used = true; placed.push({ it, slot: f.slot, idx: f.idx }); } else rest.push(it);
+      }
+      for (const it of rest) {
+        const f = free.find(f => !f.used);
+        f.used = true; placed.push({ it, slot: f.slot, idx: f.idx });
+      }
+      placed.sort((a, b) => a.idx - b.idx);
+      pages.push(placed);
+    }
+    return pages;
+  }
+
+  // Corner crop marks sit in the gap and never reach a neighbouring photo.
+  function markGeometry() {
+    const off = 0.8;
+    const len = Math.min(3, (cfg.gap - 2 * off) / 2);
+    return len >= 0.8 ? { off, len } : null;
+  }
+  function cornerLines(x, y, w, h, off, len) {
+    return [
+      [x - off - len, y, x - off, y], [x, y - off - len, x, y - off],
+      [x + w + off, y, x + w + off + len, y], [x + w, y - off - len, x + w, y - off],
+      [x - off - len, y + h, x - off, y + h], [x, y + h + off, x, y + h + off + len],
+      [x + w + off, y + h, x + w + off + len, y + h], [x + w, y + h + off, x + w, y + h + off + len],
+    ];
+  }
+
+  // ---------- editor cards ----------
+  const cardsEl = $('#cards');
+
+  function buildCard(it) {
+    const el = document.createElement('article');
+    el.className = 'card';
+    el.innerHTML = `
+      <canvas class="stage" tabindex="0"></canvas>
+      <div class="card-body">
+        <div class="row" style="flex-wrap:nowrap">
+          <input class="title" type="text" aria-label="Nombre de la escena">
+          ${it.sample ? '<span class="chip">Ejemplo</span>' : ''}
+        </div>
+        <div class="meta mono"><span class="px"></span><span class="use"></span></div>
+        <div class="row"><span class="badge"></span></div>
+        <div class="zoomrow"><span class="label">Zoom</span><input class="zoom" type="range" min="1" max="${MAX_ZOOM}" step="0.01" aria-label="Acercar"></div>
+        <div class="card-actions">
+          <div class="seg" role="group" aria-label="Orientación del marco">
+            <button type="button" data-o="h"><span class="glyph h"></span>Horizontal</button>
+            <button type="button" data-o="v"><span class="glyph v"></span>Vertical</button>
+          </div>
+          <div class="right">
+            <button type="button" class="ghost reset">Reiniciar</button>
+            <button type="button" class="ghost danger remove">Quitar</button>
+          </div>
+        </div>
+      </div>`;
+    const card = { it, el, canvas: $('canvas', el), zoomEl: $('.zoom', el), view: null, raf: 0 };
+    const title = $('.title', el);
+    title.value = it.name;
+    title.addEventListener('input', () => { it.name = title.value; scheduleSheets(); });
+    card.canvas.setAttribute('aria-label', `Encuadre de ${it.name}. Arrastra o usa las flechas para mover, más y menos para acercar.`);
+    card.zoomEl.value = it.zoom;
+    card.zoomEl.addEventListener('input', () => {
+      const rect = card.canvas.getBoundingClientRect(), v = card.view;
+      zoomAt(card, +card.zoomEl.value, rect.left + v.bx + v.bw / 2, rect.top + v.by + v.bh / 2);
+    });
+    card.zoomEl.addEventListener('change', scheduleSheets);
+    el.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+      it.orient = b.dataset.o; settle(it); requestDraw(card); scheduleSheets();
+    }));
+    $('.reset', el).addEventListener('click', () => { it.zoom = 1; it.cx = it.cy = 0.5; settle(it); requestDraw(card); scheduleSheets(); });
+    $('.remove', el).addEventListener('click', () => removeItem(it));
+    bindStage(card);
+    return card;
+  }
+
+  function bindStage(card) {
+    const cv = card.canvas, pts = new Map();
+    let pinch = null;
+    const pinchInfo = () => {
+      const [a, b] = [...pts.values()];
+      return { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
+    };
+    cv.addEventListener('pointerdown', e => {
+      cv.setPointerCapture(e.pointerId);
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      pinch = pts.size === 2 ? pinchInfo() : null;
+      cv.classList.add('grabbing');
+    });
+    cv.addEventListener('pointermove', e => {
+      const prev = pts.get(e.pointerId);
+      if (!prev) return;
+      const cur = { x: e.clientX, y: e.clientY };
+      pts.set(e.pointerId, cur);
+      if (pts.size === 1) pan(card, cur.x - prev.x, cur.y - prev.y);
+      else if (pts.size === 2 && pinch) {
+        const p = pinchInfo();
+        zoomAt(card, card.it.zoom * p.d / pinch.d, p.mx, p.my);
+        pinch = p;
+      }
+    });
+    const end = e => {
+      pts.delete(e.pointerId);
+      pinch = pts.size === 2 ? pinchInfo() : null;
+      if (!pts.size) { cv.classList.remove('grabbing'); scheduleSheets(); }
+    };
+    cv.addEventListener('pointerup', end);
+    cv.addEventListener('pointercancel', end);
+    cv.addEventListener('wheel', e => {
+      e.preventDefault();
+      zoomAt(card, card.it.zoom * Math.exp(-e.deltaY * 0.0015), e.clientX, e.clientY);
+      scheduleSheets();
+    }, { passive: false });
+    cv.addEventListener('keydown', e => {
+      const step = 12, v = card.view, rect = cv.getBoundingClientRect();
+      const cx = rect.left + v.bx + v.bw / 2, cy = rect.top + v.by + v.bh / 2;
+      const moves = { ArrowLeft: [step, 0], ArrowRight: [-step, 0], ArrowUp: [0, step], ArrowDown: [0, -step] };
+      if (moves[e.key]) pan(card, ...moves[e.key]);
+      else if (e.key === '+' || e.key === '=') zoomAt(card, card.it.zoom * 1.1, cx, cy);
+      else if (e.key === '-') zoomAt(card, card.it.zoom / 1.1, cx, cy);
+      else return;
+      e.preventDefault();
+      scheduleSheets();
+    });
+  }
+
+  function pan(card, dx, dy) {
+    const it = card.it, s = card.view.s;
+    it.cx -= dx / s / it.w;
+    it.cy -= dy / s / it.h;
+    settle(it);
+    requestDraw(card);
+  }
+  // Zoom while keeping the point under the cursor (or fingers) in place.
+  function zoomAt(card, z, clientX, clientY) {
+    const it = card.it, v = card.view, rect = card.canvas.getBoundingClientRect();
+    const ux = clamp((clientX - rect.left - v.bx) / v.bw, 0, 1);
+    const uy = clamp((clientY - rect.top - v.by) / v.bh, 0, 1);
+    const r = cropRect(it);
+    const px = r.x + ux * r.w, py = r.y + uy * r.h;
+    it.zoom = clamp(z, 1, MAX_ZOOM);
+    const { tw, th } = trim(it.orient);
+    const cw = Math.min(it.w, it.h * tw / th) / it.zoom, ch = cw * th / tw;
+    it.cx = (px - ux * cw + cw / 2) / it.w;
+    it.cy = (py - uy * ch + ch / 2) / it.h;
+    settle(it);
+    card.zoomEl.value = it.zoom;
+    requestDraw(card);
+  }
+
+  function requestDraw(card) {
+    if (card.raf) return;
+    card.raf = requestAnimationFrame(() => { card.raf = 0; drawStage(card); updateInfo(card); });
+  }
+
+  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+  function drawStage(card) {
+    const { it, canvas: cv } = card;
+    const cssW = cv.clientWidth || 330;
+    const { tw, th } = trim(it.orient);
+    const pad = 22, maxH = 290;
+    let bw = cssW - 2 * pad, bh = bw * th / tw;
+    if (bh > maxH) { bh = maxH; bw = bh * tw / th; }
+    const cssH = Math.round(bh + 2 * pad);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const pxW = Math.round(cssW * dpr), pxH = Math.round(cssH * dpr);
+    if (cv.width !== pxW || cv.height !== pxH) { cv.width = pxW; cv.height = pxH; }
+    cv.style.height = cssH + 'px';
+    const ctx = cv.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const bx = (cssW - bw) / 2, by = pad;
+    const r = cropRect(it), s = bw / r.w;
+    card.view = { bx, by, bw, bh, s };
+
+    ctx.fillStyle = css('--stage') || '#1B1F22';
+    ctx.fillRect(0, 0, cssW, cssH);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(it.src, bx - r.x * s, by - r.y * s, it.w * s, it.h * s);
+
+    ctx.fillStyle = 'rgba(6,8,10,.7)';
+    ctx.beginPath(); ctx.rect(0, 0, cssW, cssH); ctx.rect(bx, by, bw, bh); ctx.fill('evenodd');
+
+    const lip = cfg.lip * bw / tw;
+    if (lip > 0) {
+      ctx.fillStyle = 'rgba(6,8,10,.45)';
+      ctx.beginPath(); ctx.rect(bx, by, bw, bh); ctx.rect(bx + lip, by + lip, bw - 2 * lip, bh - 2 * lip); ctx.fill('evenodd');
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = 'rgba(255,255,255,.6)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(bx + lip, by + lip, bw - 2 * lip, bh - 2 * lip);
+      ctx.setLineDash([]);
+    }
+    const mark = css('--stage-mark') || '#F2689F';
+    ctx.strokeStyle = mark;
+    ctx.lineWidth = 1.25;
+    ctx.strokeRect(bx, by, bw, bh);
+    ctx.beginPath();
+    for (const [x1, y1, x2, y2] of cornerLines(bx, by, bw, bh, 5, 10)) { ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); }
+    ctx.stroke();
+  }
+
+  function updateInfo(card) {
+    const { it, el } = card;
+    const r = cropRect(it), { tw } = trim(it.orient);
+    const dpi = r.w / (tw / MM_PER_IN);
+    const [cls, word] = dpi >= 220 ? ['good', 'Nítida'] : dpi >= 150 ? ['warn', 'Aceptable'] : ['bad', 'Se verá borrosa'];
+    const badge = $('.badge', el);
+    badge.className = 'badge ' + cls;
+    badge.textContent = `${Math.round(dpi)} ppp · ${word}`;
+    $('.px', el).textContent = `${it.w} × ${it.h} px · ${ratioLabel(it.w, it.h)}`;
+    $('.use', el).textContent = `usa ${Math.round(r.w / it.w * 100)} % del ancho, ${Math.round(r.h / it.h * 100)} % del alto`;
+    el.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.o === it.orient)));
+    if (+card.zoomEl.value !== it.zoom) card.zoomEl.value = it.zoom;
+  }
+
+  function syncCards() {
+    const ids = new Set(items.map(i => i.id));
+    for (const [id, card] of cards) if (!ids.has(id)) { card.el.remove(); cards.delete(id); }
+    for (const it of items) {
+      let card = cards.get(it.id);
+      if (!card) { card = buildCard(it); cards.set(it.id, card); }
+      cardsEl.appendChild(card.el);
+    }
+    cards.forEach(requestDraw);
+    $('#sampleNote').hidden = !items.some(i => i.sample);
+  }
+  function redrawAll() { items.forEach(settle); cards.forEach(requestDraw); }
+
+  function removeItem(it) {
+    items = items.filter(i => i !== it);
+    if (it.url) URL.revokeObjectURL(it.url);
+    syncCards();
+    scheduleSheets();
+  }
+
+  // ---------- adding images ----------
+  function loadImage(url) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = url;
+    });
+  }
+  function cleanName(filename) {
+    const base = filename.replace(/\.[a-z0-9]+$/i, '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    return !base || /^(image|imagen|pasted|screenshot)\b/i.test(base) ? `Escena ${items.filter(i => !i.sample).length + 1}` : base;
+  }
+  async function addFiles(fileList) {
+    const files = [...fileList].filter(f => f.type.startsWith('image/'));
+    if (!files.length) { toast('Eso no parece una imagen. Usa JPG, PNG o WebP.'); return; }
+    if (items.some(i => i.sample)) items = items.filter(i => !i.sample);
+    for (const f of files) {
+      const url = URL.createObjectURL(f);
+      try {
+        const img = await loadImage(url);
+        items.push(newItem(img, img.naturalWidth, img.naturalHeight, cleanName(f.name), { url }));
+      } catch (e) {
+        URL.revokeObjectURL(url);
+        toast(`No pude abrir ${f.name}. Prueba guardándola como JPG.`);
+      }
+    }
+    syncCards();
+    scheduleSheets();
+  }
+
+  const drop = $('#drop');
+  $('#file').addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
+  document.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+  document.addEventListener('dragleave', e => { if (!e.relatedTarget) drop.classList.remove('over'); });
+  document.addEventListener('drop', e => {
+    e.preventDefault();
+    drop.classList.remove('over');
+    if (e.dataTransfer && e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+  });
+  document.addEventListener('paste', e => {
+    const files = e.clipboardData ? [...e.clipboardData.files] : [];
+    if (files.length) { e.preventDefault(); addFiles(files); }
+  });
+
+  // ---------- sample stills (clearly labelled, drawn in the page) ----------
+  function rng(seed) { return () => ((seed = (seed * 16807) % 2147483647) / 2147483647); }
+  function sampleDesert() {
+    const W = 3840, H = 1607, c = document.createElement('canvas'), x = c.getContext('2d');
+    c.width = W; c.height = H;
+    const sky = x.createLinearGradient(0, 0, 0, H * 0.72);
+    sky.addColorStop(0, '#1C2146'); sky.addColorStop(0.55, '#A8435B'); sky.addColorStop(1, '#F3A55B');
+    x.fillStyle = sky; x.fillRect(0, 0, W, H);
+    const sun = x.createRadialGradient(W * 0.64, H * 0.66, 0, W * 0.64, H * 0.66, H * 0.34);
+    sun.addColorStop(0, 'rgba(255,236,190,1)'); sun.addColorStop(0.22, 'rgba(255,214,150,.95)'); sun.addColorStop(1, 'rgba(255,170,100,0)');
+    x.fillStyle = sun; x.fillRect(0, 0, W, H);
+    const layers = [['#5A2B3A', 0.70, 60, 0.0011], ['#3A1C2A', 0.78, 80, 0.0017], ['#1E0F18', 0.88, 70, 0.0023]];
+    layers.forEach(([color, base, amp, f], i) => {
+      x.fillStyle = color; x.beginPath(); x.moveTo(0, H);
+      for (let px = 0; px <= W; px += 16) x.lineTo(px, H * base + Math.sin(px * f + i * 2) * amp + Math.sin(px * f * 2.7 + i) * amp * 0.4);
+      x.lineTo(W, H); x.closePath(); x.fill();
+    });
+    const fx = W * 0.3, fy = H * 0.7 + Math.sin(fx * 0.0011) * 60 + Math.sin(fx * 0.0011 * 2.7) * 24;
+    x.fillStyle = '#12080E';
+    x.fillRect(fx - 14, fy - 150, 28, 150);
+    x.beginPath(); x.arc(fx, fy - 172, 22, 0, Math.PI * 2); x.fill();
+    sampleLabel(x, W, H, 'EJEMPLO · 2.39:1');
+    return c;
+  }
+  function sampleCity() {
+    const W = 3840, H = 2160, c = document.createElement('canvas'), x = c.getContext('2d'), rand = rng(42);
+    c.width = W; c.height = H;
+    const sky = x.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#060D1C'); sky.addColorStop(0.7, '#1B2C4E'); sky.addColorStop(1, '#0A1222');
+    x.fillStyle = sky; x.fillRect(0, 0, W, H);
+    let px = 0;
+    while (px < W) {
+      const bw = 180 + rand() * 320, bh = H * (0.3 + rand() * 0.5), top = H * 0.82 - bh;
+      x.fillStyle = '#0B1220'; x.fillRect(px, top, bw, bh);
+      for (let wy = top + 30; wy < H * 0.8; wy += 58) for (let wx = px + 24; wx < px + bw - 30; wx += 46) {
+        if (rand() < 0.38) { x.fillStyle = `rgba(245,194,107,${0.35 + rand() * 0.6})`; x.fillRect(wx, wy, 22, 30); }
+      }
+      px += bw + 14;
+    }
+    x.save(); x.shadowColor = '#FF4FA3'; x.shadowBlur = 60; x.strokeStyle = '#FF7BBF'; x.lineWidth = 16;
+    x.strokeRect(W * 0.56, H * 0.36, 620, 170); x.restore();
+    const street = x.createLinearGradient(0, H * 0.82, 0, H);
+    street.addColorStop(0, '#141C2C'); street.addColorStop(1, '#05080F');
+    x.fillStyle = street; x.fillRect(0, H * 0.82, W, H * 0.18);
+    x.fillStyle = 'rgba(255,123,191,.18)'; x.fillRect(W * 0.56, H * 0.86, 620, H * 0.12);
+    sampleLabel(x, W, H, 'EJEMPLO · 16:9');
+    return c;
+  }
+  function sampleLabel(x, W, H, text) {
+    x.font = '600 58px "IBM Plex Mono", monospace';
+    x.fillStyle = 'rgba(255,255,255,.72)';
+    x.fillText(text, W * 0.05, H - 70);
+  }
+
+  // ---------- sheets preview ----------
+  let sheetTimer = 0;
+  function scheduleSheets() { clearTimeout(sheetTimer); sheetTimer = setTimeout(renderSheets, 200); }
+
+  function renderSheets() {
+    const layout = computeLayout(), pages = paginate(layout), per = layout.slots.length;
+    renderSummary(layout, pages);
+    const host = $('#sheets');
+    host.textContent = '';
+    const sum = $('#sheetsSummary');
+    if (!per) { sum.textContent = 'La foto no cabe en esta hoja con estos márgenes.'; return; }
+    if (!items.length) { sum.textContent = 'Sube tus stills para ver cómo se reparten en las hojas.'; return; }
+    const free = pages.length * per - items.length;
+    sum.textContent = `${items.length} ${items.length === 1 ? 'foto' : 'fotos'} de ${cm(cfg.s)} × ${cm(cfg.l)} cm en ${pages.length} ${pages.length === 1 ? 'hoja' : 'hojas'} ${layout.paper.label}` +
+      (free ? `. Quedan ${free} ${free === 1 ? 'espacio libre' : 'espacios libres'} en la última hoja.` : '.');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = 200, k = cssW / layout.paper.w, cssH = layout.paper.h * k;
+    const marks = markGeometry();
+    pages.forEach((page, i) => {
+      const fig = document.createElement('figure');
+      fig.className = 'sheet';
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(cssW * dpr); cv.height = Math.round(cssH * dpr);
+      cv.setAttribute('role', 'img');
+      cv.setAttribute('aria-label', `Hoja ${i + 1}: ${page.map(p => p.it.name).join(', ')}`);
+      const x = cv.getContext('2d');
+      x.scale(dpr * k, dpr * k);
+      x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, layout.paper.w, layout.paper.h);
+      const usedIdx = new Set(page.map(p => p.idx));
+      layout.slots.forEach((s, idx) => {
+        if (usedIdx.has(idx)) return;
+        x.setLineDash([2, 2]); x.strokeStyle = '#C3C9CD'; x.lineWidth = 0.5; x.strokeRect(s.x, s.y, s.w, s.h); x.setLineDash([]);
+      });
+      for (const { it, slot } of page) {
+        const thumb = renderItem(it, slot.o, k * dpr * MM_PER_IN);
+        x.drawImage(thumb, slot.x, slot.y, slot.w, slot.h);
+        if (marks) {
+          x.strokeStyle = '#7D848A'; x.lineWidth = 0.35; x.beginPath();
+          for (const [x1, y1, x2, y2] of cornerLines(slot.x, slot.y, slot.w, slot.h, marks.off, marks.len)) { x.moveTo(x1, y1); x.lineTo(x2, y2); }
+          x.stroke();
+        }
+      }
+      const cap = document.createElement('figcaption');
+      const b = document.createElement('b');
+      b.textContent = `Hoja ${i + 1}`;
+      cap.append(b, ` · ${page.length} de ${per}`);
+      const ol = document.createElement('ol');
+      for (const { it, slot } of page) {
+        const li = document.createElement('li');
+        const turned = slot.o !== 'sq' && slot.o !== it.orient;
+        li.textContent = (it.name || 'Sin nombre') + (turned ? ' (va girada para aprovechar la hoja)' : '');
+        ol.appendChild(li);
+      }
+      cap.appendChild(ol);
+      fig.append(cv, cap);
+      host.appendChild(fig);
+    });
+  }
+
+  function renderSummary(layout, pages) {
+    const per = layout.slots.length, s = $('#summary');
+    s.textContent = '';
+    if (!per) {
+      const p = document.createElement('p');
+      p.className = 'alert';
+      p.textContent = `Una foto de ${cm(cfg.s)} × ${cm(cfg.l)} cm no cabe en hoja ${layout.paper.label} con ${num(cfg.margin)} mm de margen. Prueba con hoja oficio, baja el margen o imprímela en una imprenta.`;
+      s.appendChild(p);
+      $('#pdfBtn').disabled = true;
+      return;
+    }
+    const big = document.createElement('span');
+    big.className = 'big';
+    big.textContent = `${per} por hoja`;
+    const line = document.createElement('span');
+    line.className = 'muted';
+    line.textContent = items.length ? `${items.length} ${items.length === 1 ? 'foto' : 'fotos'} → ${pages.length} ${pages.length === 1 ? 'hoja' : 'hojas'} ${layout.paper.label}` : 'Aún no hay fotos';
+    s.append(big, line);
+    $('#pdfBtn').disabled = !items.length;
+    $('#rules').innerHTML = `
+      <li>Imprime al <strong>100 %</strong> o “Tamaño real”. Nunca “Ajustar a la página”.</li>
+      <li>Mide la primera hoja con una regla: cada foto debe medir <strong>${cm(cfg.s)} × ${cm(cfg.l)} cm</strong>. Si da bien, imprime el resto.</li>
+      <li>Corta con regla y cartonero uniendo las marcas de las esquinas.</li>`;
+  }
+
+  // ---------- PDF ----------
+  const downloadsReady = (window.claude && typeof window.claude.use === 'function')
+    ? window.claude.use('downloads').catch(() => null)
+    : Promise.resolve(null);
+
+  async function deliver(blob, filename) {
+    const downloads = await downloadsReady;
+    if (downloads) {
+      try { await downloads.save({ filename, data: blob }); toast('PDF listo.'); }
+      catch (e) {
+        if (e && e.code === 'declined') toast('Descarga cancelada.');
+        else if (e && e.code === 'rate_limited') toast('Ya hay una descarga esperando tu confirmación.');
+        else toast('No se pudo guardar el PDF desde esta vista.');
+      }
+      return;
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    toast(window.self === window.top ? 'PDF descargado.' : 'Si el PDF no se descargó, esta vista no permite descargas: abre la página directamente en el navegador.');
+  }
+
+  async function makePdf() {
+    if (!window.jspdf || !window.jspdf.jsPDF) { toast('No se cargó el generador de PDF. Revisa tu conexión y recarga la página.'); return; }
+    const layout = computeLayout(), pages = paginate(layout);
+    if (!pages.length) return;
+    const btn = $('#pdfBtn'), label = btn.textContent;
+    btn.disabled = true;
+    try {
+      const { jsPDF } = window.jspdf;
+      const P = layout.paper;
+      const doc = new jsPDF({ unit: 'mm', format: [P.w, P.h], orientation: 'portrait', compress: true });
+      const marks = markGeometry();
+      let done = 0;
+      for (let pi = 0; pi < pages.length; pi++) {
+        if (pi) doc.addPage([P.w, P.h], 'portrait');
+        for (const { it, slot } of pages[pi]) {
+          btn.textContent = `Preparando ${++done} de ${items.length}…`;
+          await tick();
+          const c = renderItem(it, slot.o, OUT_DPI);
+          doc.addImage(c.toDataURL('image/jpeg', 0.92), 'JPEG', slot.x, slot.y, slot.w, slot.h, `still${it.id}p${pi}`, 'NONE');
+          doc.setDrawColor(150); doc.setLineWidth(0.08);
+          doc.rect(slot.x, slot.y, slot.w, slot.h, 'S');
+          if (marks) {
+            doc.setDrawColor(90); doc.setLineWidth(0.15);
+            for (const [x1, y1, x2, y2] of cornerLines(slot.x, slot.y, slot.w, slot.h, marks.off, marks.len)) doc.line(x1, y1, x2, y2);
+          }
+        }
+        const note = `Hoja ${pi + 1} de ${pages.length}  ·  Imprimir al 100 % (tamaño real)  ·  Cada foto debe medir ${cm(cfg.s)} x ${cm(cfg.l)} cm`;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(120);
+        if (P.h - layout.bottom >= 7) doc.text(note, P.w / 2, layout.bottom + 4.5, { align: 'center' });
+        else if (layout.top >= 7) doc.text(note, P.w / 2, layout.top - 2.5, { align: 'center' });
+      }
+      const filename = `stills-${cm(cfg.s)}x${cm(cfg.l)}cm-${P.label.toLowerCase()}.pdf`.replace(/,/g, '.');
+      await deliver(doc.output('blob'), filename);
+    } catch (e) {
+      console.error(e);
+      toast('Algo falló al armar el PDF. Prueba con menos fotos o imágenes más livianas.');
+    } finally {
+      btn.textContent = label;
+      btn.disabled = !items.length;
+    }
+  }
+  $('#pdfBtn').addEventListener('click', makePdf);
+
+  // ---------- settings UI ----------
+  const presetEl = $('#preset'), faEl = $('#fa'), fbEl = $('#fb'), lipEl = $('#lip'), paperEl = $('#paper'), marginEl = $('#margin'), gapEl = $('#gap');
+
+  function renderNeed() {
+    const px = (mm, dpi) => Math.round(mm / MM_PER_IN * dpi);
+    $('#need').innerHTML = `
+      <dt>Nítida (300 ppp)</dt><dd>${px(cfg.l, 300)} × ${px(cfg.s, 300)} px</dd>
+      <dt>Aceptable (150 ppp)</dt><dd>${px(cfg.l, 150)} × ${px(cfg.s, 150)} px</dd>`;
+  }
+  function applyFrame() {
+    renderNeed(); redrawAll(); scheduleSheets(); saveCfg();
+  }
+  function fillSettings() {
+    presetEl.value = PRESETS[cfg.preset] || cfg.preset === 'custom' ? cfg.preset : 'custom';
+    faEl.value = +(cfg.s / 10).toFixed(2);
+    fbEl.value = +(cfg.l / 10).toFixed(2);
+    lipEl.value = cfg.lip;
+    $('#lipOut').textContent = `${num(cfg.lip)} mm`;
+    paperEl.value = cfg.paper;
+    marginEl.value = cfg.margin;
+    gapEl.value = cfg.gap;
+    $('#orientSeg').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.o === cfg.orient)));
+  }
+  presetEl.addEventListener('change', () => {
+    cfg.preset = presetEl.value;
+    const p = PRESETS[cfg.preset];
+    if (p) { [cfg.s, cfg.l] = p; faEl.value = +(cfg.s / 10).toFixed(2); fbEl.value = +(cfg.l / 10).toFixed(2); applyFrame(); }
+    else faEl.focus();
+  });
+  function onSize() {
+    const a = parseFloat(faEl.value) * 10, b = parseFloat(fbEl.value) * 10;
+    if (!(a >= 30 && b >= 30 && a <= 600 && b <= 600)) return;
+    cfg.s = Math.min(a, b); cfg.l = Math.max(a, b);
+    cfg.preset = 'custom'; presetEl.value = 'custom';
+    applyFrame();
+  }
+  faEl.addEventListener('input', onSize);
+  fbEl.addEventListener('input', onSize);
+  lipEl.addEventListener('input', () => {
+    cfg.lip = +lipEl.value; $('#lipOut').textContent = `${num(cfg.lip)} mm`; cards.forEach(requestDraw); saveCfg();
+  });
+  $('#orientSeg').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    cfg.orient = b.dataset.o; fillSettings(); saveCfg();
+  }));
+  $('#applyAll').addEventListener('click', () => {
+    items.forEach(it => { it.orient = cfg.orient; });
+    redrawAll(); scheduleSheets();
+    toast(cfg.orient === 'h' ? 'Todas las fotos quedaron horizontales.' : 'Todas las fotos quedaron verticales.');
+  });
+  paperEl.addEventListener('change', () => { cfg.paper = paperEl.value; scheduleSheets(); saveCfg(); });
+  function onSpacing() {
+    const m = parseFloat(marginEl.value), g = parseFloat(gapEl.value);
+    if (m >= 0 && m <= 30) cfg.margin = m;
+    if (g >= 0 && g <= 30) cfg.gap = g;
+    scheduleSheets(); saveCfg();
+  }
+  marginEl.addEventListener('input', onSpacing);
+  gapEl.addEventListener('input', onSpacing);
+
+  let toastTimer = 0;
+  function toast(msg) {
+    const t = $('#toast');
+    t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.hidden = true; }, 3800);
+  }
+
+  new ResizeObserver(() => cards.forEach(requestDraw)).observe(cardsEl);
+
+  // ---------- start ----------
+  fillSettings();
+  renderNeed();
+  const desert = sampleDesert(), city = sampleCity();
+  items.push(newItem(desert, desert.width, desert.height, 'Ejemplo · Desierto al atardecer', { sample: true, orient: 'h' }));
+  items.push(newItem(city, city.width, city.height, 'Ejemplo · Ciudad de noche', { sample: true, orient: 'v', cx: 0.62 }));
+  items.forEach(settle);
+  syncCards();
+  renderSheets();
+})();
+</script>
+</body>
+</html>
