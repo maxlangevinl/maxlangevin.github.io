@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Taller</title>
+<meta name="description" content="El taller de Maximiliano Langevin: cómo se hace un retrato al óleo, de la primera línea a la firma.">
+<meta name="theme-color" content="#d8cfbf">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Courier+Prime:wght@400;700&family=Literata:ital,opsz,wght@0,7..72,400;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+/* Taller: lino crudo, tinta, etiquetas de bastidor escritas a máquina. El azul ultramar de Gallagath es el único color propio. */
+:root {
+  --bg: #d8cfbf; --bg-2: #cfc5b3; --sheet: #ebe5d9; --fg: #1f1a14; --muted: #5d5345; --line: rgba(31,26,20,.18);
+  --accent: #23379a; --on-accent: #fff;
+  --f-sans: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Literata', Georgia, serif;
+  --f-mono: 'Courier Prime', 'Courier New', monospace;
+  --gl: max(clamp(20px, 5vw, 72px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(20px, 5vw, 72px), env(safe-area-inset-right, 0px));
+  --nav-h: 60px; --title-style: italic;
+  --lb-bg: #1b1712; --lb-fg: #eee6d8; --lb-muted: #b3a895; --lb-line: rgba(238,230,216,.16);
+  color-scheme: light;
+}
+body {
+  background-color: var(--bg); color: var(--fg); font: 400 1.05rem/1.65 var(--f-serif);
+  background-image: repeating-linear-gradient(0deg, rgba(70,52,30,.045) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(70,52,30,.04) 0 1px, transparent 1px 3px);
+}
+::selection { background: var(--accent); color: #fff; }
+.wrap { padding-left: var(--gl); padding-right: var(--gr); }
+.band { padding-block: clamp(5rem, 12vh, 8.5rem); }
+.tag { font: 400 .82rem var(--f-mono); letter-spacing: .02em; color: var(--muted); }
+.tag b { color: var(--fg); font-weight: 700; }
+.h1 { font: 800 clamp(2.6rem, 7.4vw, 6.8rem)/.92 var(--f-sans); letter-spacing: -.035em; text-wrap: balance; }
+.h2 { font: 800 clamp(2.1rem, 5vw, 4.4rem)/.96 var(--f-sans); letter-spacing: -.03em; text-wrap: balance; }
+.h3 { font: 600 clamp(1.35rem, 2.2vw, 1.8rem)/1.15 var(--f-sans); letter-spacing: -.015em; }
+.lede { font-size: clamp(1.05rem, 1.3vw, 1.2rem); line-height: 1.6; color: var(--muted); max-width: 44ch; text-wrap: pretty; }
+.btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 46px; padding: .7rem 1.25rem; font: 600 .95rem var(--f-sans); text-decoration: none; background: var(--fg); color: var(--sheet); border-radius: 3px; transition: background .2s; }
+.btn:hover { background: var(--accent); }
+.btn.line { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--fg); }
+.btn.line:hover { background: var(--fg); color: var(--sheet); }
+.skip { position: fixed; left: 12px; top: -60px; z-index: 400; background: var(--fg); color: var(--sheet); padding: .6rem 1rem; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--bg); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); transition: background .3s, box-shadow .3s; }
+.nav.solid { background: rgba(216,207,191,.9); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
+.brand { display: flex; align-items: center; gap: .6rem; font: 700 .95rem var(--f-sans); text-decoration: none; white-space: nowrap; }
+.brand img { width: 30px; height: 30px; }
+.nav-r { display: flex; align-items: center; gap: 1rem; }
+.nav-links { display: flex; gap: clamp(.9rem, 2vw, 1.8rem); list-style: none; }
+.nav-links a { text-decoration: none; font: 400 .85rem var(--f-mono); color: var(--muted); }
+.nav-links a:hover { color: var(--fg); }
+.nav .btn { min-height: 38px; padding: .45rem 1rem; font-size: .85rem; }
+.lang { font: 400 .78rem var(--f-mono); min-width: 44px; min-height: 36px; box-shadow: inset 0 0 0 1px var(--line); border-radius: 3px; }
+.burger { display: none; width: 44px; height: 44px; position: relative; }
+.burger span { position: absolute; left: 12px; right: 12px; height: 2px; background: var(--fg); transition: transform .3s, top .3s; }
+.burger span:nth-child(1) { top: 18px; } .burger span:nth-child(2) { top: 25px; }
+.burger[aria-expanded="true"] span:nth-child(1) { top: 21.5px; transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { top: 21.5px; transform: rotate(-45deg); }
+.drawer { position: fixed; inset: 0; z-index: 130; background: var(--bg); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2rem) var(--gr) 2rem var(--gl); display: flex; flex-direction: column; gap: .3rem; }
+.drawer a { text-decoration: none; font: 800 clamp(2rem, 9vw, 3rem)/1.15 var(--f-sans); letter-spacing: -.03em; }
+
+/* Portada: la firma */
+#top { --len: 165vh; }
+.hero-stage { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2vh) var(--gr) 4vh var(--gl); }
+.hero-l { display: grid; gap: clamp(1.2rem, 3vh, 2rem); align-content: center; }
+.hero-sig { color: var(--fg); width: min(100%, 760px); margin-left: -1.5%; }
+.hero-sig .sig-ghost { opacity: .17; }
+.hero-l .lede { max-width: 38ch; }
+.polaroid { justify-self: center; background: var(--sheet); padding: .8rem .8rem 2.6rem; box-shadow: 0 2px 3px rgba(40,30,20,.18), 0 22px 40px -18px rgba(40,30,20,.5); rotate: 2.5deg; max-width: 100%; position: relative; }
+.polaroid img { width: min(30vw, 400px); aspect-ratio: 4 / 5; object-fit: cover; }
+.polaroid figcaption { position: absolute; left: .9rem; right: .9rem; bottom: .7rem; font: 400 .8rem var(--f-mono); color: var(--muted); }
+.tape { position: absolute; top: -12px; left: 50%; width: 92px; height: 26px; translate: -50% 0; rotate: -4deg; background: rgba(235,229,217,.75); box-shadow: 0 1px 2px rgba(0,0,0,.1); }
+
+/* Fotos del taller */
+.strip { display: flex; gap: clamp(1rem, 2.5vw, 2rem); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1.2rem; scrollbar-width: thin; }
+.strip figure { flex: none; scroll-snap-align: start; display: grid; gap: .6rem; width: clamp(220px, 26vw, 340px); }
+.strip button { display: block; }
+.strip img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; box-shadow: 0 14px 28px -16px rgba(40,30,20,.55); }
+.strip figcaption { font: 400 .8rem var(--f-mono); color: var(--muted); }
+
+/* Cómo se hace */
+.howto { background: var(--fg); color: var(--sheet); --muted: #b3a895; --line: rgba(235,229,217,.18); }
+.how-stage { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); grid-template-rows: minmax(0, 1fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2vh) var(--gr) 4vh var(--gl); }
+.how-steps { display: grid; gap: .3rem; }
+.how-step { padding: .9rem 0 .9rem 1.2rem; border-left: 2px solid var(--line); opacity: .4; transition: opacity .35s, border-color .35s; }
+.how-step.on { opacity: 1; border-left-color: #7d8fe6; }
+.how-step .tag { color: #9fb0ff; }
+.how-step h3 { font: 700 clamp(1.4rem, 2.4vw, 2rem)/1.1 var(--f-sans); letter-spacing: -.02em; margin-top: .2rem; }
+.how-step p { font-size: .98rem; color: #cfc6b6; margin-top: .4rem; max-width: 42ch; display: none; }
+.how-step.on p { display: block; }
+.how-art { position: relative; height: 100%; max-height: 80svh; min-height: 0; }
+.how-art > * { position: absolute; inset: 0; opacity: 0; transition: opacity .5s; }
+.how-art > .on { opacity: 1; }
+.how-art img { width: 100%; height: 100%; object-fit: contain; }
+.how-art .draw img { position: absolute; inset: 0; }
+.how-art .sigbox { display: grid; place-items: center; color: var(--sheet); }
+.how-art .sigbox > div { width: min(90%, 620px); }
+.macros { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 8px; }
+.macros img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Mesa de luz */
+.lightbox-table { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 10px; background: #1f1a14; padding: 10px; }
+.macro { position: relative; overflow: hidden; aspect-ratio: 1; display: block; cursor: zoom-in; }
+.macro img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.macro:hover img { transform: scale(1.7); }
+.macro span { position: absolute; left: .6rem; bottom: .55rem; font: 400 .74rem var(--f-mono); color: #f3eee4; background: rgba(20,16,12,.7); padding: .2rem .45rem; }
+
+/* Obras: etiquetas de bastidor */
+.tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 2.5rem; }
+.tabs button { min-height: 40px; padding: .4rem .95rem; font: 400 .85rem var(--f-mono); border-radius: 3px; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
+.tabs button[aria-pressed="true"] { background: var(--fg); color: var(--sheet); box-shadow: none; }
+.works { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
+.work { display: grid; gap: 0; text-align: left; }
+.work .frame { display: block; position: relative; overflow: hidden; aspect-ratio: var(--a); background: var(--bg-2); box-shadow: 0 16px 30px -18px rgba(40,30,20,.6); }
+.work .frame img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
+.work:hover .frame img { transform: scale(1.03); }
+.placard { display: grid; gap: 0; margin: -10px 0 0 14px; width: calc(100% - 28px); position: relative; background: var(--sheet); padding: .7rem .85rem; font: 400 .8rem/1.45 var(--f-mono); box-shadow: 0 2px 4px rgba(40,30,20,.15); rotate: -.6deg; }
+.placard .t { font: 700 .95rem var(--f-mono); }
+.placard .m { color: var(--muted); }
+.badge { position: absolute; top: .6rem; left: .6rem; font: 700 .72rem var(--f-mono); padding: .2rem .5rem; background: var(--accent); color: #fff; }
+
+/* Encargos */
+.enc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+.enc-steps { display: grid; gap: 0; counter-reset: s; }
+.enc-steps li { list-style: none; counter-increment: s; display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; padding-block: 1.2rem; border-top: 1px solid var(--line); }
+.enc-steps li::before { content: counter(s); font: 800 2rem/1 var(--f-sans); color: var(--accent); }
+.enc-steps b { font: 700 1.25rem var(--f-sans); display: block; }
+.enc-steps span { color: var(--muted); font-size: .98rem; }
+
+/* Bio */
+.bio-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+.bio-photo { display: grid; gap: .8rem; max-width: 460px; }
+.bio-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; filter: grayscale(1) sepia(.15); }
+.bio-body { display: grid; gap: 1.1rem; max-width: 62ch; }
+.bio-body p { color: var(--muted); }
+.bio-body p:first-child { color: var(--fg); font-size: clamp(1.15rem, 1.6vw, 1.35rem); line-height: 1.5; }
+.cv { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 1.5rem 3rem; }
+.cv h3 { font: 700 .82rem var(--f-mono); text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; }
+.cv li { list-style: none; display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .8rem; padding-block: .55rem; border-top: 1px dashed var(--line); font-size: .93rem; }
+.cv li span:first-child { font: .82rem var(--f-mono); color: var(--muted); }
+
+/* Contacto */
+.contact { background: var(--accent); color: #f1ede4; --muted: #cdd3f1; --line: rgba(241,237,228,.25); }
+.contact .h1 { max-width: 13ch; }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: 2rem; }
+.mail a { font: italic 400 clamp(1.5rem, 3.8vw, 2.9rem)/1.1 var(--f-serif); text-decoration: none; overflow-wrap: anywhere; }
+.copy { font: 400 .78rem var(--f-mono); min-height: 36px; padding: 0 .9rem; box-shadow: inset 0 0 0 1px var(--line); border-radius: 3px; }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
+.contact .btn { background: #f1ede4; color: var(--accent); }
+.socials { display: flex; flex-wrap: wrap; gap: .4rem 1.8rem; list-style: none; margin-top: 2.5rem; }
+.socials a { font: 400 .85rem var(--f-mono); color: var(--muted); text-decoration: none; display: inline-block; padding-block: .6rem; }
+footer { background: var(--accent); color: #cdd3f1; border-top: 1px solid rgba(241,237,228,.25); padding-block: 1.4rem calc(1.4rem + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; font: .8rem var(--f-mono); }
+
+@media (max-width: 1100px) { .nav-links { display: none; } .burger { display: block; } }
+@media (max-width: 860px) {
+  .nav .btn { display: none; }
+  #top { --len: 150vh; }
+  .hero-stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; align-content: center; gap: 1.6rem; }
+  .polaroid { order: -1; justify-self: start; rotate: -2deg; padding: .5rem .5rem 1.9rem; }
+  .polaroid img { width: min(52vw, 230px); }
+  .polaroid figcaption { font-size: .7rem; bottom: .45rem; }
+  .how-stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 1rem; padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); }
+  .how-art { order: -1; max-height: none; }
+  .how-step { padding: .45rem 0 .45rem .9rem; }
+  .how-step h3 { font-size: 1.15rem; }
+  .how-step p { font-size: .9rem; }
+  .enc, .bio-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) { .brand span { display: none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#obras" data-i18n="skip">Ir a las obras</a>
+<header class="nav" id="nav">
+  <a class="brand" href="#top"><img src="../images/logo_ml.png" alt="" width="30" height="30"><span>Max Langevin</span></a>
+  <div class="nav-r">
+    <nav aria-label="Secciones"><ul class="nav-links">
+      <li><a href="#taller" data-i18n="n_studio">Taller</a></li><li><a href="#como" data-i18n="n_how">Cómo se hace</a></li>
+      <li><a href="#mesa" data-i18n="n_macro">De cerca</a></li><li><a href="#obras" data-i18n="n_works">Obras</a></li><li><a href="#about" data-i18n="n_about">Biografía</a></li></ul></nav>
+    <a class="btn" href="#encargos" data-i18n="n_commission">Encargar</a>
+    <button class="lang js-lang" type="button">EN</button>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" data-i18n-aria="menu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="drawer" id="drawer" hidden>
+  <a href="#taller" data-i18n="n_studio">Taller</a><a href="#como" data-i18n="n_how">Cómo se hace</a><a href="#mesa" data-i18n="n_macro">De cerca</a>
+  <a href="#obras" data-i18n="n_works">Obras</a><a href="#encargos" data-i18n="n_commission">Encargar</a><a href="#about" data-i18n="n_about">Biografía</a><a href="#contact" data-i18n="n_contact">Contacto</a>
+</div>
+
+<main>
+<section class="scene" id="top" aria-label="Max Langevin">
+  <div class="stage hero-stage">
+    <div class="hero-l">
+      <p class="tag" data-i18n="hero_tag">Pintor realista · Santiago de Chile · desde 2019 al óleo</p>
+      <h1 class="hero-sig" id="hero-sig"><span hidden>Maximiliano Langevin</span></h1>
+      <p class="lede" data-i18n="hero_p">Max Langevin pinta personas. Primero las fotografía; después las pinta capa por capa, al óleo sobre lino, hasta que el cuadro dice algo más que la foto.</p>
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap"><a class="btn" href="#obras" data-i18n="hero_b1">Ver las obras</a><a class="btn line" href="#encargos" data-i18n="hero_b2">Encargar un retrato</a></div>
+    </div>
+    <figure class="polaroid"><span class="tape"></span><button type="button" data-open="gallagath" data-i="1"><img src="../images/w/pinturas/gallagath_1.webp" alt="Maximiliano Langevin junto a su pintura de Gallagath en el caballete" width="1611" height="2000"></button><figcaption data-i18n="hero_cap">Con Gallagath, 2021</figcaption></figure>
+  </div>
+</section>
+
+<section class="band" id="taller" aria-labelledby="taller-h" style="padding-top:clamp(2rem,6vh,4rem)">
+  <div class="wrap" style="display:grid;gap:1rem;margin-bottom:2.2rem">
+    <p class="tag" data-i18n="studio_tag">01 · El taller</p>
+    <h2 class="h2" id="taller-h" data-i18n="studio_h">Todo pasa en el caballete.</h2>
+  </div>
+  <div class="strip wrap" id="strip"></div>
+</section>
+
+<section class="howto" id="como" aria-labelledby="how-h">
+  <div class="scene" style="--len:420vh" id="how">
+    <div class="stage how-stage">
+      <div>
+        <p class="tag" style="color:#9fb0ff" data-i18n="how_tag">02 · Cómo se hace un retrato</p>
+        <h2 class="h3" id="how-h" style="margin:.4rem 0 1.4rem" data-i18n="how_h">De la primera línea a la firma.</h2>
+        <div class="how-steps" id="how-steps"></div>
+      </div>
+      <div class="how-art" id="how-art">
+        <div class="draw on">
+          <img src="../images/w/dibujos/bouguereau_1.webp" alt="" loading="lazy"><img src="../images/w/dibujos/bouguereau_2.webp" alt="" loading="lazy">
+          <img src="../images/w/dibujos/bouguereau_3.webp" alt="" loading="lazy"><img src="../images/w/dibujos/bouguereau_4.webp" alt="" loading="lazy">
+          <img src="../images/w/dibujos/bouguereau_5.webp" alt="Dibujo de Bouguereau en cinco etapas" loading="lazy">
+        </div>
+        <div><img src="../images/w/pinturas/marcos_16_16_2.webp" alt="Marcos 16:16 en el caballete, todavía en proceso" loading="lazy"></div>
+        <div class="macros">
+          <img src="../images/t/pinturas/karin_goldberg_4.webp" alt="" loading="lazy"><img src="../images/t/pinturas/gallagath_6.webp" alt="" loading="lazy"><img src="../images/t/pinturas/coti_3.webp" alt="" loading="lazy">
+          <img src="../images/t/pinturas/santiago_3.webp" alt="" loading="lazy"><img src="../images/t/pinturas/veteran_george_2.webp" alt="" loading="lazy"><img src="../images/t/pinturas/vicente_7.webp" alt="" loading="lazy">
+        </div>
+        <div class="sigbox"><div id="how-sig"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band wrap" id="mesa" aria-labelledby="mesa-h">
+  <div style="display:grid;gap:1rem;margin-bottom:2.2rem;max-width:60rem">
+    <p class="tag" data-i18n="macro_tag">03 · Mesa de luz</p>
+    <h2 class="h2" id="mesa-h" data-i18n="macro_h">A diez centímetros de la tela.</h2>
+    <p class="lede" data-i18n="macro_p">Fotos macro de las pinturas. Pasa el cursor para acercarte más; toca para ver la obra completa.</p>
+  </div>
+  <div class="lightbox-table" id="table"></div>
+</section>
+
+<section class="band wrap" id="obras" aria-labelledby="obras-h" style="padding-top:0">
+  <div style="display:grid;gap:1rem;margin-bottom:2rem">
+    <p class="tag" data-i18n="works_tag">04 · Obras</p>
+    <h2 class="h2" id="obras-h" data-i18n="works_h">Lo que salió del taller.</h2>
+  </div>
+  <div class="tabs" id="tabs" role="group" aria-label="Filtrar"></div>
+  <div class="works" id="works"></div>
+</section>
+
+<section class="band wrap" id="encargos" aria-labelledby="enc-h" style="background:var(--sheet)">
+  <div class="enc">
+    <div style="display:grid;gap:1.2rem;align-content:start">
+      <p class="tag" data-i18n="enc_tag">05 · Encargos</p>
+      <h2 class="h2" id="enc-h" data-i18n="enc_h">¿Un retrato de alguien que quieres?</h2>
+      <p class="lede" data-i18n="enc_p">Personas, mascotas, lugares. Así funciona, de la primera conversación a la firma.</p>
+      <div><a class="btn js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener" data-i18n="enc_b">Conversemos por WhatsApp</a></div>
+    </div>
+    <ol class="enc-steps" id="enc-steps"></ol>
+  </div>
+</section>
+
+<section class="band wrap" id="about" aria-labelledby="about-h">
+  <div class="bio-grid">
+    <div class="bio-photo"><img src="../images/maximiliano_langevin.jpg" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="tag">Santiago, Chile · 1996</p></div>
+    <div>
+      <p class="tag" data-i18n="about_tag">06 · Biografía</p>
+      <h2 class="h2" id="about-h" style="margin:.8rem 0 2rem">Maximiliano Langevin Larraín</h2>
+      <div class="bio-body" id="bio-body"></div>
+      <div class="cv" id="cv"></div>
+    </div>
+  </div>
+</section>
+
+<section class="band wrap contact" id="contact" aria-labelledby="contact-h">
+  <p class="tag" style="color:#cdd3f1" data-i18n="n_contact">Contacto</p>
+  <h2 class="h1" id="contact-h" style="margin-top:1rem" data-i18n="contact_h">Pasa por el taller.</h2>
+  <p class="lede" style="margin-top:1.4rem" data-i18n="contact_p">Encargos, exposiciones o colaboraciones. Respondo personalmente.</p>
+  <div class="mail"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a><button class="copy js-copy" type="button" data-i18n="copy">Copiar</button></div>
+  <div class="actions"><a class="btn js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener"><span data-i18n="wa">Escribir por WhatsApp</span></a></div>
+  <ul class="socials"><li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li><li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+</section>
+<footer class="wrap"><span>© 2026 Maximiliano Langevin</span><span>Langevinci®</span></footer>
+</main>
+
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+const { $, $$, clamp, RM } = ML;
+const S = {
+  es: { skip: 'Ir a las obras', n_studio: 'Taller', n_how: 'Cómo se hace', n_macro: 'De cerca', n_works: 'Obras', n_about: 'Biografía', n_commission: 'Encargar', n_contact: 'Contacto',
+    hero_tag: 'Pintor realista · Santiago de Chile · al óleo desde 2019', hero_p: 'Max Langevin pinta personas. Primero las fotografía; después las pinta capa por capa, al óleo sobre lino, hasta que el cuadro dice algo más que la foto.',
+    hero_b1: 'Ver las obras', hero_b2: 'Encargar un retrato', hero_cap: 'Con Gallagath, 2021',
+    studio_tag: '01 · El taller', studio_h: 'Todo pasa en el caballete.',
+    how_tag: '02 · Cómo se hace un retrato', how_h: 'De la primera línea a la firma.',
+    s1: 'El dibujo', s1p: 'Antes del color, la estructura. Cinco fotos de un mismo dibujo, copia de Bouguereau: de las primeras líneas al sombreado final.',
+    s2: 'El color', s2p: 'El óleo va por capas, de lo general al detalle. Marcos 16:16 todavía está en el caballete: el piso y la reja ya están, la luz todavía se trabaja.',
+    s3: 'El detalle', s3p: 'Al final, los acentos: el brillo del ojo, un hilo del velo, el pelo del gato. Son los toques más pequeños y los que más se notan.',
+    s4: 'La firma', s4p: 'Max Langevin, y el año. La obra está terminada.',
+    macro_tag: '03 · Mesa de luz', macro_h: 'A diez centímetros de la tela.', macro_p: 'Fotos macro de las pinturas. Pasa el cursor para acercarte más; toca para ver la obra completa.',
+    works_tag: '04 · Obras', works_h: 'Lo que salió del taller.', all: 'Todo',
+    enc_tag: '05 · Encargos', enc_h: '¿Un retrato de alguien que quieres?', enc_p: 'Personas, mascotas, lugares. Así funciona, de la primera conversación a la firma.', enc_b: 'Conversemos por WhatsApp',
+    about_tag: '06 · Biografía', contact_h: 'Pasa por el taller.', contact_p: 'Encargos, exposiciones o colaboraciones. Respondo personalmente.' },
+  en: { skip: 'Go to the work', n_studio: 'Studio', n_how: 'How it is made', n_macro: 'Up close', n_works: 'Works', n_about: 'Biography', n_commission: 'Commission', n_contact: 'Contact',
+    hero_tag: 'Realist painter · Santiago, Chile · in oils since 2019', hero_p: 'Max Langevin paints people. First he photographs them; then he paints them layer by layer, in oil on linen, until the picture says something the photo did not.',
+    hero_b1: 'See the work', hero_b2: 'Commission a portrait', hero_cap: 'With Gallagath, 2021',
+    studio_tag: '01 · The studio', studio_h: 'Everything happens at the easel.',
+    how_tag: '02 · How a portrait is made', how_h: 'From the first line to the signature.',
+    s1: 'Drawing', s1p: 'Before colour, structure. Five photos of the same drawing, a copy after Bouguereau: from the first lines to the final shading.',
+    s2: 'Colour', s2p: 'Oil goes on in layers, from the general to the detail. Marcos 16:16 is still on the easel: the floor and grille are there, the light is still being worked.',
+    s3: 'Detail', s3p: 'Last come the accents: the glint in an eye, a thread of the veil, a cat’s fur. They are the smallest touches and the ones you notice most.',
+    s4: 'Signature', s4p: 'Max Langevin, and the year. The work is finished.',
+    macro_tag: '03 · Light table', macro_h: 'Ten centimetres from the canvas.', macro_p: 'Macro photos of the paintings. Hover to get closer; tap to see the whole work.',
+    works_tag: '04 · Works', works_h: 'What came out of the studio.', all: 'All',
+    enc_tag: '05 · Commissions', enc_h: 'A portrait of someone you love?', enc_p: 'People, pets, places. This is how it works, from the first conversation to the signature.', enc_b: "Let's talk on WhatsApp",
+    about_tag: '06 · Biography', contact_h: 'Come by the studio.', contact_p: 'Commissions, exhibitions or collaborations. I answer personally.' }
+};
+
+// Portada: la firma se escribe en el primer medio scroll
+const heroSig = ML.signature($('#hero-sig'), { label: 'Maximiliano Langevin' });
+ML.scene($('#top'), { layout() {}, update(p) { heroSig(clamp(p / .85)); } });
+
+// Cómo se hace: cuatro pasos fijos
+const STEPS = ['s1', 's2', 's3', 's4'];
+$('#how-steps').innerHTML = STEPS.map((k, i) => `<div class="how-step${i ? '' : ' on'}"><p class="tag" style="display:block">${String(i + 1).padStart(2, '0')}</p><h3 data-i18n="${k}"></h3><p data-i18n="${k}p"></p></div>`).join('');
+const howSig = ML.signature($('#how-sig'));
+const drawFrames = $$('#how-art .draw img');
+ML.scene($('#how'), { layout() {}, update(p) {
+  const q = RM ? .999 : p, idx = Math.min(3, Math.floor(q * 4)), local = q * 4 - idx;
+  $$('.how-step').forEach((d, i) => d.classList.toggle('on', i === idx));
+  [...$('#how-art').children].forEach((d, i) => d.classList.toggle('on', i === idx));
+  const f = idx === 0 ? clamp(local / .85) * 4 : 4;
+  drawFrames.forEach((img, i) => img.style.opacity = i === 0 ? 1 : clamp(f - (i - 1)));
+  howSig(idx === 3 ? clamp(local / .7) : idx > 3 ? 1 : 0);
+} });
+
+// Mesa de luz: macros con su obra
+const MACROS = [['pinturas/karin_goldberg_4', 'karin-goldberg', 4], ['pinturas/gallagath_6', 'gallagath', 6], ['pinturas/coti_3', 'coti', 3], ['pinturas/santiago_3', 'santiago', 4],
+  ['pinturas/veteran_george_2', 'veteran-george', 1], ['pinturas/vicente_7', 'vicente', 7], ['pinturas/karin_goldberg_6', 'karin-goldberg', 5], ['pinturas/gallagath_4', 'gallagath', 4],
+  ['pinturas/en_verano_3', 'en-verano', 3], ['pinturas/el_jardin_de_las_delicias_2', 'el-jardin', 2], ['pinturas/coti_4', 'coti', 4], ['pinturas/santiago_2', 'santiago', 3]];
+$('#table').innerHTML = MACROS.map(([p, id, i]) => `<button class="macro" type="button" data-open="${id}" data-i="${i}"><img src="${ML.W_(p)}" alt="" loading="lazy"><span>${ML.BY_ID[id].name}</span></button>`).join('');
+$$('.macro').forEach(m => m.addEventListener('pointermove', e => { const r = m.getBoundingClientRect(); $('img', m).style.transformOrigin = `${(e.clientX - r.left) / r.width * 100}% ${(e.clientY - r.top) / r.height * 100}%`; }));
+
+// Fotos del taller
+const STRIP = [['pinturas/gallagath_1', 'gallagath', 1], ['pinturas/veteran_george_3', 'veteran-george', 2], ['pinturas/vicente_1', 'vicente', 1], ['pinturas/marcos_16_16_2', 'marcos-16-16', 1],
+  ['pinturas/santiago_1', 'santiago', 1], ['pinturas/consu_gato', 'consu-gato', 1], ['pinturas/el_conde_3', 'el-conde', 2]];
+
+let tab = 'all';
+function renderWorks() {
+  const g = $('#works'); g.innerHTML = '';
+  ML.WORKS.filter(w => tab === 'all' || w.cat === tab).forEach(w => {
+    const c = ML.card(w, { count: false });
+    const pl = $('.placard', c), L = ML.lang;
+    pl.innerHTML = `<span class="t">${w.name}</span><span class="m">${ML.yearLabel(w)} · ${w.tech[L]}</span>${w.dims ? `<span class="m">${w.dims}</span>` : ''}`;
+    g.appendChild(c);
+  });
+}
+$('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (!b) return; tab = b.dataset.f; render(); });
+function render() {
+  const L = ML.lang;
+  $('#tabs').innerHTML = [['all', ML.t('all')], ...ML.CATS.map(c => [c, ML.t('cats')[c]])].map(([v, l]) => `<button type="button" data-f="${v}" aria-pressed="${v === tab}">${l}</button>`).join('');
+  renderWorks();
+  $('#strip').innerHTML = STRIP.map(([p, id, i]) => { const w = ML.BY_ID[id]; const cap = w.imgs[i] && w.imgs[i].cap[L]; return `<figure><button type="button" data-open="${id}" data-i="${i}"><img src="${ML.T_(p)}" alt="" loading="lazy"></button><figcaption><b style="color:var(--fg)">${w.name}</b><br>${cap || ML.yearLabel(w)}</figcaption></figure>`; }).join('');
+  $('#enc-steps').innerHTML = ML.COMMISSION[L].map(([a, b]) => `<li><span><b>${a}</b><span>${b}</span></span></li>`).join('');
+  $('#bio-body').innerHTML = ML.BIO[L].map(p => `<p>${p}</p>`).join('');
+  $('#cv').innerHTML = ML.CV[L].map(([h, rows]) => `<div><h3>${h}</h3><ul>${rows.map(([a, b]) => `<li><span>${a}</span><span>${b}</span></li>`).join('')}</ul></div>`).join('');
+}
+ML.onLang(render);
+
+const nav = $('#nav'), drawer = $('#drawer'), burger = $('#burger');
+const setDrawer = open => { drawer.hidden = !open; burger.setAttribute('aria-expanded', open); document.documentElement.classList.toggle('lb-open', open); };
+burger.addEventListener('click', () => setDrawer(drawer.hidden));
+drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); });
+ML.onTick(() => nav.classList.toggle('solid', scrollY > 30));
+ML.boot({ strings: S });
+</script>
+</body>
+</html>
