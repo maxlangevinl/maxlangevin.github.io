@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Materia</title>
+<meta name="description" content="Maximiliano Langevin: los cuadros como objetos. Lino, bastidor y óleo en 3D.">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+/* Materia: el cuadro como objeto. Un taller a oscuras, el lino y el óleo en 3D detrás del texto.
+   Syne ancha para los títulos, grotesca de lectura, mono para las etiquetas del reverso. */
+:root {
+  --bg: #14120f; --bg-2: #1c1915; --fg: #efe8dc; --muted: #a59d90; --line: rgba(239,232,220,.14);
+  --linen: #cdbf9f; --accent: #d9b77a; --on-accent: #14120f;
+  --f-sans: 'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --gl: max(clamp(20px, 5vw, 72px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(20px, 5vw, 72px), env(safe-area-inset-right, 0px));
+  --nav-h: 60px; --title-style: normal;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font: 400 1.05rem/1.62 var(--f-sans); }
+::selection { background: var(--accent); color: var(--bg); }
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; transition: opacity .25s linear; }
+main { position: relative; z-index: 1; }
+.wrap { padding-left: var(--gl); padding-right: var(--gr); }
+.band { padding-block: clamp(5rem, 12vh, 8rem); }
+.k { font: 400 .72rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.mono { font: 400 .76rem var(--f-mono); color: var(--muted); }
+.h1 { font: 800 clamp(2.4rem, 7vw, 6.6rem)/.95 var(--f-serif); letter-spacing: -.03em; text-wrap: balance; }
+.h2 { font: 700 clamp(2rem, 4.6vw, 4.2rem)/1 var(--f-serif); letter-spacing: -.025em; text-wrap: balance; }
+.h3 { font: 700 clamp(1.4rem, 2.6vw, 2.2rem)/1.1 var(--f-serif); letter-spacing: -.02em; text-wrap: balance; }
+.lede { font-size: clamp(1.02rem, 1.3vw, 1.18rem); color: var(--muted); max-width: 42ch; text-wrap: pretty; }
+.btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 46px; padding: .7rem 1.25rem; border-radius: 999px; font: 600 .92rem var(--f-sans); text-decoration: none; background: var(--fg); color: var(--bg); }
+.btn.line { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.btn svg { width: 18px; height: 18px; }
+.skip { position: fixed; left: 12px; top: -60px; z-index: 400; background: var(--fg); color: var(--bg); padding: .6rem 1rem; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--bg); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); background: linear-gradient(rgba(20,18,15,.8), transparent); }
+.brand { display: flex; align-items: center; gap: .6rem; font: 700 1rem var(--f-serif); text-decoration: none; white-space: nowrap; }
+.brand img { width: 28px; height: 28px; filter: invert(1); }
+.nav-r { display: flex; align-items: center; gap: 1rem; }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a { text-decoration: none; font-size: .86rem; color: var(--muted); }
+.nav-links a:hover { color: var(--fg); }
+.nav .btn { min-height: 36px; padding: .4rem .95rem; font-size: .84rem; }
+.lang { font: 400 .72rem var(--f-mono); min-width: 44px; min-height: 34px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); }
+.burger { display: none; width: 44px; height: 44px; position: relative; }
+.burger span { position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--fg); transition: transform .3s, top .3s; }
+.burger span:nth-child(1) { top: 18px; } .burger span:nth-child(2) { top: 25px; }
+.burger[aria-expanded="true"] span:nth-child(1) { top: 21.5px; transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { top: 21.5px; transform: rotate(-45deg); }
+.drawer { position: fixed; inset: 0; z-index: 130; background: var(--bg); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2rem) var(--gr) 2rem var(--gl); display: flex; flex-direction: column; gap: .3rem; }
+.drawer a { text-decoration: none; font: 800 clamp(2rem, 9vw, 3rem)/1.15 var(--f-serif); }
+
+/* Capítulos 3D: el escenario es transparente, el 3D vive detrás */
+.ch .stage { overflow: visible; }
+.zt.cap { left: var(--gl); right: var(--gr); bottom: calc(clamp(1.5rem, 7vh, 4.5rem) + env(safe-area-inset-bottom, 0px)); max-width: 30rem; display: grid; gap: .7rem; text-shadow: 0 2px 20px rgba(0,0,0,.6); }
+.zt.cap.veil { background: rgba(20,18,15,.62); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); padding: 1rem 1.2rem; border-radius: 4px; text-shadow: none; }
+.zt.cap.r { left: auto; right: var(--gr); text-align: right; justify-items: end; }
+.zt.top { top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(1rem, 5vh, 3rem)); }
+.hero-intro { left: var(--gl); top: 50%; translate: 0 -50%; max-width: min(36rem, 46vw); display: grid; gap: 1.2rem; }
+.cue { position: absolute; z-index: 3; left: var(--gl); bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: .7rem; }
+.cue i { width: 34px; height: 1px; background: var(--fg); animation: slide 2.4s ease-in-out infinite; transform-origin: left; }
+@keyframes slide { 0%, 100% { transform: scaleX(.2); } 50% { transform: scaleX(1); } }
+.ring-ui { position: absolute; z-index: 3; left: var(--gl); right: var(--gr); bottom: calc(clamp(1.2rem, 5vh, 3rem) + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; pointer-events: none; }
+.ring-ui > * { pointer-events: auto; }
+.ring-now { display: grid; gap: .3rem; text-shadow: 0 2px 20px rgba(0,0,0,.6); }
+.ring-now .t { font: 700 clamp(1.6rem, 3.2vw, 2.6rem)/1.05 var(--f-serif); }
+.ring-ctrl { display: flex; gap: .5rem; align-items: center; }
+.ring-ctrl .arrow { width: 46px; height: 46px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--line); display: grid; place-items: center; background: rgba(20,18,15,.5); }
+.ring-ctrl .arrow svg { width: 18px; height: 18px; }
+.ring-head { left: var(--gl); }
+.note-sm { font: 400 .7rem var(--f-mono); color: var(--muted); }
+.fallback { display: none; }
+.no3d #gl { display: none; }
+.no3d .ch { height: auto !important; }
+.no3d .ch .stage { position: relative; height: auto; min-height: 0; padding: calc(var(--nav-h) + 3rem) var(--gr) 3rem var(--gl); display: grid; gap: 1.5rem; }
+.no3d .ch .zt { position: static !important; opacity: 1 !important; visibility: visible !important; translate: none !important; }
+.no3d .fallback { display: block; max-height: 70svh; width: auto; }
+.no3d .cue, .no3d .ring-ui { display: none; }
+
+/* Secciones planas: fondo de lino */
+.solid { background-color: var(--bg-2); position: relative; }
+.linen-bg { background-color: #cdbf9f; background-image: var(--linen-img, none); background-size: 256px; color: #1e1a14; --fg: #1e1a14; --muted: #5b5244; --line: rgba(30,26,20,.18); --accent: #7a4f1f; }
+.linen-bg ::selection { background: #1e1a14; color: #cdbf9f; }
+.cats { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 2.2rem; }
+.cats button { min-height: 40px; padding: .4rem .95rem; border-radius: 999px; font-size: .86rem; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
+.cats button[aria-pressed="true"] { background: var(--fg); color: var(--bg); box-shadow: none; }
+.linen-bg .cats button[aria-pressed="true"] { background: #1e1a14; color: #cdbf9f; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: clamp(1.6rem, 3vw, 2.6rem) clamp(1.2rem, 2.5vw, 2rem); align-items: start; }
+.work { display: grid; gap: .8rem; text-align: left; perspective: 900px; }
+.work .frame { display: block; position: relative; aspect-ratio: var(--a); transform-style: preserve-3d; transition: transform .5s cubic-bezier(.22,.61,.36,1), box-shadow .5s; box-shadow: 6px 10px 22px -10px rgba(0,0,0,.55); }
+.work .frame img { width: 100%; height: 100%; object-fit: cover; }
+.work .frame::after { content: ""; position: absolute; top: 0; bottom: 0; right: -10px; width: 10px; background: linear-gradient(90deg, #a8987a, #c7b892); transform-origin: left; transform: rotateY(90deg); }
+.work:hover .frame { transform: rotateY(-14deg) rotateX(4deg); box-shadow: 18px 18px 30px -12px rgba(0,0,0,.6); }
+.placard { display: grid; gap: .1rem; }
+.placard .t { font: 700 1.1rem/1.2 var(--f-serif); }
+.placard .m { font: .72rem var(--f-mono); color: var(--muted); }
+.badge { position: absolute; top: .5rem; left: .5rem; font: .64rem var(--f-mono); text-transform: uppercase; padding: .25rem .5rem; background: #1e1a14; color: #cdbf9f; }
+.bio-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+.bio-photo { display: grid; gap: .7rem; max-width: 460px; }
+.bio-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; filter: grayscale(1); }
+.bio-body { display: grid; gap: 1.1rem; max-width: 62ch; }
+.bio-body p { color: var(--muted); }
+.bio-body p:first-child { color: var(--fg); font-size: 1.25rem; line-height: 1.5; }
+.cv { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 1.5rem 3rem; }
+.cv h3 { font: .72rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; }
+.cv li { list-style: none; display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .8rem; padding-block: .55rem; border-top: 1px solid var(--line); font-size: .93rem; }
+.cv li span:first-child { color: var(--muted); }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 2rem; counter-reset: s; margin-top: 2.5rem; }
+.steps li { list-style: none; counter-increment: s; display: grid; gap: .45rem; border-top: 1px solid currentColor; padding-top: 1rem; }
+.steps li::before { content: counter(s, decimal-leading-zero); font: .8rem var(--f-mono); }
+.steps b { font: 700 1.3rem var(--f-serif); }
+.steps span { color: var(--muted); }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: 2rem; }
+.mail a { font: 700 clamp(1.4rem, 3.8vw, 2.8rem)/1.1 var(--f-serif); text-decoration: none; overflow-wrap: anywhere; }
+.copy { font: .72rem var(--f-mono); text-transform: uppercase; min-height: 36px; padding: 0 .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
+.socials { display: flex; flex-wrap: wrap; gap: .4rem 1.8rem; list-style: none; margin-top: 2.5rem; }
+.socials a { font: .76rem var(--f-mono); text-transform: uppercase; color: var(--muted); text-decoration: none; display: inline-block; padding-block: .6rem; }
+.end-sig { width: min(560px, 90%); margin-top: 3rem; color: var(--fg); }
+footer { border-top: 1px solid var(--line); padding-block: 1.4rem calc(1.4rem + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 2rem; font: .74rem var(--f-mono); color: var(--muted); background: var(--bg-2); }
+
+@media (max-width: 1000px) { .nav-links { display: none; } .burger { display: block; } }
+@media (max-width: 860px) {
+  .nav .btn { display: none; }
+  .hero-intro { top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 1.2rem); translate: none; right: var(--gr); max-width: none; gap: .7rem; }
+  .hero-intro .lede { display: none; }
+  .zt.cap.r { left: var(--gl); text-align: left; justify-items: start; }
+  .bio-grid { grid-template-columns: minmax(0, 1fr); }
+  .work:hover .frame { transform: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<a class="skip" href="#archivo" data-i18n="skip">Ir a las obras</a>
+<header class="nav" id="nav">
+  <a class="brand" href="#top"><img src="../images/logo_ml.png" alt="" width="28" height="28"><span>Max Langevin</span></a>
+  <div class="nav-r">
+    <nav aria-label="Secciones"><ul class="nav-links">
+      <li><a href="#luz" data-i18n="n_light">Luz rasante</a></li><li><a href="#anillo" data-i18n="n_ring">Obras</a></li>
+      <li><a href="#lino" data-i18n="n_linen">Del lino al óleo</a></li><li><a href="#archivo" data-i18n="n_archive">Archivo</a></li><li><a href="#about" data-i18n="n_about">Biografía</a></li></ul></nav>
+    <a class="btn" href="#encargos" data-i18n="n_commission">Encargar</a>
+    <button class="lang js-lang" type="button">EN</button>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" data-i18n-aria="menu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="drawer" id="drawer" hidden>
+  <a href="#luz" data-i18n="n_light">Luz rasante</a><a href="#anillo" data-i18n="n_ring">Obras</a><a href="#lino" data-i18n="n_linen">Del lino al óleo</a>
+  <a href="#archivo" data-i18n="n_archive">Archivo</a><a href="#about" data-i18n="n_about">Biografía</a><a href="#encargos" data-i18n="n_commission">Encargar</a><a href="#contact" data-i18n="n_contact">Contacto</a>
+</div>
+
+<main>
+<section class="scene ch" id="top" data-ch="hero" style="--len:440vh" aria-label="Karin Goldberg como objeto">
+  <div class="stage">
+    <img class="fallback" src="../images/w/pinturas/karin_goldberg_1.webp" alt="Karin Goldberg" loading="lazy">
+    <div class="zt hero-intro" data-r="0,.05" data-e=".06">
+      <p class="k" data-i18n="hero_k">Pintor realista · Santiago de Chile</p>
+      <h1 class="h1">Maximiliano Langevin</h1>
+      <p class="lede" data-i18n="hero_p">Un cuadro es un objeto: lino tensado, madera y capas de óleo. Baja y gíralo.</p>
+    </div>
+    <div class="cue zt" data-r="0,.02" data-e=".04" data-still><i></i><span class="mono" data-i18n="cue">Baja: el cuadro gira</span></div>
+    <div class="zt cap" data-r=".2,.31"><p class="h3" data-i18n="c1">Lino tensado sobre madera.</p><p class="mono" data-i18n="c1s">Karin Goldberg · 48 × 68 cm · 2,5 cm de canto</p></div>
+    <div class="zt cap r" data-r=".44,.57"><p class="h3" data-i18n="c2">El reverso: lino crudo, bastidor y la firma.</p><p class="mono" data-i18n="c2s">Por detrás también se lee un cuadro.</p></div>
+    <div class="zt cap veil" data-r=".9,1" data-e=".04"><p class="h3" data-i18n="c3">Y por delante, una persona.</p><div><button class="btn" type="button" data-open="karin-goldberg"><span data-i18n="see">Ver la obra</span></button></div></div>
+  </div>
+</section>
+
+<section class="scene ch" id="luz" data-ch="raking" style="--len:280vh" aria-labelledby="luz-h">
+  <div class="stage">
+    <img class="fallback" src="../images/w/pinturas/veteran_george_2.webp" alt="Detalle de Veteran George" loading="lazy">
+    <div class="zt cap zt-top top" data-r="0,.62" data-e=".05" style="bottom:auto">
+      <p class="k" data-i18n="l_k">Luz rasante</p>
+      <h2 class="h2" id="luz-h" data-i18n="l_h">La materia aparece con la luz baja.</h2>
+      <p class="lede" data-i18n="l_p">Cuando la luz pasa casi paralela a la tela, cada pincelada proyecta su pequeña sombra. Así revisan los restauradores la superficie de un óleo.</p>
+    </div>
+    <div class="zt cap r" data-r=".7,1" data-e=".05"><p class="h3" data-i18n="l2">Con luz de frente, vuelve a ser imagen.</p><p class="mono">Veteran George · 2024 · 28 × 40 cm</p><p class="note-sm" data-i18n="l_note">Relieve simulado a partir de la fotografía de la obra.</p><div><button class="btn line" type="button" data-open="veteran-george"><span data-i18n="see">Ver la obra</span></button></div></div>
+  </div>
+</section>
+
+<section class="scene ch" id="anillo" data-ch="ring" style="--len:520vh" aria-labelledby="ring-h">
+  <div class="stage" id="ring-stage">
+    <img class="fallback" src="../images/w/pinturas/gallagath_2_c.webp" alt="Gallagath" loading="lazy">
+    <div class="zt cap top ring-head" data-r="0,.1" data-e=".05" style="bottom:auto">
+      <p class="k" data-i18n="r_k">Pintura, dibujo y grabado · 2017 — 2025</p>
+      <h2 class="h2" id="ring-h" data-i18n="r_h">Dieciséis obras en círculo.</h2>
+    </div>
+    <div class="ring-ui">
+      <div class="ring-now" aria-live="polite"><span class="mono" id="ring-n"></span><span class="t" id="ring-t"></span><span class="mono" id="ring-m"></span></div>
+      <div class="ring-ctrl">
+        <button class="arrow" type="button" id="ring-prev" data-i18n-aria="prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="arrow" type="button" id="ring-next" data-i18n-aria="next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg></button>
+        <button class="btn" type="button" id="ring-open"><span data-i18n="see">Ver la obra</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene ch" id="lino" data-ch="linen" style="--len:340vh" aria-labelledby="lino-h">
+  <div class="stage">
+    <img class="fallback" src="../images/w/pinturas/coti_c.webp" alt="Coti" loading="lazy">
+    <div class="zt cap" data-r="0,.2" data-e=".05"><p class="k" data-i18n="li_k">Del lino al óleo</p><h2 class="h2" id="lino-h" data-i18n="li_h">Todo empieza en un lino crudo.</h2></div>
+    <div class="zt cap r" data-r=".3,.48"><p class="h3" data-i18n="li2">Primero, el dibujo.</p><p class="mono" data-i18n="li2s">Las líneas que ordenan el cuadro antes del color.</p></div>
+    <div class="zt cap" data-r=".56,.8"><p class="h3" data-i18n="li3">Después el color, capa por capa.</p><p class="mono" data-i18n="li3s">Rojo de fondo, blancos fríos y un solo acento: los ojos azules.</p></div>
+    <div class="zt cap r" data-r=".9,1" data-e=".04"><p class="h3">Coti</p><p class="mono" data-i18n="coti_m">2020 · Óleo sobre tela · 50 × 40 cm</p><div><button class="btn" type="button" data-open="coti"><span data-i18n="see">Ver la obra</span></button></div></div>
+  </div>
+</section>
+
+<section class="solid linen-bg band wrap" id="archivo" aria-labelledby="arch-h">
+  <div style="display:grid;gap:1rem;margin-bottom:2rem;max-width:60rem">
+    <p class="k" data-i18n="a_k">Archivo completo</p>
+    <h2 class="h2" id="arch-h" data-i18n="a_h">Todas las obras.</h2>
+  </div>
+  <div class="cats" id="cats" role="group" aria-label="Filtrar"></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="solid band wrap" id="about" aria-labelledby="about-h">
+  <div class="bio-grid">
+    <div class="bio-photo"><img src="../images/maximiliano_langevin.jpg" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="mono">Santiago, Chile · 1996</p></div>
+    <div>
+      <p class="k" data-i18n="n_about">Biografía</p>
+      <h2 class="h2" id="about-h" style="margin:.8rem 0 2rem">Maximiliano Langevin Larraín</h2>
+      <div class="bio-body" id="bio-body"></div>
+      <div class="cv" id="cv"></div>
+    </div>
+  </div>
+</section>
+
+<section class="solid linen-bg band wrap" id="encargos" aria-labelledby="enc-h">
+  <p class="k" data-i18n="n_commission">Encargar</p>
+  <h2 class="h2" id="enc-h" style="margin-top:.8rem;max-width:20ch" data-i18n="enc_h">Un retrato, del lino a la firma.</h2>
+  <ol class="steps" id="steps"></ol>
+</section>
+
+<section class="solid band wrap" id="contact" aria-labelledby="contact-h">
+  <p class="k" data-i18n="n_contact">Contacto</p>
+  <h2 class="h1" id="contact-h" style="margin-top:1rem;max-width:14ch" data-i18n="contact_h">Hablemos de un retrato.</h2>
+  <div class="mail"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a><button class="copy js-copy" type="button" data-i18n="copy">Copiar</button></div>
+  <div class="actions"><a class="btn js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener"><span data-i18n="wa">Escribir por WhatsApp</span></a></div>
+  <ul class="socials"><li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li><li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+  <div class="end-sig" id="end-sig"></div>
+</section>
+<footer class="wrap"><span>© 2026 Maximiliano Langevin</span><span>Langevinci®</span></footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+const { $, $$, clamp, lerp, ease, smooth, RM } = ML;
+const S = {
+  es: { skip: 'Ir a las obras', n_light: 'Luz rasante', n_ring: 'Obras', n_linen: 'Del lino al óleo', n_archive: 'Archivo', n_about: 'Biografía', n_commission: 'Encargar', n_contact: 'Contacto',
+    hero_k: 'Pintor realista · Santiago de Chile', hero_p: 'Un cuadro es un objeto: lino tensado, madera y capas de óleo. Baja y gíralo.', cue: 'Baja: el cuadro gira',
+    c1: 'Lino tensado sobre madera.', c1s: 'Karin Goldberg · 48 × 68 cm', c2: 'El reverso: lino crudo, bastidor y la firma.', c2s: 'Por detrás también se lee un cuadro.',
+    c3: 'Y por delante, una persona.', see: 'Ver la obra',
+    l_k: 'Luz rasante', l_h: 'La materia aparece con la luz baja.', l_p: 'Cuando la luz pasa casi paralela a la tela, cada pincelada proyecta su pequeña sombra. Así revisan los restauradores la superficie de un óleo.',
+    l2: 'Con luz de frente, vuelve a ser imagen.', l_note: 'Relieve simulado a partir de la fotografía de la obra.',
+    r_k: 'Pintura, dibujo y grabado · 2017 — 2025', r_h: 'Dieciséis obras en círculo.', prev: 'Obra anterior', next: 'Obra siguiente',
+    li_k: 'Del lino al óleo', li_h: 'Todo empieza en un lino crudo.', li2: 'Primero, el dibujo.', li2s: 'Las líneas que ordenan el cuadro antes del color.',
+    li3: 'Después el color, capa por capa.', li3s: 'Rojo de fondo, blancos fríos y un solo acento: los ojos azules.', coti_m: '2020 · Óleo sobre tela · 50 × 40 cm',
+    a_k: 'Archivo completo', a_h: 'Todas las obras.', all: 'Todo', enc_h: 'Un retrato, del lino a la firma.', contact_h: 'Hablemos de un retrato.',
+    lbl_tech: 'Óleo sobre lino' },
+  en: { skip: 'Go to the work', n_light: 'Raking light', n_ring: 'Works', n_linen: 'From linen to oil', n_archive: 'Archive', n_about: 'Biography', n_commission: 'Commission', n_contact: 'Contact',
+    hero_k: 'Realist painter · Santiago, Chile', hero_p: 'A painting is an object: stretched linen, wood and layers of oil. Scroll and turn it.', cue: 'Scroll: the painting turns',
+    c1: 'Linen stretched over wood.', c1s: 'Karin Goldberg · 48 × 68 cm', c2: 'The back: raw linen, stretcher and signature.', c2s: 'A painting can be read from behind too.',
+    c3: 'And on the front, a person.', see: 'View the work',
+    l_k: 'Raking light', l_h: 'Matter appears with low light.', l_p: 'When light runs almost parallel to the canvas, every brushstroke casts its own small shadow. Restorers examine the surface of an oil painting this way.',
+    l2: 'With light from the front, it becomes an image again.', l_note: 'Relief simulated from the photograph of the work.',
+    r_k: 'Painting, drawing and print · 2017 — 2025', r_h: 'Sixteen works in a circle.', prev: 'Previous work', next: 'Next work',
+    li_k: 'From linen to oil', li_h: 'It all starts with raw linen.', li2: 'First, the drawing.', li2s: 'The lines that organise the picture before colour.',
+    li3: 'Then colour, layer by layer.', li3s: 'A red ground, cool whites and a single accent: the blue eyes.', coti_m: '2020 · Oil on canvas · 50 × 40 cm',
+    a_k: 'Full archive', a_h: 'All the works.', all: 'All', enc_h: 'A portrait, from linen to signature.', contact_h: "Let's talk about a portrait.",
+    lbl_tech: 'Oil on linen' }
+};
+
+// ───────────────────────── TEXTURAS PROCEDURALES ─────────────────────────
+function cnv(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+// Lino: trama y urdimbre con hilos irregulares y nudos
+function linenCanvas(size, base, dark, light) {
+  const c = cnv(size, size), g = c.getContext('2d');
+  g.fillStyle = base; g.fillRect(0, 0, size, size);
+  for (let pass = 0; pass < 2; pass++) for (let i = 0; i < size; i += 2) {
+    const w = 1 + (rnd() < .08 ? 1 : 0);
+    g.globalAlpha = .1 + rnd() * .22; g.fillStyle = rnd() < .5 ? dark : light;
+    if (pass === 0) g.fillRect(0, i, size, w); else g.fillRect(i, 0, w, size);
+    if (rnd() < .12) { g.globalAlpha = .25; g.fillStyle = dark; const len = 6 + rnd() * 30, p = rnd() * size; pass === 0 ? g.fillRect(p, i, len, 2) : g.fillRect(i, p, 2, len); }
+  }
+  const id = g.getImageData(0, 0, size, size), d = id.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (rnd() - .5) * 18; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  g.putImageData(id, 0, 0); g.globalAlpha = 1;
+  return c;
+}
+// Mapa de normales a partir de una imagen: relieve = luminancia suavizada + trama del lino
+function normalFrom(img, maxW, strength, weave) {
+  const s = Math.min(1, maxW / img.width), w = Math.round(img.width * s), h = Math.round(img.height * s);
+  const c = cnv(w, h), g = c.getContext('2d'); g.drawImage(img, 0, 0, w, h);
+  const src = g.getImageData(0, 0, w, h).data, H = new Float32Array(w * h);
+  for (let i = 0, j = 0; i < src.length; i += 4, j++) H[j] = (src[i] * .3 + src[i + 1] * .59 + src[i + 2] * .11) / 255;
+  if (weave) for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) H[y * w + x] += ((x % 3 === 0) ^ (y % 3 === 0) ? .025 : 0) + (rnd() - .5) * .015;
+  const out = g.createImageData(w, h), o = out.data;
+  const at = (x, y) => H[Math.min(h - 1, Math.max(0, y)) * w + Math.min(w - 1, Math.max(0, x))];
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    let nx = (at(x - 1, y) - at(x + 1, y)) * strength, ny = (at(x, y + 1) - at(x, y - 1)) * strength, nz = 1;
+    const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+    const k = (y * w + x) * 4; o[k] = (nx * .5 + .5) * 255; o[k + 1] = (ny * .5 + .5) * 255; o[k + 2] = (nz * .5 + .5) * 255; o[k + 3] = 255;
+  }
+  g.putImageData(out, 0, 0); return c;
+}
+function woodCanvas() {
+  const c = cnv(128, 512), g = c.getContext('2d');
+  g.fillStyle = '#8f6a45'; g.fillRect(0, 0, 128, 512);
+  for (let x = 0; x < 128; x += 1) { g.globalAlpha = .06 + rnd() * .12; g.fillStyle = rnd() < .5 ? '#5e4129' : '#b08a5f'; g.fillRect(x, 0, 1 + rnd() * 2, 512); }
+  g.globalAlpha = 1; return c;
+}
+// Etiqueta del reverso, con la firma dibujada desde el vector
+function labelCanvas(w) {
+  const c = cnv(1024, 600), g = c.getContext('2d');
+  g.fillStyle = '#f2ede2'; g.fillRect(0, 0, 1024, 600);
+  g.strokeStyle = '#2a241c'; g.lineWidth = 3; g.strokeRect(24, 24, 976, 552);
+  g.fillStyle = '#2a241c'; g.font = '600 64px "JetBrains Mono", monospace'; g.fillText(w.name.toUpperCase(), 64, 130);
+  g.font = '40px "JetBrains Mono", monospace';
+  g.fillText(`${w.year} · ${ML.t('lbl_tech')}`, 64, 200); g.fillText(w.dims, 64, 256);
+  g.save(); const sc = 520 / SIG.w; g.translate(420, 300); g.scale(sc, sc); g.fill(new Path2D(SIG.fill), 'evenodd'); g.restore();
+  return c;
+}
+
+// ───────────────────────── ESCENA ─────────────────────────
+const canvas = $('#gl');
+let ok3d = !!window.THREE;
+try { if (ok3d) { const t = cnv(2, 2); ok3d = !!(t.getContext('webgl2') || t.getContext('webgl')); } } catch (e) { ok3d = false; }
+if (!ok3d) document.documentElement.classList.add('no3d');
+
+const CH = {};
+let renderer, scene, camera, clock, fovT, aspect = 1, pointer = { x: 0, y: 0 }, sp = { x: 0, y: 0 };
+if (ok3d) {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+  scene = new THREE.Scene(); scene.background = new THREE.Color('#14120f');
+  camera = new THREE.PerspectiveCamera(35, 1, .1, 200); fovT = Math.tan(THREE.MathUtils.degToRad(35) / 2);
+  clock = new THREE.Clock();
+  addEventListener('pointermove', e => { pointer.x = e.clientX / innerWidth * 2 - 1; pointer.y = e.clientY / innerHeight * 2 - 1; }, { passive: true });
+}
+const loader = ok3d ? new THREE.TextureLoader() : null;
+const maxAniso = ok3d ? renderer.capabilities.getMaxAnisotropy() : 1;
+function tex(src, cb) { const t = loader.load(src, cb); t.encoding = THREE.sRGBEncoding; t.anisotropy = maxAniso; return t; }
+function canvasTex(c, srgb = true, rep) { const t = new THREE.CanvasTexture(c); if (srgb) t.encoding = THREE.sRGBEncoding; t.anisotropy = maxAniso; if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep[0], rep[1]); } return t; }
+
+let LINEN, LINEN_N, RAW, WOOD;
+if (ok3d) {
+  const lc = linenCanvas(512, '#cdbf9f', '#8f7f5f', '#efe4c8');
+  LINEN = lc; LINEN_N = normalFrom(lc, 512, 3.2, false);
+  RAW = linenCanvas(512, '#b9a57c', '#7d6a48', '#d9c79d');
+  WOOD = woodCanvas();
+}
+// fondo de lino para las secciones planas (también sin 3D)
+try { const lc = LINEN || linenCanvas(256, '#cdbf9f', '#8f7f5f', '#efe4c8'); document.documentElement.style.setProperty('--linen-img', `url(${lc.toDataURL('image/jpeg', .82)})`); } catch (e) {}
+
+// Un cuadro como objeto: frente pintado, cantos de lino, reverso con bastidor y etiqueta
+function stretched(w, opts = {}) {
+  const a = ML.ratio(w.imgs[0].p);
+  let hcm = w.cm ? w.cm[1] : 45; if (w.cm && (a >= 1) !== (w.cm[0] >= w.cm[1])) hcm = w.cm[0];
+  const H = hcm / 10 * (opts.scale || 1), W = H * a, D = (opts.depth || .25) * (opts.scale || 1);
+  const g = new THREE.Group(); g.userData = { id: w.id, W, H };
+  const side = new THREE.MeshStandardMaterial({ map: canvasTex(LINEN, true, [W / 2, 1]), normalMap: canvasTex(LINEN_N, false, [W / 2, 1]), roughness: .95 });
+  const sideV = new THREE.MeshStandardMaterial({ map: canvasTex(LINEN, true, [1, H / 2]), normalMap: canvasTex(LINEN_N, false, [1, H / 2]), roughness: .95 });
+  const front = new THREE.MeshStandardMaterial({ map: tex(opts.src || ML.T_(w.imgs[0].p)), roughness: .5, metalness: 0 });
+  if (opts.normal) { front.normalScale = new THREE.Vector2(opts.normalScale || .8, opts.normalScale || .8); }
+  const hidden = new THREE.MeshBasicMaterial({ visible: false });
+  const box = new THREE.Mesh(new THREE.BoxGeometry(W, H, D), [sideV, sideV, side, side, front, hidden]);
+  box.userData.id = w.id; g.add(box); g.userData.front = front; g.userData.box = box;
+  if (opts.back) {
+    const raw = new THREE.Mesh(new THREE.PlaneGeometry(W - .02, H - .02), new THREE.MeshStandardMaterial({ map: canvasTex(RAW, true, [W / 3, H / 3]), normalMap: canvasTex(LINEN_N, false, [W / 3, H / 3]), roughness: 1 }));
+    raw.position.z = D / 2 - .03; raw.rotation.y = Math.PI; g.add(raw);
+    const bt = .45 * (opts.scale || 1), bd = D - .05, woodM = new THREE.MeshStandardMaterial({ map: canvasTex(WOOD), roughness: .75 });
+    const bar = (bw, bh, x, y) => { const m = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), woodM); m.position.set(x, y, -.02); g.add(m); };
+    bar(W - .04, bt, 0, H / 2 - bt / 2 - .02); bar(W - .04, bt, 0, -H / 2 + bt / 2 + .02);
+    bar(bt, H - 2 * bt - .04, -W / 2 + bt / 2 + .02, 0); bar(bt, H - 2 * bt - .04, W / 2 - bt / 2 - .02, 0);
+    bar(W - 2 * bt - .04, bt * .8, 0, 0);
+    const lbl = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 1.11), new THREE.MeshStandardMaterial({ map: canvasTex(labelCanvas(w)), roughness: .9 }));
+    lbl.position.set(0, -H * .27, -.02 - bd / 2 - .006); lbl.rotation.y = Math.PI; lbl.rotation.z = -.03; g.add(lbl);
+    g.userData.label = lbl;
+  }
+  return g;
+}
+
+function lights(group, cfg = {}) {
+  const hemi = new THREE.HemisphereLight('#fff4e0', '#2a2218', cfg.hemi ?? .55); group.add(hemi);
+  const key = new THREE.DirectionalLight('#fff1dc', cfg.key ?? 1.6); key.position.set(-4, 5, 9); group.add(key); group.add(key.target);
+  const rim = new THREE.DirectionalLight('#b8c7ff', cfg.rim ?? .35); rim.position.set(6, 2, -6); group.add(rim);
+  return { hemi, key, rim };
+}
+// distancia de cámara para que un objeto ocupe una fracción de la pantalla
+function fitDist(w, h, frame) { return Math.max(h / frame, w / (frame * aspect)) / (2 * fovT); }
+
+// ── Capítulo 1: el cuadro gira ──
+function buildHero() {
+  const w = ML.BY_ID['karin-goldberg'], g = new THREE.Group();
+  const obj = stretched(w, { src: ML.W_('pinturas/karin_goldberg_1'), back: true, normal: true, normalScale: .55 });
+  tex(ML.W_('pinturas/karin_goldberg_1'), t => { obj.userData.front.normalMap = new THREE.CanvasTexture(normalFrom(t.image, 1100, 5, true)); obj.userData.front.needsUpdate = true; });
+  g.add(obj); const L = lights(g);
+  const { W, H } = obj.userData;
+  const wide = () => aspect > 1;
+  const K = [
+    { p: 0, rx: .16, ry: -.72, f: .56, sx: () => wide() ? .2 : 0, sy: () => wide() ? -.02 : -.12 },
+    { p: .16, rx: .03, ry: -.06, f: .8, sx: () => wide() ? .1 : 0, sy: () => wide() ? 0 : -.06 },
+    { p: .3, rx: -.05, ry: .55, f: .72, sx: () => wide() ? .14 : 0, sy: () => wide() ? 0 : -.08 },
+    { p: .44, rx: 0, ry: Math.PI, f: .78, sx: () => wide() ? -.14 : 0, sy: () => wide() ? 0 : .04 },
+    { p: .58, rx: 0, ry: Math.PI, f: .78, sx: () => wide() ? -.14 : 0, sy: () => wide() ? 0 : .04 },
+    { p: .72, rx: .02, ry: Math.PI * 2, f: .8, sx: 0, sy: 0 },
+    { p: .8, rx: .02, ry: Math.PI * 2, f: .8, sx: 0, sy: 0 },
+    { p: .94, rx: 0, ry: Math.PI * 2, f: 2.9, focus: [.53, .3] },
+    { p: 1, rx: 0, ry: Math.PI * 2, f: 2.9, focus: [.53, .3] },
+  ];
+  const v = x => typeof x === 'function' ? x() : (x || 0);
+  return { group: g, update(p, t) {
+    let i = 0; while (i < K.length - 2 && p > K[i + 1].p) i++;
+    const a = K[i], b = K[i + 1], u = ease(clamp((p - a.p) / (b.p - a.p)));
+    const f = Math.exp(lerp(Math.log(a.f), Math.log(b.f), u));
+    const D = fitDist(W, H, f);
+    const visH = 2 * D * fovT, visW = visH * aspect;
+    const fx = (k) => k.focus ? -(k.focus[0] - .5) * W : v(k.sx) * visW;
+    const fy = (k) => k.focus ? (k.focus[1] - .5) * H : v(k.sy) * visH;
+    obj.rotation.set(lerp(a.rx, b.rx, u) + sp.y * .06, lerp(a.ry, b.ry, u) + sp.x * .1, 0);
+    obj.position.set(lerp(fx(a), fx(b), u), lerp(fy(a), fy(b), u) + Math.sin(t * .8) * .04 * (1 - u * (b.focus ? 1 : 0)), 0);
+    camera.position.set(0, 0, D); camera.lookAt(0, 0, 0);
+    L.key.position.set(-4 + sp.x * 2, 5, 9);
+  } };
+}
+
+// ── Capítulo 2: luz rasante ──
+function buildRaking() {
+  const w = ML.BY_ID['veteran-george'], g = new THREE.Group();
+  const obj = stretched(w, { src: ML.W_('pinturas/veteran_george_1'), normal: true, normalScale: 1.5, scale: 1.4 });
+  tex(ML.W_('pinturas/veteran_george_1'), t => { obj.userData.front.normalMap = new THREE.CanvasTexture(normalFrom(t.image, 1200, 9, true)); obj.userData.front.needsUpdate = true; });
+  g.add(obj);
+  const hemi = new THREE.HemisphereLight('#fff4e0', '#1a140e', .05); g.add(hemi);
+  const rake = new THREE.DirectionalLight('#ffe2b0', 2.6); g.add(rake); g.add(rake.target);
+  const front = new THREE.DirectionalLight('#fff4e6', 0); front.position.set(0, 1, 10); g.add(front);
+  const { W, H } = obj.userData;
+  return { group: g, update(p, t) {
+    const q = clamp(p / .66), back = clamp((p - .66) / .2);
+    const D = fitDist(W, H, aspect > 1 ? .82 : .62);
+    const visH = 2 * D * fovT, visW = visH * aspect;
+    obj.position.set(aspect > 1 ? visW * lerp(.16, -.16, smooth(back)) : 0, aspect > 1 ? 0 : -visH * .1, 0);
+    obj.rotation.set(sp.y * .05, lerp(-.28, .22, q) + sp.x * .08, 0);
+    const ang = lerp(-1.35, 1.35, q);                       // la luz barre de izquierda a derecha, casi paralela a la tela
+    rake.position.set(Math.sin(ang) * 10 + obj.position.x, 3 + Math.cos(ang) * 2, 1.2 + back * 6);
+    rake.target.position.copy(obj.position);
+    rake.intensity = lerp(2.6, .8, back); hemi.intensity = lerp(.05, .5, back); front.intensity = lerp(0, 1.4, back);
+    obj.userData.front.normalScale.set(lerp(1.5, .5, back), lerp(1.5, .5, back));
+    camera.position.set(0, 0, D); camera.lookAt(0, 0, 0);
+  } };
+}
+
+// ── Capítulo 3: el anillo ──
+const RING_IDS = ['karin-goldberg', 'marcos-16-16', 'veteran-george', 'el-conde', 'consu-gato', 'santiago', 'vicente', 'en-verano', 'gallagath', 'coti', 'el-jardin', 'bouguereau', 'parmigianino', 'la-mosca', 'guiseppe', 'san-jorge'];
+let ringIdx = 0;
+function buildRing() {
+  const g = new THREE.Group(), ring = new THREE.Group(); g.add(ring); lights(g, { hemi: .7, key: 1.3 });
+  const N = RING_IDS.length, R = 19, step = Math.PI * 2 / N;
+  const items = RING_IDS.map((id, i) => {
+    const o = stretched(ML.BY_ID[id], { depth: .18 });
+    const th = i * step; o.position.set(Math.sin(th) * R, 0, Math.cos(th) * R); o.rotation.y = th;
+    ring.add(o); return o;
+  });
+  // piso de lino oscuro para el reflejo de la sala
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(40, 64), new THREE.MeshStandardMaterial({ color: '#060504', roughness: .55, metalness: .35 }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -5.2; g.add(floor);
+  const fog = new THREE.Fog('#14120f', 24, 48);
+  return { group: g, ring, items, N, fog, update(p, t) {
+    const f = (RM ? ringIdx : p * (N - 1)), i0 = Math.floor(f), fr = f - i0;
+    const tt = RM ? 0 : smooth(clamp((fr - .2) / .6));
+    const pos = i0 + tt;
+    ring.rotation.y = -pos * step;
+    ring.rotation.x = .06 + sp.y * .03;
+    const D = fitDist(5.5, 7, aspect > 1 ? .7 : .55);
+    camera.position.set(sp.x * .8, 1.6, R + D); camera.lookAt(0, -.4, R - 2);
+    const idx = Math.min(N - 1, Math.round(pos));
+    if (idx !== ringIdx || !ringLabelSet) setRingLabel(idx);
+    items.forEach((o, i) => { const d = Math.abs(((i - pos + N / 2) % N + N) % N - N / 2); o.scale.setScalar(1 + .12 * Math.max(0, 1 - d)); });
+  } };
+}
+let ringLabelSet = false;
+function setRingLabel(i) {
+  ringIdx = i; ringLabelSet = true;
+  const w = ML.BY_ID[RING_IDS[i]];
+  $('#ring-n').textContent = `${String(i + 1).padStart(2, '0')} / ${RING_IDS.length}`;
+  $('#ring-t').textContent = w.name; $('#ring-m').textContent = ML.metaLine(w);
+  $('#ring-open').dataset.open = w.id;
+}
+
+// ── Capítulo 4: del lino al óleo (shader) ──
+function buildLinen() {
+  const w = ML.BY_ID['coti'], g = new THREE.Group();
+  const a = ML.ratio('pinturas/coti_c'), H = 5 * 1.25, W = H * a;
+  const uniforms = {
+    uLinen: { value: canvasTex(LINEN, true, [3, 3.6]) }, uPaint: { value: tex(ML.W_('pinturas/coti_c')) },
+    uP: { value: 0 }, uT: { value: 0 }, uLight: { value: new THREE.Vector3(-.4, .5, .8).normalize() },
+  };
+  const mat = new THREE.ShaderMaterial({
+    uniforms, side: THREE.DoubleSide, extensions: { derivatives: true },
+    vertexShader: `
+      uniform float uP; uniform float uT; varying vec2 vUv; varying vec3 vN;
+      void main() {
+        vUv = uv; vec3 p = position;
+        float calm = 1.0 - smoothstep(.15, .55, uP);        // el lino se tensa a medida que se pinta
+        float wv = sin(p.x * 1.3 + uT * 1.4) * .22 + sin(p.y * 1.7 + uT * 1.1) * .18 + sin((p.x + p.y) * 2.3 + uT * 2.0) * .07;
+        p.z += wv * calm;
+        float dx = cos(p.x * 1.3 + uT * 1.4) * .29 * calm, dy = cos(p.y * 1.7 + uT * 1.1) * .31 * calm;
+        vN = normalize(normalMatrix * vec3(-dx, -dy, 1.0));
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+      }`,
+    fragmentShader: `
+      uniform sampler2D uLinen; uniform sampler2D uPaint; uniform float uP; uniform vec3 uLight; varying vec2 vUv; varying vec3 vN;
+      float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float n(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f); return mix(mix(h(i), h(i + vec2(1, 0)), f.x), mix(h(i + vec2(0, 1)), h(i + 1.), f.x), f.y); }
+      float fbm(vec2 p) { float v = 0., a = .5; for (int i = 0; i < 5; i++) { v += a * n(p); p *= 2.03; a *= .5; } return v; }
+      void main() {
+        vec4 linen = texture2D(uLinen, vUv * vec2(3.0, 3.6));
+        vec4 paint = texture2D(uPaint, vUv);
+        float lum = dot(paint.rgb, vec3(.3, .59, .11));
+        // dibujo: bordes de la imagen en tierra tostada
+        float edge = clamp(length(vec2(dFdx(lum), dFdy(lum))) * 26.0, 0., 1.);
+        float sketchP = smoothstep(.26, .46, uP);
+        float sketchMask = smoothstep(.35, .0, fbm(vUv * vec2(4., 4.)) + (1.0 - vUv.y) * .5 - sketchP * 1.6 + .45);
+        vec3 col = mix(linen.rgb, vec3(.29, .18, .1), edge * .85 * sketchMask);
+        // color: pinceladas horizontales que avanzan de arriba hacia abajo
+        float colorP = smoothstep(.52, .9, uP);
+        float strokes = fbm(vec2(vUv.x * 2.5, vUv.y * 22.0)) * .55 + (1.0 - vUv.y) * .45;
+        float reveal = colorP * 1.2 - .1;
+        float m = 1.0 - smoothstep(reveal - .05, reveal, strokes);
+        col = mix(col, paint.rgb, m);
+        float diff = .62 + .45 * max(dot(normalize(vN), uLight), 0.);
+        gl_FragColor = vec4(col * diff, 1.0);
+        #include <encodings_fragment>
+      }`,
+  });
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(W, H, 90, 110), mat); g.add(plane);
+  return { group: g, update(p, t) {
+    uniforms.uP.value = RM ? 1 : p; uniforms.uT.value = t;
+    const D = fitDist(W, H, aspect > 1 ? .78 : .6), visH = 2 * D * fovT, visW = visH * aspect;
+    // el lienzo se pone del lado contrario al texto de cada momento
+    const X = [[0, .15], [.25, .15], [.33, -.15], [.5, -.15], [.57, .15], [.83, .15], [.9, -.15], [1, -.15]];
+    let j = 0; while (j < X.length - 2 && p > X[j + 1][0]) j++;
+    const sx = lerp(X[j][1], X[j + 1][1], smooth(clamp((p - X[j][0]) / (X[j + 1][0] - X[j][0]))));
+    plane.position.set(aspect > 1 ? visW * sx : 0, aspect > 1 ? 0 : visH * .1, 0);
+    plane.rotation.set(lerp(-.35, 0, smooth(clamp(p / .5))) + sp.y * .04, lerp(.45, 0, smooth(clamp(p / .55))) + sp.x * .08, lerp(-.08, 0, smooth(clamp(p / .5))));
+    camera.position.set(0, 0, D); camera.lookAt(0, 0, 0);
+  } };
+}
+
+// ── Orquestación: un solo lienzo WebGL, el capítulo visible decide la escena ──
+const chapters = $$('.ch').map(el => ({ el, key: el.dataset.ch, p: 0, texts: $$('.zt', el).map(ML.textLayer) }));
+if (ok3d) {
+  CH.hero = buildHero(); CH.raking = buildRaking(); CH.ring = buildRing(); CH.linen = buildLinen();
+  Object.values(CH).forEach(c => { c.group.visible = false; scene.add(c.group); });
+}
+function resize() {
+  if (!ok3d) return;
+  const w = innerWidth, h = innerHeight; aspect = w / h;
+  renderer.setSize(w, h, false); camera.aspect = aspect; camera.updateProjectionMatrix();
+}
+let active = null, running = false, lastActive = null;
+function frame() {
+  running = false;
+  if (!ok3d) return;
+  const VH = innerHeight, mid = VH * .5;
+  let cur = null, op = 0;
+  for (const c of chapters) {
+    const r = c.el.getBoundingClientRect();
+    if (r.top <= mid && r.bottom > mid) {
+      cur = c;
+      const total = r.height - VH; c.p = total > 0 ? clamp(-r.top / total) : 0;
+      op = clamp((r.bottom - VH * .5) / (VH * .35)) * (c === chapters[0] ? 1 : clamp((VH * .5 - r.top) / (VH * .35)));
+    }
+  }
+  canvas.style.opacity = RM ? (cur ? 1 : 0) : op.toFixed(3);
+  if (!cur) { canvas.style.visibility = 'hidden'; lastActive = null; return; }
+  canvas.style.visibility = 'visible';
+  if (lastActive !== cur.key) { Object.entries(CH).forEach(([k, c]) => c.group.visible = k === cur.key); scene.fog = CH[cur.key].fog || null; lastActive = cur.key; }
+  const t = clock.getElapsedTime();
+  sp.x += (pointer.x - sp.x) * .06; sp.y += (pointer.y - sp.y) * .06;
+  CH[cur.key].update(RM ? ({ hero: .16, raking: .5, ring: 0, linen: 1 })[cur.key] : cur.p, t);
+  renderer.render(scene, camera);
+  schedule();
+}
+function schedule() { if (!running) { running = true; requestAnimationFrame(frame); } }
+// textos de cada capítulo
+chapters.forEach(c => ML.scene(c.el, { layout() {}, update(p) { c.texts.forEach(L => ML.applyText(L, p)); schedule(); } }));
+addEventListener('resize', () => { resize(); schedule(); });
+resize(); schedule();
+
+// anillo: botones, clic en un cuadro, teclado
+function ringGo(i) {
+  i = clamp(i, 0, RING_IDS.length - 1);
+  if (RM || !ok3d) { setRingLabel(i); schedule(); return; }
+  const el = $('#anillo'), top = el.getBoundingClientRect().top + scrollY;
+  scrollTo({ top: top + (i / (RING_IDS.length - 1)) * (el.offsetHeight - innerHeight) + 2, behavior: 'smooth' });
+}
+$('#ring-prev').addEventListener('click', () => ringGo(ringIdx - 1));
+$('#ring-next').addEventListener('click', () => ringGo(ringIdx + 1));
+setRingLabel(0);
+if (ok3d) {
+  const ray = new THREE.Raycaster(), v2 = new THREE.Vector2();
+  $('#ring-stage').addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    v2.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight * 2 - 1));
+    ray.setFromCamera(v2, camera);
+    const hit = ray.intersectObjects(CH.ring.items.map(o => o.userData.box), false)[0];
+    if (hit) ML.LB.open(hit.object.userData.id);
+  });
+  $('#ring-stage').addEventListener('pointermove', e => {
+    v2.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight * 2 - 1)); ray.setFromCamera(v2, camera);
+    $('#ring-stage').style.cursor = ray.intersectObjects(CH.ring.items.map(o => o.userData.box), false).length ? 'pointer' : '';
+  });
+}
+
+// secciones planas
+let cat = 'all';
+$('#cats').addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (!b) return; cat = b.dataset.f; render(); });
+function render() {
+  const L = ML.lang;
+  $('#cats').innerHTML = [['all', ML.t('all')], ...ML.CATS.map(c => [c, ML.t('cats')[c]])].map(([v, l]) => `<button type="button" data-f="${v}" aria-pressed="${v === cat}">${l}</button>`).join('');
+  const g = $('#grid'); g.innerHTML = '';
+  ML.WORKS.filter(w => cat === 'all' || w.cat === cat).forEach(w => g.appendChild(ML.card(w)));
+  $('#bio-body').innerHTML = ML.BIO[L].map(p => `<p>${p}</p>`).join('');
+  $('#cv').innerHTML = ML.CV[L].map(([h, rows]) => `<div><h3>${h}</h3><ul>${rows.map(([a, b]) => `<li><span>${a}</span><span>${b}</span></li>`).join('')}</ul></div>`).join('');
+  $('#steps').innerHTML = ML.COMMISSION[L].map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('');
+  setRingLabel(ringIdx);
+  if (ok3d && CH.hero) { const lbl = CH.hero.group.children[0].userData.label; if (lbl) { lbl.material.map = canvasTex(labelCanvas(ML.BY_ID['karin-goldberg'])); lbl.material.needsUpdate = true; } }
+}
+ML.onLang(render);
+ML.endScene($('#end-sig'), ML.signature($('#end-sig')), .7);
+
+const drawer = $('#drawer'), burger = $('#burger');
+const setDrawer = open => { drawer.hidden = !open; burger.setAttribute('aria-expanded', open); document.documentElement.classList.toggle('lb-open', open); };
+burger.addEventListener('click', () => setDrawer(drawer.hidden));
+drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); });
+ML.boot({ strings: S });
+</script>
+</body>
+</html>
