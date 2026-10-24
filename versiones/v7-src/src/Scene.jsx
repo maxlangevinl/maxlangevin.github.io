@@ -1,40 +1,31 @@
 import { Suspense, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { ContactShadows, Environment, Lightformer, PresentationControls, useTexture } from '@react-three/drei';
+import { Environment, PresentationControls, useGLTF, useTexture } from '@react-three/drei';
 import { RIG, S, ML, RM, TOUCH } from './state.js';
-import { linenTexture, woodTexture } from './textures.js';
 
 const BASE = window.ML_BASE || '../../images/';
 
-// Barra de madera entre dos puntos (patas del caballete)
-function Bar({ a, b, w = .34, mat }) {
-  const [pos, quat, len] = useMemo(() => {
-    const A = new THREE.Vector3(...a), B = new THREE.Vector3(...b);
-    const d = B.clone().sub(A);
-    const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.clone().normalize());
-    return [A.clone().add(B).multiplyScalar(.5), q, d.length()];
-  }, [a, b]);
-  return <mesh position={pos} quaternion={quat} material={mat} castShadow><boxGeometry args={[w, len, w]} /></mesh>;
-}
-
-// El cuadro: frente pintado, cantos de lino
-function Painting({ src, w, h, d = .25, ...props }) {
-  const map = useTexture(src);
-  const mats = useMemo(() => {
-    map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 8;
-    const side = new THREE.MeshStandardMaterial({ map: linenTexture([2, 1]), roughness: .95 });
-    const front = new THREE.MeshStandardMaterial({ map, roughness: .55 });
-    const back = new THREE.MeshStandardMaterial({ map: linenTexture([3, 4]), color: '#c9b892', roughness: 1 });
-    return [side, side, side, side, front, back];
-  }, [map]);
-  return <mesh {...props} material={mats} castShadow><boxGeometry args={[w, h, d]} /></mesh>;
-}
+// Estudio modelado en Blender (caballete, lienzo, banqueta de Poly Haven, paleta, pinceles y tubos).
+// Medidas reales en metros; aquí ×10. El lienzo queda centrado en y = 1.1, como espera la cámara.
+const MODEL = './estudio.glb';
+const SCALE = 10, LIFT = 1.1 - 11.34;
+useGLTF.preload(MODEL);
 
 function Easel() {
   const group = useRef();
-  const wood = useMemo(() => new THREE.MeshStandardMaterial({ map: woodTexture(), roughness: .7 }), []);
-  const W = 4.8, H = 6.8, cy = 1.1;
+  const { scene } = useGLTF(MODEL);
+  const map = useTexture(`${BASE}w/pinturas/karin_goldberg_1.webp`);
+  useMemo(() => {
+    map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 8; map.flipY = false;   // convención de UV de glTF
+    scene.traverse(o => {
+      if (!o.isMesh) return;
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      mats.forEach(m => { if (m.name === 'Painting') { m.map = map; m.color.set('#ffffff'); m.roughness = .5; m.needsUpdate = true; } });
+      // sombra horneada en Blender: solo oscurece, no refleja la luz del entorno
+      if (mats[0].name === 'Shadow') o.material = new THREE.MeshBasicMaterial({ color: '#000000', alphaMap: null, map: mats[0].map, transparent: true, opacity: .8, depthWrite: false });
+    });
+  }, [scene, map]);
   useFrame((state, dt) => {
     const visible = S.scene === 'hero';
     group.current.visible = visible;
@@ -47,20 +38,8 @@ function Easel() {
   return (
     <group ref={group}>
       <PresentationControls enabled={!TOUCH && !RM} global={false} cursor snap speed={1.4} polar={[-.08, .18]} azimuth={[-.7, .7]}>
-        <group rotation={[-.06, 0, 0]}>
-          <Painting src={`${BASE}w/pinturas/karin_goldberg_1.webp`} w={W} h={H} position={[0, cy, .12]} />
-          {/* bandeja y prensa superior */}
-          <mesh position={[0, cy - H / 2 - .18, .2]} material={wood} castShadow><boxGeometry args={[6.4, .34, 1.2]} /></mesh>
-          <mesh position={[0, cy + H / 2 + .22, .02]} material={wood} castShadow><boxGeometry args={[1.3, .42, .7]} /></mesh>
-          {/* mástil, patas delanteras y pata trasera */}
-          <Bar a={[0, -8, -.3]} b={[0, 9.4, -.3]} w={.42} mat={wood} />
-          <Bar a={[-3.4, -8, .3]} b={[-.5, 8.4, -.22]} mat={wood} />
-          <Bar a={[3.4, -8, .3]} b={[.5, 8.4, -.22]} mat={wood} />
-          <Bar a={[0, -8, -5.4]} b={[0, 7.8, -.55]} mat={wood} />
-          <Bar a={[-2.9, -5.2, .2]} b={[2.9, -5.2, .2]} w={.26} mat={wood} />
-        </group>
+        <primitive object={scene} scale={SCALE} position={[0, LIFT, 0]} />
       </PresentationControls>
-      <ContactShadows position={[0, -8, 0]} opacity={.42} scale={34} blur={2.6} far={14} resolution={512} color="#3b2a1c" />
     </group>
   );
 }
@@ -148,18 +127,14 @@ export default function Scene({ frameloop }) {
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       eventSource={document.getElementById('root')}
       eventPrefix="client"
-      fallback={<img src={`${BASE}w/pinturas/karin_goldberg_1.webp`} alt="" className="fixed right-[8vw] top-[18vh] h-[64vh] w-auto" />}
+      fallback={<img src="./estudio-render.jpg" alt="El estudio: caballete con Karin Goldberg, banqueta, paleta y pinceles" className="fixed inset-0 h-full w-full object-cover object-right" />}
     >
       <color attach="background" args={['#ebe8e1']} />
       <fog attach="fog" args={['#ebe8e1', 48, 120]} />
-      <ambientLight intensity={.55} />
-      <directionalLight position={[-6, 10, 12]} intensity={1.6} color="#fff3e2" />
+      <ambientLight intensity={.2} />
+      <directionalLight position={[-6, 10, 12]} intensity={1.1} color="#fff3e2" />
       <Suspense fallback={null}>
-        <Environment resolution={128}>
-          <Lightformer form="rect" intensity={2.2} position={[-6, 6, 8]} scale={[8, 5, 1]} color="#fff6ea" />
-          <Lightformer form="rect" intensity={1.2} position={[8, 2, 4]} rotation-y={-Math.PI / 3} scale={[5, 8, 1]} color="#e9eefc" />
-          <Lightformer form="circle" intensity={.8} position={[0, 10, -6]} scale={4} color="#ffffff" />
-        </Environment>
+        <Environment files="./studio.hdr" environmentIntensity={.85} />
         <Easel />
         <Pigments />
       </Suspense>
