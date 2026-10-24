@@ -11,18 +11,16 @@ import { RIG, S, ML, RM, TOUCH } from './state.js';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 const pad = n => String(n).padStart(2, '0');
 
-// ── Firma: trazos que se descubren según un progreso 0–1 ──
-function Signature({ progress, className = '', ghost = true }) {
+// ── Firma: se arma de izquierda a derecha según un progreso 0–1; lo que falta no se ve (plan compartido en core.js) ──
+function Signature({ progress, className = '' }) {
   const id = useMemo(() => 'm' + Math.random().toString(36).slice(2, 8), []);
-  const pens = useRef([]), lens = useRef([]);
-  useLayoutEffect(() => { lens.current = pens.current.map(p => p.getTotalLength()); }, []);
+  const plan = ML.sigPlan(), pens = useRef([]);
   useLayoutEffect(() => {
-    const L = lens.current, total = L.reduce((a, b) => a + b, 0);
-    let acc = 0; const D = Math.min(1, Math.max(0, progress)) * total;
+    const t = Math.min(1, Math.max(0, progress)), X = plan.x0 + (plan.x1 - plan.x0) * t;
     pens.current.forEach((p, i) => {
-      const v = Math.min(L[i], Math.max(0, D - acc));
-      p.setAttribute('stroke-dasharray', `${L[i]} ${L[i]}`); p.setAttribute('stroke-dashoffset', L[i] - v);
-      p.style.visibility = v > .5 ? 'visible' : 'hidden'; acc += L[i];
+      const s = plan.strokes[i], v = t >= 1 ? s.L : plan.at(s, X);
+      p.setAttribute('stroke-dasharray', `${s.L} ${s.L}`); p.setAttribute('stroke-dashoffset', s.L - v);
+      p.style.visibility = v > .5 ? 'visible' : 'hidden';
     });
   }, [progress]);
   const SIG = ML.SIG;
@@ -30,9 +28,8 @@ function Signature({ progress, className = '', ghost = true }) {
     <svg viewBox={`0 0 ${SIG.w} ${SIG.h}`} className={className} role="img" aria-label="Max Langevin">
       <defs><mask id={id} maskUnits="userSpaceOnUse" x="0" y="0" width={SIG.w} height={SIG.h}>
         <g fill="none" stroke="#fff" strokeWidth="46" strokeLinecap="round" strokeLinejoin="round">
-          {SIG.pen.map((d, i) => <path key={i} d={d} ref={el => (pens.current[i] = el)} />)}
+          {plan.strokes.map((s, i) => <path key={i} d={s.d} ref={el => (pens.current[i] = el)} />)}
         </g></mask></defs>
-      {ghost && <path d={SIG.fill} fillRule="evenodd" fill="currentColor" opacity=".1" />}
       <path d={SIG.fill} fillRule="evenodd" fill="currentColor" mask={`url(#${id})`} />
     </svg>
   );

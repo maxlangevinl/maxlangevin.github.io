@@ -148,11 +148,11 @@ const COMMISSION = {
   es: [['Conversación', 'Hablamos de la persona, el lugar, el formato y la luz que quieres.'],
        ['Fotografía', 'Max hace su propia sesión de fotos: casi todas sus pinturas parten de fotografías que él toma.'],
        ['Pintura', 'Óleo sobre lino o tela, capa por capa, en el taller.'],
-       ['Firma', 'La obra se entrega firmada y fechada.']],
+       ['Firma y entrega', 'La obra se entrega firmada, con placa de latón al reverso y certificado de autenticidad en un sobre lacrado.']],
   en: [['Conversation', 'We talk about the person, the place, the format and the light you want.'],
        ['Photography', 'Max does his own photo session: almost all his paintings start from photographs he takes.'],
        ['Painting', 'Oil on linen or canvas, layer by layer, in the studio.'],
-       ['Signature', 'The work is delivered signed and dated.']]
+       ['Signature and delivery', 'The work is delivered signed, with a brass plaque on the back and a certificate of authenticity in a wax-sealed envelope.']]
 };
 
 // ── TEXTOS BASE ──
@@ -342,26 +342,65 @@ function zoomScene(el, cfg) {
 
 // ── FIRMA: se escribe con el scroll ──
 // La forma es el contorno vectorizado de la firma pintada en «El Conde». Una máscara de trazos gruesos la descubre
-// siguiendo el esqueleto de cada letra, en orden de escritura.
+// siguiendo el esqueleto de cada letra. Lo escrito avanza de izquierda a derecha, como un frente: cada trazo se
+// dibuja desde su extremo izquierdo hasta donde ha llegado la mano. Lo que falta no se ve.
+let sigPlanCache = null;
+function sigPlan() {
+  if (sigPlanCache) return sigPlanCache;
+  let x0 = Infinity, x1 = -Infinity;
+  const strokes = SIG.pen.map(d => {
+    let pts = d.match(/-?[\d.]+,-?[\d.]+/g).map(q => q.split(',').map(Number));
+    if (pts[pts.length - 1][0] < pts[0][0]) pts = pts.reverse();
+    const cum = [0], run = [pts[0][0]];
+    for (let i = 1; i < pts.length; i++) {
+      cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+      run.push(Math.max(run[i - 1], pts[i][0]));
+    }
+    pts.forEach(([x]) => { x0 = Math.min(x0, x); x1 = Math.max(x1, x); });
+    return { d: 'M' + pts.map(q => q.join(',')).join(' L'), cum, run, L: cum[cum.length - 1] || 1, pts };
+  });
+  // largo escrito de un trazo cuando el frente está en X (interpola dentro del segmento que cruza)
+  const at = (s, X) => {
+    if (X < s.run[0]) return 0;
+    let i = 0; while (i < s.run.length - 1 && s.run[i + 1] <= X) i++;
+    if (i === s.run.length - 1) return s.L;
+    const a = s.pts[i][0], b = s.pts[i + 1][0];
+    const f = b > a && X > s.run[i] ? clamp((X - Math.max(a, s.run[i])) / (b - Math.max(a, s.run[i]))) : 0;
+    return s.cum[i] + f * (s.cum[i + 1] - s.cum[i]);
+  };
+  return (sigPlanCache = { strokes, at, x0: x0 - 4, x1: x1 + 4 });
+}
+// Óleo: relieve de pintura (ruido de pincel + borde engrosado), sombra difusa y brillo húmedo. Solo afecta lo ya escrito.
+const oilFilter = id => `<filter id="${id}" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency=".045 .11" numOctaves="3" seed="11" result="n"/>
+  <feColorMatrix in="n" type="matrix" values="1.6 0 0 0 -.3  1.6 0 0 0 -.3  1.6 0 0 0 -.3  1.6 0 0 0 -.3" result="nh"/>
+  <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="b"/>
+  <feComposite in="nh" in2="b" operator="arithmetic" k1=".32" k2="0" k3=".8" k4="0" result="h"/>
+  <feDiffuseLighting in="h" surfaceScale="4" diffuseConstant="1.3" lighting-color="#fff" result="d"><feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
+  <feSpecularLighting in="h" surfaceScale="4" specularConstant=".9" specularExponent="28" lighting-color="#fff4e2" result="s"><feDistantLight azimuth="225" elevation="42"/></feSpecularLighting>
+  <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" result="c"/>
+  <feComposite in="c" in2="nh" operator="arithmetic" k1=".18" k2=".9" k3="0" k4="0" result="c1"/>
+  <feComposite in="c1" in2="SourceAlpha" operator="in" result="c2"/>
+  <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
+  <feComposite in="s2" in2="c2" operator="arithmetic" k1="0" k2=".55" k3="1" k4="0"/>
+</filter>`;
 let sigN = 0;
 function signature(host, opts = {}) {
-  const id = 'sigmask' + (++sigN);
-  const pens = SIG.pen.map(d => `<path d="${d}"/>`).join('');
+  const id = 'sigmask' + (++sigN), plan = sigPlan();
+  if (opts.paint) { opts = { ...opts, defs: (opts.defs || '') + oilFilter(id + 'oil'), filter: id + 'oil' }; }
+  const pens = plan.strokes.map(s => `<path d="${s.d}"/>`).join('');
   host.innerHTML = `<svg class="sig" viewBox="0 0 ${SIG.w} ${SIG.h}" role="img" aria-label="${opts.label || 'Firma de Max Langevin'}">
     <defs><mask id="${id}" maskUnits="userSpaceOnUse" x="0" y="0" width="${SIG.w}" height="${SIG.h}">
-      <g fill="none" stroke="#fff" stroke-width="${opts.pen || 46}" stroke-linecap="round" stroke-linejoin="round">${pens}</g></mask></defs>
-    ${opts.ghost === false ? '' : `<path class="sig-ghost" d="${SIG.fill}" fill-rule="evenodd"/>`}
-    <path class="sig-ink" d="${SIG.fill}" fill-rule="evenodd" mask="url(#${id})"/></svg>`;
+      <g fill="none" stroke="#fff" stroke-width="${opts.pen || 46}" stroke-linecap="round" stroke-linejoin="round">${pens}</g></mask>${opts.defs || ''}</defs>
+    <g ${opts.filter ? `filter="url(#${opts.filter})"` : ''}><path class="sig-ink" d="${SIG.fill}" fill-rule="evenodd" mask="url(#${id})"/></g></svg>`;
   const ps = $$('mask path', host);
-  const Ls = ps.map(p => p.getTotalLength());
-  const total = Ls.reduce((a, b) => a + b, 0);
-  ps.forEach((p, i) => p.setAttribute('stroke-dasharray', `${Ls[i]} ${Ls[i]}`));
+  ps.forEach((p, i) => p.setAttribute('stroke-dasharray', `${plan.strokes[i].L} ${plan.strokes[i].L}`));
   let last = -1;
   const set = t => {
     t = RM ? 1 : clamp(t);
     if (Math.abs(t - last) < .001) return; last = t;
-    let acc = 0; const D = t * total;
-    ps.forEach((p, i) => { const v = clamp(D - acc, 0, Ls[i]); p.setAttribute('stroke-dashoffset', (Ls[i] - v).toFixed(1)); p.style.visibility = v > .5 ? 'visible' : 'hidden'; acc += Ls[i]; });
+    const X = lerp(plan.x0, plan.x1, t);
+    ps.forEach((p, i) => { const s = plan.strokes[i], v = t >= 1 ? s.L : plan.at(s, X); p.setAttribute('stroke-dashoffset', (s.L - v).toFixed(1)); p.style.visibility = v > .5 ? 'visible' : 'hidden'; });
     host.classList.toggle('signed', t >= .999);
   };
   set(opts.start ?? 0);
@@ -542,5 +581,5 @@ function boot(opts = {}) {
 
 window.ML = { $, $$, clamp, lerp, ease, smooth, RM, W_, T_, ratio, WORKS, BY_ID, CATS, NOTES, BIO, TIMELINE, CV, COMMISSION, PALETTES, SIZES, SIG, MAIL, WA,
   t, get lang() { return LANG; }, onLang: cb => langCbs.push(cb), onTick: cb => tickCbs.push(cb), setLang, metaLine, yearLabel, waLink,
-  paletteHTML, card, scene, viewScene, endScene, zoomScene, signature, loupe, fadeRange, textLayer, applyText, layoutAll, tick, LB, toast, boot, FULL };
+  paletteHTML, card, scene, viewScene, endScene, zoomScene, signature, sigPlan, oilFilter, loupe, fadeRange, textLayer, applyText, layoutAll, tick, LB, toast, boot, FULL };
 })();

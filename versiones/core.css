@@ -40,7 +40,6 @@ a { color: inherit; }
 
 /* Firma */
 .sig { display: block; width: 100%; height: auto; overflow: visible; }
-.sig-ghost { fill: currentColor; opacity: .1; }
 .sig-ink { fill: currentColor; }
 
 /* Lupa */
