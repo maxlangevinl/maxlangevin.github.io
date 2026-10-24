@@ -163,7 +163,7 @@ function Content({ lang, t, toggleLang, setFrameloop }) {
     <div ref={root}>
       <svg width="0" height="0" className="absolute" aria-hidden="true"><filter id="liquid"><feTurbulence id="liquid-turb" type="fractalNoise" baseFrequency="0.008 0.02" numOctaves="2" seed="4" /><feDisplacementMap id="liquid-disp" in="SourceGraphic" scale="0" /></filter></svg>
 
-      <header className="gutter fixed inset-x-0 top-0 z-[140] flex h-16 items-center justify-between gap-4 pt-[env(safe-area-inset-top)]">
+      <header className="gutter fixed inset-x-0 top-0 z-[140] flex h-16 items-center bg-gesso/75 backdrop-blur-md justify-between gap-4 pt-[env(safe-area-inset-top)]">
         <a href="#top" onClick={e => go(e, 'top')} className="flex items-center gap-2.5 font-display text-lg"><img src={`${window.ML_BASE}logo_ml.png`} alt="" className="h-7 w-7" />Max Langevin</a>
         <nav aria-label="Secciones" className="hidden items-center gap-6 lg:flex">
           {navItems.slice(0, 5).map(([id, k]) => <a key={id} href={`#${id}`} onClick={e => go(e, id)} className="text-sm text-smoke transition-colors hover:text-ink">{t(k)}</a>)}
