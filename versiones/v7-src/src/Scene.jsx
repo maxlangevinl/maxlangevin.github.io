@@ -8,13 +8,12 @@ const BASE = window.ML_BASE || '../../images/';
 
 // Estudio modelado en Blender (caballete, lienzo, banqueta de Poly Haven, paleta, pinceles y tubos).
 // Medidas reales en metros; aquí ×10. El lienzo queda centrado en y = 1.1, como espera la cámara.
-const MODEL = './estudio.glb';
+const modelUrl = () => (window.__ASSETS && window.__ASSETS.model) || './estudio.glb';
 const SCALE = 10, LIFT = 1.1 - 11.34;
-useGLTF.preload(MODEL);
 
 function Easel() {
   const group = useRef();
-  const { scene } = useGLTF(MODEL);
+  const { scene } = useGLTF(modelUrl());
   const map = useTexture(`${BASE}w/pinturas/karin_goldberg_1.webp`);
   useMemo(() => {
     map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 8; map.flipY = false;   // convención de UV de glTF
@@ -134,7 +133,7 @@ export default function Scene({ frameloop }) {
       <ambientLight intensity={.2} />
       <directionalLight position={[-6, 10, 12]} intensity={1.1} color="#fff3e2" />
       <Suspense fallback={null}>
-        <Environment files="./studio.hdr" environmentIntensity={.85} />
+        <Environment files={(window.__ASSETS && window.__ASSETS.hdr) || './studio.hdr'} environmentIntensity={.85} />
         <Easel />
         <Pigments />
       </Suspense>
