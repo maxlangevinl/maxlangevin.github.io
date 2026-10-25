@@ -266,14 +266,17 @@ function zoomScene(el, cfg) {
   const stage = $('.stage', el), canvas = $('.zcanvas', stage), scrim = $('.scrim', stage);
   const [Pw, Ph] = SIZES[cfg.base];
   const eager = !!cfg.eager;
-  const mk = (p, cls) => {
+  // en la portada, la obra entera se pide primero; los detalles, cuando la página ya cargó
+  const mk = (p, cls, later) => {
     const i = new Image(); i.decoding = 'async'; if (!eager) i.loading = 'lazy';
-    i.src = W_(p); i.alt = ''; i.className = cls;
+    if (later) addEventListener('load', () => { i.src = W_(p); }, { once: true }); else i.src = W_(p);
+    if (eager && !later) i.fetchPriority = 'high';
+    i.alt = ''; i.className = cls;
     const [w, h] = SIZES[p]; i.width = w; i.height = h; i.style.width = w + 'px'; i.style.height = h + 'px';
     canvas.appendChild(i); return i;
   };
   const base = mk(cfg.base, 'base'); base.alt = cfg.alt || '';
-  const layers = (cfg.layers || []).map(L => ({ ...L, el: mk(L.p, 'layer'), size: SIZES[L.p] }));
+  const layers = (cfg.layers || []).map(L => ({ ...L, el: mk(L.p, 'layer', eager && document.readyState !== 'complete'), size: SIZES[L.p] }));
   const texts = $$('.zt', stage).map(textLayer);
   const rail = $$('[data-goto]', stage);
   const pins = (cfg.pins || []).map(P => {
@@ -413,7 +416,9 @@ function loupe(frame, src, opts = {}) {
   frame.appendChild(lens);
   const Z = opts.z || 3;
   let pos = opts.start || { x: .5, y: .3 }, touchOn = false;
-  lens.style.backgroundImage = `url(${src})`;
+  // la imagen grande de la lupa se pide solo cuando el cuadro está por entrar en pantalla
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { lens.style.backgroundImage = `url(${src})`; io.disconnect(); } }, { rootMargin: '600px 0px' });
+  io.observe(frame);
   function place() {
     const r = frame.getBoundingClientRect(), lw = lens.offsetWidth;
     lens.style.left = (pos.x * r.width) + 'px'; lens.style.top = (pos.y * r.height) + 'px';
@@ -577,6 +582,8 @@ function boot(opts = {}) {
   setLang(saved || ((navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en'));
   layoutAll(); tick();
   const h = location.hash.slice(1); if (BY_ID[h]) LB.open(h);
+  // un enlace compartido a otra obra dentro de la misma página también abre el visor
+  addEventListener('hashchange', () => { const k = location.hash.slice(1); if (BY_ID[k]) LB.open(k); });
 }
 
 window.ML = { $, $$, clamp, lerp, ease, smooth, RM, W_, T_, ratio, WORKS, BY_ID, CATS, NOTES, BIO, TIMELINE, CV, COMMISSION, PALETTES, SIZES, SIG, MAIL, WA,

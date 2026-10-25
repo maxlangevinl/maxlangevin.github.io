@@ -127,14 +127,19 @@ function Content({ lang, t, toggleLang, setFrameloop }) {
           onUpdate: s => gsap.set('#g-bar', { scaleX: s.progress }) } });
       // Títulos que se revelan palabra por palabra
       document.querySelectorAll('[data-split]').forEach(el => {
-        const sp = SplitText.create(el, { type: 'words', mask: 'words' });
-        gsap.from(sp.words, { yPercent: 110, duration: RM ? 0 : 1, stagger: .045, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
+        // autoSplit espera a que carguen las fuentes y vuelve a cortar si cambia el ancho
+        SplitText.create(el, { type: 'words', mask: 'words', autoSplit: true,
+          onSplit: sp => gsap.from(sp.words, { yPercent: 110, duration: RM ? 0 : 1, stagger: .045, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } }) });
       });
       // Imágenes que se descubren
       document.querySelectorAll('[data-reveal]').forEach(el => gsap.fromTo(el, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: RM ? 0 : 1.4, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 85%' } }));
       // Firma del cierre
-      ScrollTrigger.create({ trigger: '#firma', start: 'top 95%', end: 'bottom 70%', scrub: true, onUpdate: s => setFootSig(s.progress) });
+      // termina justo al llegar al final de la página, para que siempre quede escrita entera
+      ScrollTrigger.create({ trigger: '#firma', start: 'top 95%', end: () => { const el = document.getElementById('firma'); return Math.min(el.getBoundingClientRect().bottom + scrollY - innerHeight * .85, ScrollTrigger.maxScroll(window) - 2); }, scrub: true, onUpdate: s => setFootSig(s.progress) });
       ScrollTrigger.refresh();
+      // las imágenes diferidas cambian el alto de la página al cargar: recalcular los disparadores
+      let rt; const again = () => { clearTimeout(rt); rt = setTimeout(() => ScrollTrigger.refresh(), 150); };
+      document.querySelectorAll('img').forEach(i => { if (!i.complete) i.addEventListener('load', again, { once: true }); });
     }, root);
     return () => ctx.revert();
   }, [lang]);
@@ -188,8 +193,8 @@ function Content({ lang, t, toggleLang, setFrameloop }) {
               <p className="hidden max-w-[34ch] text-lg text-smoke md:block">{t('h_p')}</p>
               <p className="k hidden text-smoke md:block">{TOUCH ? t('h_scroll') : t('h_drag')}</p>
             </div>
-            <div data-cap=".18,.4" className="gutter absolute bottom-[8vh] left-0 grid max-w-[30rem] gap-2"><p className="rounded bg-gesso/80 p-3 backdrop-blur md:bg-transparent md:p-0 md:backdrop-blur-none font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-tight">{t('c1')}</p><p className="k text-smoke">{t('c1s')}</p></div>
-            <div data-cap=".46,.68" className="gutter absolute bottom-[8vh] left-0 grid max-w-[30rem] gap-2"><p className="rounded bg-gesso/80 p-3 backdrop-blur md:bg-transparent md:p-0 md:backdrop-blur-none font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-tight">{t('c2')}</p></div>
+            <div data-cap=".18,.4" className="gutter absolute bottom-[8vh] left-0 grid max-w-[30rem] gap-2"><p className="rounded bg-gesso/90 p-3 backdrop-blur md:bg-transparent md:p-0 md:backdrop-blur-none font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-tight">{t('c1')}</p><p className="k text-smoke">{t('c1s')}</p></div>
+            <div data-cap=".46,.68" className="gutter absolute bottom-[8vh] left-0 grid max-w-[30rem] gap-2"><p className="rounded bg-gesso/90 p-3 backdrop-blur md:bg-transparent md:p-0 md:backdrop-blur-none font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-tight">{t('c2')}</p></div>
             <div data-cap=".86,1" className="gutter absolute bottom-[8vh] left-0 grid max-w-[30rem] gap-4"><p className="rounded bg-gesso/80 p-3 font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-tight backdrop-blur">{t('c3')}</p><div><Magnetic as="button" type="button" data-open="karin-goldberg" className="bg-ink text-gesso">{t('see')}</Magnetic></div></div>
           </div>
         </section>
@@ -233,10 +238,11 @@ function Content({ lang, t, toggleLang, setFrameloop }) {
         {/* Ilustración y objetos */}
         <section className="gutter bg-paper py-[12vh]" aria-labelledby="more-h">
           <h2 id="more-h" data-split className="mb-10 font-display text-[clamp(1.8rem,3.4vw,3rem)] leading-tight">{t('g_more')}</h2>
-          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+          {/* columnas: cada obra con su proporción, sin recortes */}
+          <div className="columns-2 gap-5 sm:columns-3 lg:columns-5">
             {W.filter(w => w.cat === 'ilustracion' || w.cat === 'creaciones').map(w => (
-              <button key={w.id} type="button" data-open={w.id} data-cursor={t('view')} className="group grid gap-2 text-left">
-                <span className="block aspect-square overflow-hidden bg-gesso"><img src={ML.T_(w.imgs[0].p)} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" /></span>
+              <button key={w.id} type="button" data-open={w.id} data-cursor={t('view')} className="group mb-6 grid w-full break-inside-avoid gap-2 text-left">
+                <span className="block overflow-hidden bg-gesso" style={{ aspectRatio: ML.ratio(w.imgs[0].p).toFixed(4) }}><img src={ML.T_(w.imgs[0].p)} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" /></span>
                 <span className="font-display">{w.name}</span><span className="-mt-1.5 font-mono text-[11px] text-smoke">{ML.yearLabel(w)}</span>
               </button>))}
           </div>
@@ -245,7 +251,7 @@ function Content({ lang, t, toggleLang, setFrameloop }) {
         {/* Biografía */}
         <section id="about" className="gutter grid gap-12 bg-gesso py-[14vh] md:grid-cols-[5fr_7fr]" aria-labelledby="about-h">
           <figure className="grid max-w-[460px] gap-3 self-start md:sticky md:top-24">
-            <img data-reveal src={`${window.ML_BASE}maximiliano_langevin.jpg`} alt="Retrato de Maximiliano Langevin" className="aspect-square w-full object-cover grayscale" loading="lazy" />
+            <img data-reveal src={`${window.ML_BASE}w/maximiliano_langevin.webp`} alt="Retrato de Maximiliano Langevin" className="aspect-square w-full object-cover grayscale" loading="lazy" />
             <figcaption className="k text-smoke">Santiago, Chile · 1996</figcaption>
           </figure>
           <div className="min-w-0">

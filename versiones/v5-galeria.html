@@ -37,7 +37,8 @@ body { background: var(--bg); color: var(--fg); font: 400 1.05rem/1.62 var(--f-s
 .skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
 
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--wall-2); }
-.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); background: linear-gradient(rgba(20,25,22,.75), transparent); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); background: linear-gradient(rgba(20,25,22,.75), transparent); transition: background .35s; }
+.nav.scrolled { background: rgba(28,33,30,.86); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 .brand { font: 400 1.05rem var(--f-serif); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; white-space: nowrap; }
 .nav-r { display: flex; align-items: center; gap: 1rem; }
 .nav-links { display: flex; gap: 1.4rem; list-style: none; }
@@ -163,7 +164,7 @@ footer { border-top: 1px solid var(--line); padding-block: 1.4rem calc(1.4rem + 
 
 <section class="bio band wrap" id="about" aria-labelledby="about-h">
   <div class="bio-grid">
-    <div class="bio-photo"><img src="../images/maximiliano_langevin.jpg" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="lbl" style="color:var(--muted)">Santiago, Chile · 1996</p></div>
+    <div class="bio-photo"><img src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="lbl" style="color:var(--muted)">Santiago, Chile · 1996</p></div>
     <div>
       <p class="lbl" data-i18n="n_about">El artista</p>
       <h2 class="vinyl" id="about-h" style="font-size:clamp(2.2rem,4.6vw,4rem);line-height:1.05;margin:.8rem 0 2rem">Maximiliano Langevin Larraín</h2>
@@ -293,6 +294,9 @@ const setDrawer = open => { drawer.hidden = !open; burger.setAttribute('aria-exp
 burger.addEventListener('click', () => setDrawer(drawer.hidden));
 drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
 addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); });
+// fuera de la sala, la barra lleva fondo para que el texto no pase por debajo
+const navEl = document.querySelector('.nav'), hall = document.getElementById('sala') || document.querySelector('.scene');
+ML.onTick(() => { const r = hall ? hall.getBoundingClientRect() : { bottom: 0 }; navEl.classList.toggle('scrolled', r.bottom < innerHeight * .2); });
 ML.boot({ strings: S });
 </script>
 </body>

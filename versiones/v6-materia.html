@@ -32,7 +32,7 @@ main { position: relative; z-index: 1; }
 .band { padding-block: clamp(5rem, 12vh, 8rem); }
 .k { font: 400 .72rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 .mono { font: 400 .76rem var(--f-mono); color: var(--muted); }
-.h1 { font: 800 clamp(2.4rem, 7vw, 6.6rem)/.95 var(--f-serif); letter-spacing: -.03em; text-wrap: balance; }
+.h1 { font: 800 clamp(2.4rem, 6vw, 5.6rem)/.95 var(--f-serif); letter-spacing: -.03em; text-wrap: balance; }
 .h2 { font: 700 clamp(2rem, 4.6vw, 4.2rem)/1 var(--f-serif); letter-spacing: -.025em; text-wrap: balance; }
 .h3 { font: 700 clamp(1.4rem, 2.6vw, 2.2rem)/1.1 var(--f-serif); letter-spacing: -.02em; text-wrap: balance; }
 .lede { font-size: clamp(1.02rem, 1.3vw, 1.18rem); color: var(--muted); max-width: 42ch; text-wrap: pretty; }
@@ -43,7 +43,8 @@ main { position: relative; z-index: 1; }
 .skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
 
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--bg); }
-.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); background: linear-gradient(rgba(20,18,15,.8), transparent); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); background: linear-gradient(rgba(20,18,15,.8), transparent); transition: background .35s; }
+.nav.scrolled { background: rgba(20,18,15,.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 .brand { display: flex; align-items: center; gap: .6rem; font: 700 1rem var(--f-serif); text-decoration: none; white-space: nowrap; }
 .brand img { width: 28px; height: 28px; filter: invert(1); }
 .nav-r { display: flex; align-items: center; gap: 1rem; }
@@ -89,7 +90,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 /* Secciones planas: fondo de lino */
 .solid { background-color: var(--bg-2); position: relative; }
-.linen-bg { background-color: #cdbf9f; background-image: var(--linen-img, none); background-size: 256px; color: #1e1a14; --fg: #1e1a14; --muted: #5b5244; --line: rgba(30,26,20,.18); --accent: #7a4f1f; }
+.linen-bg { background-color: #cfc4a8; background-image: url(../images/tex/lino.webp); background-size: 384px; color: #1e1a14; --fg: #1e1a14; --muted: #5b5244; --line: rgba(30,26,20,.18); --accent: #7a4f1f; }
 .linen-bg ::selection { background: #1e1a14; color: #cdbf9f; }
 .cats { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 2.2rem; }
 .cats button { min-height: 40px; padding: .4rem .95rem; border-radius: 999px; font-size: .86rem; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
@@ -226,7 +227,7 @@ footer { border-top: 1px solid var(--line); padding-block: 1.4rem calc(1.4rem + 
 
 <section class="solid band wrap" id="about" aria-labelledby="about-h">
   <div class="bio-grid">
-    <div class="bio-photo"><img src="../images/maximiliano_langevin.jpg" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="mono">Santiago, Chile · 1996</p></div>
+    <div class="bio-photo"><img src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="mono">Santiago, Chile · 1996</p></div>
     <div>
       <p class="k" data-i18n="n_about">Biografía</p>
       <h2 class="h2" id="about-h" style="margin:.8rem 0 2rem">Maximiliano Langevin Larraín</h2>
@@ -286,19 +287,12 @@ const S = {
 // ───────────────────────── TEXTURAS PROCEDURALES ─────────────────────────
 function cnv(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
 let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-// Lino: trama y urdimbre con hilos irregulares y nudos
-function linenCanvas(size, base, dark, light) {
+// Lino: foto real de un lino (Poly Haven, CC0) teñida al tono del lino crudo. Mientras carga, un color liso.
+const texReg = [];
+function linenCanvas(size, base, src) {
   const c = cnv(size, size), g = c.getContext('2d');
   g.fillStyle = base; g.fillRect(0, 0, size, size);
-  for (let pass = 0; pass < 2; pass++) for (let i = 0; i < size; i += 2) {
-    const w = 1 + (rnd() < .08 ? 1 : 0);
-    g.globalAlpha = .1 + rnd() * .22; g.fillStyle = rnd() < .5 ? dark : light;
-    if (pass === 0) g.fillRect(0, i, size, w); else g.fillRect(i, 0, w, size);
-    if (rnd() < .12) { g.globalAlpha = .25; g.fillStyle = dark; const len = 6 + rnd() * 30, p = rnd() * size; pass === 0 ? g.fillRect(p, i, len, 2) : g.fillRect(i, p, 2, len); }
-  }
-  const id = g.getImageData(0, 0, size, size), d = id.data;
-  for (let i = 0; i < d.length; i += 4) { const n = (rnd() - .5) * 18; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
-  g.putImageData(id, 0, 0); g.globalAlpha = 1;
+  if (src) { const im = new Image(); im.onload = () => { g.drawImage(im, 0, 0, size, size); c.dispatchEvent(new Event('ready')); }; im.src = src; }
   return c;
 }
 // Mapa de normales a partir de una imagen: relieve = luminancia suavizada + trama del lino
@@ -316,12 +310,6 @@ function normalFrom(img, maxW, strength, weave) {
     const k = (y * w + x) * 4; o[k] = (nx * .5 + .5) * 255; o[k + 1] = (ny * .5 + .5) * 255; o[k + 2] = (nz * .5 + .5) * 255; o[k + 3] = 255;
   }
   g.putImageData(out, 0, 0); return c;
-}
-function woodCanvas() {
-  const c = cnv(128, 512), g = c.getContext('2d');
-  g.fillStyle = '#8f6a45'; g.fillRect(0, 0, 128, 512);
-  for (let x = 0; x < 128; x += 1) { g.globalAlpha = .06 + rnd() * .12; g.fillStyle = rnd() < .5 ? '#5e4129' : '#b08a5f'; g.fillRect(x, 0, 1 + rnd() * 2, 512); }
-  g.globalAlpha = 1; return c;
 }
 // Etiqueta del reverso, con la firma dibujada desde el vector
 function labelCanvas(w) {
@@ -356,17 +344,19 @@ if (ok3d) {
 const loader = ok3d ? new THREE.TextureLoader() : null;
 const maxAniso = ok3d ? renderer.capabilities.getMaxAnisotropy() : 1;
 function tex(src, cb) { const t = loader.load(src, cb); t.encoding = THREE.sRGBEncoding; t.anisotropy = maxAniso; return t; }
-function canvasTex(c, srgb = true, rep) { const t = new THREE.CanvasTexture(c); if (srgb) t.encoding = THREE.sRGBEncoding; t.anisotropy = maxAniso; if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep[0], rep[1]); } return t; }
+function canvasTex(c, srgb = true, rep) { const t = new THREE.CanvasTexture(c); texReg.push({ c, t }); if (srgb) t.encoding = THREE.sRGBEncoding; t.anisotropy = maxAniso; if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep[0], rep[1]); } return t; }
 
 let LINEN, LINEN_N, RAW, WOOD;
 if (ok3d) {
-  const lc = linenCanvas(512, '#cdbf9f', '#8f7f5f', '#efe4c8');
-  LINEN = lc; LINEN_N = normalFrom(lc, 512, 3.2, false);
-  RAW = linenCanvas(512, '#b9a57c', '#7d6a48', '#d9c79d');
-  WOOD = woodCanvas();
+  LINEN = linenCanvas(512, '#cfc4a8', '../images/tex/lino.webp'); LINEN_N = cnv(512, 512);
+  LINEN_N.getContext('2d').fillStyle = '#8080ff'; LINEN_N.getContext('2d').fillRect(0, 0, 512, 512);
+  RAW = linenCanvas(512, '#b8a681', '../images/tex/lino-crudo.webp');
+  const refresh = c => texReg.forEach(r => { if (r.c === c) r.t.needsUpdate = true; });
+  LINEN.addEventListener('ready', () => { LINEN_N.getContext('2d').drawImage(normalFrom(LINEN, 512, 6, false), 0, 0); refresh(LINEN); refresh(LINEN_N); });
+  RAW.addEventListener('ready', () => refresh(RAW));
+  WOOD = linenCanvas(512, '#c8a577', '../images/tex/haya.webp');   // madera de bastidor: foto real (Poly Haven, CC0)
+  WOOD.addEventListener('ready', () => texReg.forEach(r => { if (r.c === WOOD) r.t.needsUpdate = true; }));
 }
-// fondo de lino para las secciones planas (también sin 3D)
-try { const lc = LINEN || linenCanvas(256, '#cdbf9f', '#8f7f5f', '#efe4c8'); document.documentElement.style.setProperty('--linen-img', `url(${lc.toDataURL('image/jpeg', .82)})`); } catch (e) {}
 
 // Un cuadro como objeto: frente pintado, cantos de lino, reverso con bastidor y etiqueta
 function stretched(w, opts = {}) {
@@ -384,8 +374,10 @@ function stretched(w, opts = {}) {
   if (opts.back) {
     const raw = new THREE.Mesh(new THREE.PlaneGeometry(W - .02, H - .02), new THREE.MeshStandardMaterial({ map: canvasTex(RAW, true, [W / 3, H / 3]), normalMap: canvasTex(LINEN_N, false, [W / 3, H / 3]), roughness: 1 }));
     raw.position.z = D / 2 - .03; raw.rotation.y = Math.PI; g.add(raw);
-    const bt = .45 * (opts.scale || 1), bd = D - .05, woodM = new THREE.MeshStandardMaterial({ map: canvasTex(WOOD), roughness: .75 });
-    const bar = (bw, bh, x, y) => { const m = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), woodM); m.position.set(x, y, -.02); g.add(m); };
+    const bt = .45 * (opts.scale || 1), bd = D - .05, woodV = new THREE.MeshStandardMaterial({ map: canvasTex(WOOD), roughness: .75 });
+    // la veta corre a lo largo de cada travesaño
+    const woodH = new THREE.MeshStandardMaterial({ map: (() => { const t = canvasTex(WOOD); t.center.set(.5, .5); t.rotation = Math.PI / 2; return t; })(), roughness: .75 });
+    const bar = (bw, bh, x, y) => { const m = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), bw > bh ? woodH : woodV); m.position.set(x, y, -.02); g.add(m); };
     bar(W - .04, bt, 0, H / 2 - bt / 2 - .02); bar(W - .04, bt, 0, -H / 2 + bt / 2 + .02);
     bar(bt, H - 2 * bt - .04, -W / 2 + bt / 2 + .02, 0); bar(bt, H - 2 * bt - .04, W / 2 - bt / 2 - .02, 0);
     bar(W - 2 * bt - .04, bt * .8, 0, 0);
@@ -414,7 +406,7 @@ function buildHero() {
   const { W, H } = obj.userData;
   const wide = () => aspect > 1;
   const K = [
-    { p: 0, rx: .16, ry: -.72, f: .56, sx: () => wide() ? .2 : 0, sy: () => wide() ? -.02 : -.12 },
+    { p: 0, rx: .16, ry: -.72, f: .56, sx: () => wide() ? .27 : 0, sy: () => wide() ? -.02 : -.12 },
     { p: .16, rx: .03, ry: -.06, f: .8, sx: () => wide() ? .1 : 0, sy: () => wide() ? 0 : -.06 },
     { p: .3, rx: -.05, ry: .55, f: .72, sx: () => wide() ? .14 : 0, sy: () => wide() ? 0 : -.08 },
     { p: .44, rx: 0, ry: Math.PI, f: .78, sx: () => wide() ? -.14 : 0, sy: () => wide() ? 0 : .04 },
@@ -529,7 +521,8 @@ function buildLinen() {
       float n(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f); return mix(mix(h(i), h(i + vec2(1, 0)), f.x), mix(h(i + vec2(0, 1)), h(i + 1.), f.x), f.y); }
       float fbm(vec2 p) { float v = 0., a = .5; for (int i = 0; i < 5; i++) { v += a * n(p); p *= 2.03; a *= .5; } return v; }
       void main() {
-        vec4 linen = texture2D(uLinen, vUv * vec2(3.0, 3.6));
+        vec4 linen = texture2D(uLinen, vUv * vec2(1.6, 1.9));
+        linen.rgb = mix(vec3(.63, .55, .39), linen.rgb, 2.2);   // la trama del lino, más marcada a esta distancia
         vec4 paint = texture2D(uPaint, vUv);
         float lum = dot(paint.rgb, vec3(.3, .59, .11));
         // dibujo: bordes de la imagen en tierra tostada
@@ -650,6 +643,7 @@ const setDrawer = open => { drawer.hidden = !open; burger.setAttribute('aria-exp
 burger.addEventListener('click', () => setDrawer(drawer.hidden));
 drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
 addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); });
+ML.onTick(() => $('#nav').classList.toggle('scrolled', scrollY > 40));
 ML.boot({ strings: S });
 </script>
 </body>

@@ -26,7 +26,7 @@
 }
 body {
   background-color: var(--bg); color: var(--fg); font: 400 1.05rem/1.65 var(--f-serif);
-  background-image: repeating-linear-gradient(0deg, rgba(70,52,30,.045) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(70,52,30,.04) 0 1px, transparent 1px 3px);
+  background-image: url(../images/tex/lino-palido.webp); background-size: 420px;
 }
 ::selection { background: var(--accent); color: #fff; }
 .wrap { padding-left: var(--gl); padding-right: var(--gr); }
@@ -64,7 +64,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .drawer a { text-decoration: none; font: 800 clamp(2rem, 9vw, 3rem)/1.15 var(--f-sans); letter-spacing: -.03em; }
 
 /* Portada: la firma */
-#top { --len: 165vh; }
+#top { --len: 100vh; }   /* la firma ya no depende del scroll */
 .hero-stage { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2vh) var(--gr) 4vh var(--gl); }
 .hero-l { display: grid; gap: clamp(1.2rem, 3vh, 2rem); align-content: center; }
 .hero-sig { color: var(--fg); width: min(100%, 760px); margin-left: -1.5%; }
@@ -157,10 +157,12 @@ footer { background: var(--accent); color: #cdd3f1; border-top: 1px solid rgba(2
 @media (max-width: 1100px) { .nav-links { display: none; } .burger { display: block; } }
 @media (max-width: 860px) {
   .nav .btn { display: none; }
-  #top { --len: 150vh; }
-  .hero-stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; align-content: center; gap: 1.6rem; }
-  .polaroid { order: -1; justify-self: start; rotate: -2deg; padding: .5rem .5rem 1.9rem; }
-  .polaroid img { width: min(52vw, 230px); }
+  /* en el teléfono la portada fluye normal: así la foto nunca queda cortada bajo la barra */
+  #top { height: auto; }
+  #top .stage { position: relative; height: auto; overflow: visible; }
+  .hero-stage { grid-template-columns: minmax(0, 1fr); gap: 2.2rem; padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 1.6rem); padding-bottom: 3.5rem; }
+  .polaroid { justify-self: end; rotate: 2deg; padding: .5rem .5rem 1.9rem; margin-right: 2vw; }
+  .polaroid img { width: min(62vw, 260px); }
   .polaroid figcaption { font-size: .7rem; bottom: .45rem; }
   .how-stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 1rem; padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); }
   .how-art { order: -1; max-height: none; }
@@ -268,7 +270,7 @@ footer { background: var(--accent); color: #cdd3f1; border-top: 1px solid rgba(2
 
 <section class="band wrap" id="about" aria-labelledby="about-h">
   <div class="bio-grid">
-    <div class="bio-photo"><img src="../images/maximiliano_langevin.jpg" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="tag">Santiago, Chile · 1996</p></div>
+    <div class="bio-photo"><img src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="tag">Santiago, Chile · 1996</p></div>
     <div>
       <p class="tag" data-i18n="about_tag">06 · Biografía</p>
       <h2 class="h2" id="about-h" style="margin:.8rem 0 2rem">Maximiliano Langevin Larraín</h2>
@@ -323,8 +325,9 @@ const S = {
 };
 
 // Portada: la firma se escribe en el primer medio scroll
+// la firma de la portada se escribe sola al llegar, de izquierda a derecha
 const heroSig = ML.signature($('#hero-sig'), { label: 'Maximiliano Langevin' });
-ML.scene($('#top'), { layout() {}, update(p) { heroSig(clamp(p / .85)); } });
+(function () { const t0 = performance.now() + 350, D = 1900; const step = now => { const t = clamp((now - t0) / D); heroSig(ML.ease(t)); if (t < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); })();
 
 // Cómo se hace: cuatro pasos fijos
 const STEPS = ['s1', 's2', 's3', 's4'];

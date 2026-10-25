@@ -564,7 +564,7 @@ footer { border-top: 1px solid var(--line); padding-block: 1.6rem calc(1.6rem + 
 <section class="bio band wrap" id="about" aria-labelledby="about-h">
   <div class="bio-grid">
     <div class="bio-photo">
-      <img src="images/maximiliano_langevin.jpg" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy" decoding="async">
+      <img src="images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy" decoding="async">
       <p class="mono">Santiago, Chile · 1996</p>
     </div>
     <div>
@@ -984,7 +984,7 @@ function ZoomScene(el, cfg) {
   const eager = el.id === 'top';
   const base = mk(cfg.base, 'base', eager);
   base.alt = el.id === 'top' ? 'Karin Goldberg, óleo sobre lino, 2025' : 'Marcos 16:16, óleo sobre tela en proceso';
-  const layers = cfg.layers.map(L => ({ ...L, el: mk(L.p, 'layer', eager), size: SIZES[L.p] }));
+  const layers = cfg.layers.map(L => ({ ...L, el: mk(L.p, 'layer', false), size: SIZES[L.p] }));   // los detalles, diferidos
   const texts = $$('.zt', stage).map(textLayer);
   const rail = cfg.rail ? $$('.rail button', stage) : [];
   let W = 1, H = 1, f0 = 1, cams = [];
@@ -1125,7 +1125,9 @@ const lupa = (() => {
   const Z = 3, src = W_('pinturas/veteran_george_1');
   const coarse = matchMedia('(hover: none)').matches;
   let pos = { x: .53, y: .25 }, touchOn = false;
-  lens.style.backgroundImage = `url(${src})`;
+  // la imagen grande se pide solo cuando la lupa está por entrar en pantalla
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { lens.style.backgroundImage = `url(${src})`; io.disconnect(); } }, { rootMargin: '600px 0px' });
+  io.observe(frame);
   function place() {
     const r = frame.getBoundingClientRect();
     const lw = lens.offsetWidth;
