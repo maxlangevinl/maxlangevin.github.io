@@ -1,6 +1,17 @@
 /* Núcleo compartido por las cinco versiones: obras, textos, visor, firma, zoom y escenas de scroll.
    Cada versión pone su propio diseño encima y llama a ML.boot({...}). Requiere data.js antes. */
 (() => {
+// Botón de revisión «← Versiones»: lleva a la página que reúne todas las versiones (versiones/index.html, junto a este archivo).
+// Es solo para elegir; se quita al publicar la versión final.
+const HUB = new URL('index.html', document.currentScript.src).href;
+const BACK_CSS = `.ml-back{position:fixed;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;min-height:40px;padding:.5rem .95rem;border-radius:999px;font:600 13px/1 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none;color:#fff;background:rgba(18,18,18,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 0 1px rgba(255,255,255,.2),0 6px 18px rgba(0,0,0,.3)}.ml-back:hover{background:rgba(18,18,18,.94)}html.lb-open .ml-back{display:none}body:has(.drawer:not([hidden])) .ml-back{display:none}`;
+addEventListener('DOMContentLoaded', () => {
+  document.head.insertAdjacentHTML('beforeend', `<style>${BACK_CSS}</style>`);
+  const a = document.createElement('a');
+  a.className = 'ml-back'; a.href = HUB; a.textContent = '← Versiones';
+  a.setAttribute('aria-label', 'Volver a todas las versiones');
+  document.body.appendChild(a);
+});
 const BASE = window.ML_BASE || '../images/';
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];

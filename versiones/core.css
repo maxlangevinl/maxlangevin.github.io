@@ -101,3 +101,4 @@ a { color: inherit; }
   .lb-thumbs button { width: 54px; flex: none; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+

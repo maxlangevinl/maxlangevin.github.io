@@ -1300,5 +1300,13 @@ try { saved = localStorage.getItem('ml-lang'); } catch (e) {}
 setLang(saved || ((navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en'));
 layoutAll(); tick();
 </script>
+<script>
+// Botón de revisión «← Versiones» (se quita al publicar la versión final)
+addEventListener('DOMContentLoaded', () => {
+  document.head.insertAdjacentHTML('beforeend', `<style>.ml-back{position:fixed;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;min-height:40px;padding:.5rem .95rem;border-radius:999px;font:600 13px/1 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none;color:#fff;background:rgba(18,18,18,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 0 1px rgba(255,255,255,.2),0 6px 18px rgba(0,0,0,.3)}.ml-back:hover{background:rgba(18,18,18,.94)}body:has(#lb:not([hidden])) .ml-back{display:none}</style>`);
+  const a = document.createElement('a'); a.className = 'ml-back'; a.href = 'versiones/index.html'; a.textContent = '← Versiones';
+  a.setAttribute('aria-label', 'Volver a todas las versiones'); document.body.appendChild(a);
+});
+</script>
 </body>
 </html>
