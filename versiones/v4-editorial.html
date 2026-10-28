@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Editorial</title>
+<meta name="description" content="Maximiliano Langevin: el color de cada obra, leído como una revista.">
+<meta name="theme-color" content="#ece6dc">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+/* Editorial: la página cambia de color con cada obra; el fondo es el color medido en la tela.
+   Grotesca condensada a gran escala para los títulos, serif de lectura para el texto. */
+:root {
+  --bg: #ece6dc; --fg: #17140f; --muted: color-mix(in srgb, var(--fg) 62%, var(--bg)); --line: color-mix(in srgb, var(--fg) 20%, transparent);
+  --accent: #b01c17; --on-accent: #fff;
+  --f-sans: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Source Serif 4', Georgia, serif;
+  --f-mono: 'Space Mono', ui-monospace, Menlo, monospace;
+  --gl: max(clamp(20px, 4vw, 56px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(20px, 4vw, 56px), env(safe-area-inset-right, 0px));
+  --nav-h: 58px; --title-style: normal;
+  color-scheme: light;
+}
+body { background: var(--bg); color: var(--fg); font: 400 1.08rem/1.62 var(--f-serif); transition: none; }
+::selection { background: var(--fg); color: var(--bg); }
+.wrap { padding-left: var(--gl); padding-right: var(--gr); }
+.mono { font: 400 .76rem var(--f-mono); letter-spacing: .02em; }
+.cond { font-family: var(--f-sans); font-stretch: 62%; font-weight: 800; text-transform: uppercase; letter-spacing: -.01em; line-height: .86; }
+.skip { position: fixed; left: 12px; top: -60px; z-index: 400; background: var(--fg); color: var(--bg); padding: .6rem 1rem; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+.btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 46px; padding: .7rem 1.3rem; border-radius: 999px; font: 700 .9rem var(--f-sans); font-stretch: 90%; text-transform: uppercase; letter-spacing: .02em; text-decoration: none; background: var(--fg); color: var(--bg); }
+.btn.line { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--fg); }
+
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--bg); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); background: var(--bg); border-bottom: 1px solid var(--line); }
+.brand { font: 800 1.15rem var(--f-sans); font-stretch: 62%; text-transform: uppercase; letter-spacing: .02em; text-decoration: none; white-space: nowrap; }
+.nav-r { display: flex; align-items: center; gap: 1.1rem; }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a { text-decoration: none; font: 400 .78rem var(--f-mono); }
+.nav-links a:hover { text-decoration: underline; }
+.lang { font: 700 .74rem var(--f-mono); min-width: 44px; min-height: 34px; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--fg); }
+.burger { display: none; width: 44px; height: 44px; position: relative; }
+.burger span { position: absolute; left: 12px; right: 12px; height: 2px; background: var(--fg); transition: transform .3s, top .3s; }
+.burger span:nth-child(1) { top: 18px; } .burger span:nth-child(2) { top: 25px; }
+.burger[aria-expanded="true"] span:nth-child(1) { top: 21.5px; transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { top: 21.5px; transform: rotate(-45deg); }
+.drawer { position: fixed; inset: 0; z-index: 130; background: var(--bg); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2rem) var(--gr) 2rem var(--gl); display: flex; flex-direction: column; }
+.drawer a { text-decoration: none; font: 800 clamp(2.6rem, 13vw, 4rem)/1 var(--f-sans); font-stretch: 62%; text-transform: uppercase; }
+
+/* Portada */
+.cover { min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .82fr); gap: 0; padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
+.cover-l { display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; padding: clamp(1.5rem, 4vh, 3rem) var(--gr) clamp(1.5rem, 4vh, 3rem) var(--gl); min-width: 0; }
+.cover .cond { font-size: clamp(4.2rem, 13.5vw, 15.5rem); margin-right: -14vw; position: relative; z-index: 2; }
+.cover-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; border-top: 1.5px solid var(--fg); padding-top: .8rem; }
+.cover-dek { font: italic 400 clamp(1.3rem, 2.2vw, 1.9rem)/1.3 var(--f-serif); max-width: 26ch; }
+.cover-img { position: relative; min-height: 60svh; }
+.cover-img button { position: absolute; inset: 0; }
+.cover-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+
+/* Capítulos de color */
+.chap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); padding-block: clamp(4rem, 12vh, 8rem); }
+.chap.flip .chap-img { order: 2; }
+.chap-img { position: sticky; top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 4vh); align-self: start; display: block; }
+.chap-img img { width: 100%; max-height: 82svh; object-fit: contain; object-position: center top; filter: drop-shadow(0 24px 40px rgba(0,0,0,.35)); }
+.chap-txt { display: grid; gap: 1.4rem; align-content: start; min-width: 0; padding-top: 2vh; }
+.chap-txt .num { display: flex; justify-content: space-between; border-top: 1.5px solid var(--fg); padding-top: .7rem; }
+.chap-txt .cond { font-size: clamp(3.6rem, 9vw, 9.5rem); }
+.kicker { font: italic 400 clamp(1.8rem, 3.6vw, 3.2rem)/1.08 var(--f-serif); letter-spacing: -.01em; text-wrap: balance; }
+.chap-txt .body { font-size: 1.12rem; max-width: 42ch; }
+.swatches { display: grid; gap: .45rem; margin-top: .4rem; }
+.sw { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) 3.5rem; align-items: center; gap: .9rem; }
+.sw i { width: 2.6rem; height: 2.6rem; border-radius: 50%; box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--fg) 30%, transparent); }
+.sw .bar { height: 6px; background: color-mix(in srgb, var(--fg) 14%, transparent); position: relative; }
+.sw .bar span { position: absolute; inset: 0 auto 0 0; background: var(--fg); }
+.sw .mono { text-align: right; }
+.chap-txt .actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: .6rem; }
+
+/* Índice */
+.index-h { display: flex; justify-content: space-between; align-items: end; gap: 1rem; border-bottom: 1.5px solid var(--fg); padding-bottom: 1rem; margin-bottom: .4rem; }
+.index-h .cond { font-size: clamp(3.4rem, 9vw, 8rem); }
+.idx { list-style: none; }
+.idx li { border-bottom: 1px solid var(--line); }
+.idx button { width: 100%; display: grid; grid-template-columns: 3.2rem minmax(0, 1fr) auto; align-items: baseline; gap: 1rem; padding-block: .55rem; text-align: left; }
+.idx .t { font: 800 clamp(1.8rem, 4.6vw, 3.6rem)/1 var(--f-sans); font-stretch: 62%; text-transform: uppercase; transition: font-stretch .35s, letter-spacing .35s; }
+.idx button:hover .t, .idx button:focus-visible .t { font-stretch: 100%; }
+.idx .mono { color: var(--muted); }
+.idx .cat { font: italic 400 .95rem var(--f-serif); color: var(--muted); }
+.peek { position: fixed; z-index: 120; left: 0; top: 0; width: 260px; pointer-events: none; opacity: 0; transition: opacity .2s; box-shadow: 0 20px 40px rgba(0,0,0,.3); }
+.peek.on { opacity: 1; }
+.peek img { width: 100%; height: auto; }
+
+/* Perfil */
+.profile { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; padding-block: clamp(5rem, 12vh, 8rem); }
+.profile-photo { display: grid; gap: .7rem; position: sticky; top: calc(var(--nav-h) + 4vh); max-width: 480px; }
+.profile-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; filter: grayscale(1) contrast(1.05); }
+.pull { font: italic 400 clamp(1.8rem, 3.6vw, 3rem)/1.15 var(--f-serif); text-wrap: balance; margin-bottom: 2rem; }
+.pull::before { content: "«"; } .pull::after { content: "»"; }
+.profile .cond { font-size: clamp(3rem, 7vw, 6.5rem); margin-bottom: 1.6rem; }
+.bio-body { display: grid; gap: 1.1rem; max-width: 60ch; }
+.bio-body p:first-child::first-letter { float: left; font: 800 4.6rem/.8 var(--f-sans); font-stretch: 62%; padding: .35rem .5rem 0 0; }
+.cv { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 1.5rem 3rem; }
+.cv h3 { font: 700 .76rem var(--f-mono); text-transform: uppercase; margin-bottom: .4rem; }
+.cv li { list-style: none; display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: .8rem; padding-block: .5rem; border-top: 1px solid var(--line); font-size: .95rem; }
+.cv li span:first-child { font: .76rem var(--f-mono); color: var(--muted); padding-top: .2rem; }
+
+/* Encargos + contacto */
+.enc { padding-block: clamp(5rem, 12vh, 8rem); }
+.enc .cond { font-size: clamp(3.4rem, 10vw, 9rem); margin-bottom: 2rem; }
+.enc ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 2rem; counter-reset: s; }
+.enc li { list-style: none; counter-increment: s; display: grid; gap: .5rem; border-top: 1.5px solid var(--fg); padding-top: .9rem; }
+.enc li::before { content: counter(s, decimal-leading-zero); font: 700 .8rem var(--f-mono); }
+.enc b { font: 800 1.6rem/1 var(--f-sans); font-stretch: 62%; text-transform: uppercase; }
+.enc span { color: var(--muted); }
+.contact { padding-block: clamp(4rem, 10vh, 7rem) 2rem; display: grid; gap: 1.5rem; }
+.contact .mail { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; }
+.contact .mail a { font: italic 400 clamp(1.6rem, 4.5vw, 3.6rem)/1.1 var(--f-serif); text-decoration: none; overflow-wrap: anywhere; }
+.copy { font: 700 .72rem var(--f-mono); min-height: 36px; padding: 0 .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--fg); }
+.socials { display: flex; flex-wrap: wrap; gap: .4rem 1.8rem; list-style: none; }
+.socials a { font: 400 .8rem var(--f-mono); text-decoration: none; display: inline-block; padding-block: .6rem; }
+.big-sig { color: var(--fg); padding-block: 3rem 1rem; }
+.big-sig .sig { width: 100%; }
+footer { border-top: 1.5px solid var(--fg); padding-block: 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 2rem; font: .74rem var(--f-mono); }
+
+@media (max-width: 1000px) { .nav-links { display: none; } .burger { display: block; } }
+@media (max-width: 860px) {
+  .cover { grid-template-columns: minmax(0, 1fr); }
+  .cover .cond { margin-right: 0; font-size: clamp(3.2rem, 17vw, 7rem); }
+  .cover-img { order: -1; min-height: 52svh; }
+  .chap { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .chap.flip .chap-img { order: 0; }
+  .chap-img { position: static; }
+  .chap-img img { max-height: 64svh; }
+  .profile { grid-template-columns: minmax(0, 1fr); }
+  .profile-photo { position: static; }
+  .idx button { grid-template-columns: 2.4rem minmax(0, 1fr); }
+  .idx .cat { display: none; }
+  .peek { display: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#indice" data-i18n="skip">Ir al índice</a>
+<header class="nav" id="nav">
+  <a class="brand" href="#top">Max Langevin</a>
+  <div class="nav-r">
+    <nav aria-label="Secciones"><ul class="nav-links">
+      <li><a href="#color" data-i18n="n_color">El color</a></li><li><a href="#indice" data-i18n="n_index">Índice</a></li>
+      <li><a href="#perfil" data-i18n="n_profile">Perfil</a></li><li><a href="#encargos" data-i18n="n_commission">Encargos</a></li><li><a href="#contact" data-i18n="n_contact">Contacto</a></li></ul></nav>
+    <button class="lang js-lang" type="button">EN</button>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" data-i18n-aria="menu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="drawer" id="drawer" hidden>
+  <a href="#color" data-i18n="n_color">El color</a><a href="#indice" data-i18n="n_index">Índice</a><a href="#perfil" data-i18n="n_profile">Perfil</a>
+  <a href="#encargos" data-i18n="n_commission">Encargos</a><a href="#contact" data-i18n="n_contact">Contacto</a>
+</div>
+
+<main>
+<section class="cover" id="top" data-bg="#ece6dc" data-fg="#17140f">
+  <div class="cover-l">
+    <p class="mono" data-i18n="cover_k">Retratos al óleo · Santiago de Chile · 2020 — 2026</p>
+    <h1 class="cond">Maximiliano<br>Langevin</h1>
+    <div style="display:grid;gap:1.4rem">
+      <p class="cover-dek" data-i18n="cover_dek">Seis cuadros leídos por su color. Lo que hace el verde, el azul, el rojo y el gris en manos de un pintor realista.</p>
+      <div class="cover-meta mono"><span data-i18n="cover_m1">Pintor realista, n. 1996</span><a href="#color" data-i18n="cover_m2">Empezar a leer ↓</a></div>
+    </div>
+  </div>
+  <div class="cover-img"><button type="button" data-open="karin-goldberg" aria-label="Karin Goldberg"><img src="../images/w/pinturas/karin_goldberg_3.webp" alt="Detalle de Karin Goldberg: rostro con velo" width="1500" height="2000"></button></div>
+</section>
+
+<div id="color"></div>
+<div id="chapters"></div>
+
+<section class="wrap" id="indice" data-bg="#ece6dc" data-fg="#17140f" style="padding-block:clamp(5rem,12vh,8rem)" aria-labelledby="idx-h">
+  <div class="index-h"><h2 class="cond" id="idx-h" data-i18n="n_index">Índice</h2><p class="mono" id="idx-count"></p></div>
+  <ol class="idx" id="idx"></ol>
+</section>
+<div class="peek" id="peek" aria-hidden="true"><img alt=""></div>
+
+<section class="wrap profile" id="perfil" data-bg="#17140f" data-fg="#ece6dc" aria-labelledby="prof-h">
+  <div class="profile-photo"><img src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="mono">Santiago, Chile · 1996</p></div>
+  <div>
+    <p class="pull" data-i18n="quote">Los retratos son una forma de inmortalizar al sujeto. Mi objetivo es capturar lo que va más allá de lo que se ve.</p>
+    <h2 class="cond" id="prof-h">Max<br>Langevin</h2>
+    <div class="bio-body" id="bio-body"></div>
+    <div class="cv" id="cv"></div>
+  </div>
+</section>
+
+<section class="wrap enc" id="encargos" data-bg="#b01c17" data-fg="#f6efe6" aria-labelledby="enc-h">
+  <h2 class="cond" id="enc-h" data-i18n="enc_h">Encarga<br>un retrato</h2>
+  <ol id="steps"></ol>
+</section>
+
+<section class="wrap contact" id="contact" data-bg="#ece6dc" data-fg="#17140f" aria-labelledby="contact-h">
+  <p class="mono" id="contact-h" data-i18n="n_contact">Contacto</p>
+  <div class="mail"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a><button class="copy js-copy" type="button" data-i18n="copy">Copiar</button></div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap"><a class="btn js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener"><span data-i18n="wa">Escribir por WhatsApp</span></a></div>
+  <ul class="socials"><li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li><li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+  <div class="big-sig" id="big-sig"></div>
+</section>
+<footer class="wrap" data-bg="#ece6dc" data-fg="#17140f"><span>© 2026 Maximiliano Langevin</span><span>Langevinci®</span></footer>
+</main>
+
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+const { $, $$, clamp, RM } = ML;
+const S = {
+  es: { skip: 'Ir al índice', n_color: 'El color', n_index: 'Índice', n_profile: 'Perfil', n_commission: 'Encargos', n_contact: 'Contacto',
+    cover_k: 'Retratos al óleo · Santiago de Chile · 2020 — 2026', cover_dek: 'Seis cuadros leídos por su color. Lo que hace el verde, el azul, el rojo y el gris en manos de un pintor realista.',
+    cover_m1: 'Pintor realista, n. 1996', cover_m2: 'Empezar a leer ↓', see: 'Ver la obra', ask: 'Consultar', of: 'de',
+    quote: 'Los retratos son una forma de inmortalizar al sujeto. Mi objetivo es capturar lo que va más allá de lo que se ve.',
+    enc_h: 'Encarga un retrato', works: 'obras',
+    k_karin: 'Verde contra carmín.', k_gall: 'Azul contra naranja.', k_coti: 'Todo rojo, salvo los ojos.', k_conde: 'Sin color.', k_vic: 'Luz que sale de la sombra.', k_vet: 'Calor contra frío.' },
+  en: { skip: 'Go to the index', n_color: 'Colour', n_index: 'Index', n_profile: 'Profile', n_commission: 'Commissions', n_contact: 'Contact',
+    cover_k: 'Oil portraits · Santiago, Chile · 2020 — 2026', cover_dek: 'Six pictures read through their colour. What green, blue, red and grey do in the hands of a realist painter.',
+    cover_m1: 'Realist painter, b. 1996', cover_m2: 'Start reading ↓', see: 'View the work', ask: 'Enquire', of: 'of',
+    quote: 'Portraits are a way to immortalize the subject. My goal is to capture what lies beyond what is seen.',
+    enc_h: 'Commission a portrait', works: 'works',
+    k_karin: 'Green against crimson.', k_gall: 'Blue against orange.', k_coti: 'All red, except the eyes.', k_conde: 'No colour.', k_vic: 'Light coming out of shadow.', k_vet: 'Warm against cool.' }
+};
+// Fondo y texto de cada capítulo: tomados de la paleta medida, ajustados para que el texto se lea
+const CH = [
+  { id: 'karin-goldberg', k: 'k_karin', bg: '#3c463b', fg: '#f1ebe0' },
+  { id: 'gallagath', k: 'k_gall', bg: '#1d365b', fg: '#f3e6d6' },
+  { id: 'coti', k: 'k_coti', bg: '#a31b16', fg: '#fbefe6' },
+  { id: 'el-conde', k: 'k_conde', bg: '#b9bdc5', fg: '#1d2025' },
+  { id: 'vicente', k: 'k_vic', bg: '#2b2111', fg: '#ecdcc0' },
+  { id: 'veteran-george', k: 'k_vet', bg: '#4d465c', fg: '#f4e9e4' },
+];
+function renderChapters() {
+  const L = ML.lang;
+  $('#chapters').innerHTML = CH.map((c, i) => {
+    const w = ML.BY_ID[c.id], pal = ML.PALETTES[c.id];
+    return `<section class="wrap chap${i % 2 ? ' flip' : ''}" data-bg="${c.bg}" data-fg="${c.fg}" aria-label="${w.name}">
+      <button class="chap-img" type="button" data-open="${c.id}"><img src="${ML.W_(w.imgs[0].p)}" alt="${w.name}" loading="lazy"></button>
+      <div class="chap-txt">
+        <div class="num mono"><span>${String(i + 1).padStart(2, '0')} ${ML.t('of')} ${String(CH.length).padStart(2, '0')}</span><span>${ML.yearLabel(w)}</span></div>
+        <h2 class="cond">${w.name}</h2>
+        <p class="kicker">${ML.t(c.k)}</p>
+        <p class="body">${ML.NOTES[c.id][L]}</p>
+        <div class="swatches">${pal.slice(0, 5).map(([hex, s]) => `<div class="sw"><i style="background:${hex}"></i><span class="bar"><span style="width:${(s / pal[0][1] * 100).toFixed(0)}%"></span></span><span class="mono">${Math.round(s * 100)}%</span></div>`).join('')}</div>
+        <p class="mono">${ML.metaLine(w)}</p>
+        <div class="actions"><button class="btn" type="button" data-open="${c.id}">${ML.t('see')}</button><a class="btn line" href="${ML.waLink(ML.t('ask_msg').replace('{w}', w.name))}" target="_blank" rel="noopener">${ML.t('ask')}</a></div>
+      </div></section>`;
+  }).join('');
+}
+function renderIndex() {
+  const L = ML.lang;
+  $('#idx-count').textContent = `${ML.WORKS.length} ${ML.t('works')}`;
+  $('#idx').innerHTML = ML.WORKS.map((w, i) => `<li><button type="button" data-open="${w.id}" data-peek="${ML.T_(w.imgs[0].p)}"><span class="mono">${String(i + 1).padStart(2, '0')}</span><span class="t">${w.name}</span><span class="cat">${ML.t('cats')[w.cat]} · ${ML.yearLabel(w)}</span></button></li>`).join('');
+}
+const peek = $('#peek'), peekImg = $('img', peek);
+$('#idx').addEventListener('pointerover', e => { const b = e.target.closest('[data-peek]'); if (!b || e.pointerType !== 'mouse') return; peekImg.src = b.dataset.peek; peek.classList.add('on'); });
+$('#idx').addEventListener('pointerleave', () => peek.classList.remove('on'));
+addEventListener('pointermove', e => { if (peek.classList.contains('on')) peek.style.transform = `translate(${e.clientX + 24}px, ${e.clientY - 120}px)`; });
+
+// Color de la página: mezcla entre la sección actual y la siguiente
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => '#' + a.map((v, i) => Math.round(v + (b[i] - v) * t).toString(16).padStart(2, '0')).join('');
+let secs = [];
+function collect() { secs = $$('[data-bg]').map(el => ({ el, bg: hex(el.dataset.bg), fg: hex(el.dataset.fg) })); }
+const root = document.documentElement;
+function paint() {
+  if (!secs.length) return;
+  const mid = innerHeight * .55;
+  let i = secs.findIndex(s => { const r = s.el.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; });
+  if (i < 0) i = scrollY < 10 ? 0 : secs.length - 1;
+  const r = secs[i].el.getBoundingClientRect(), next = secs[i + 1];
+  const zone = innerHeight * .35, t = next && !RM ? clamp(1 - (r.bottom - mid) / zone) : 0;
+  const bg = next ? mix(secs[i].bg, next.bg, t) : mix(secs[i].bg, secs[i].bg, 0);
+  const fg = next ? mix(secs[i].fg, next.fg, t) : mix(secs[i].fg, secs[i].fg, 0);
+  root.style.setProperty('--bg', bg); root.style.setProperty('--fg', fg);
+  const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = bg;
+}
+ML.onTick(paint);
+
+ML.endScene($('#big-sig'), ML.signature($('#big-sig')), .9);
+
+function render() {
+  const L = ML.lang;
+  renderChapters(); renderIndex(); collect(); paint();
+  $('#bio-body').innerHTML = ML.BIO[L].map(p => `<p>${p}</p>`).join('');
+  $('#cv').innerHTML = ML.CV[L].map(([h, rows]) => `<div><h3>${h}</h3><ul>${rows.map(([a, b]) => `<li><span>${a}</span><span>${b}</span></li>`).join('')}</ul></div>`).join('');
+  $('#steps').innerHTML = ML.COMMISSION[L].map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('');
+  $('#enc-h').innerHTML = ML.t('enc_h').replace(' ', '<br>');
+}
+ML.onLang(render);
+
+const drawer = $('#drawer'), burger = $('#burger');
+const setDrawer = open => { drawer.hidden = !open; burger.setAttribute('aria-expanded', open); document.documentElement.classList.toggle('lb-open', open); };
+burger.addEventListener('click', () => setDrawer(drawer.hidden));
+drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); });
+ML.boot({ strings: S });
+</script>
+</body>
+</html>

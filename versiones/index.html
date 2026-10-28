@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ocho versiones · Max Langevin</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* Mesa de decisión: cada versión con su captura de escritorio y teléfono, lo que la distingue y un botón para abrirla. */
+:root { --bg: #f2f0eb; --fg: #181613; --muted: #67615a; --line: rgba(24,22,19,.14); --card: #fbfaf7; --accent: #8e2f22;
+  --f-sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif; --f-serif: 'Newsreader', Georgia, serif; --f-mono: 'DM Mono', ui-monospace, monospace; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #141210; --fg: #efe9de; --muted: #a69c8f; --line: rgba(239,233,222,.14); --card: #1d1a17; --accent: #e08a7a; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #141210; --fg: #efe9de; --muted: #a69c8f; --line: rgba(239,233,222,.14); --card: #1d1a17; --accent: #e08a7a; color-scheme: dark; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--fg); font: 400 1rem/1.6 var(--f-sans); -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+header { padding-block: clamp(3rem, 9vh, 6rem) clamp(2rem, 5vh, 3rem); display: grid; gap: 1rem; }
+.k { font: .74rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 400 clamp(2.4rem, 5.6vw, 4.6rem)/1.02 var(--f-serif); letter-spacing: -.02em; max-width: 18ch; text-wrap: balance; }
+h1 em { color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; font-size: 1.08rem; }
+.list { display: grid; gap: clamp(1.5rem, 3vw, 2.2rem); padding-bottom: 4rem; }
+.v { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(1.2rem, 3vw, 2.5rem); background: var(--card); border: 1px solid var(--line); padding: clamp(1rem, 2vw, 1.5rem); align-items: center; }
+.shots { position: relative; display: block; }
+.shots .d { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border: 1px solid var(--line); }
+.shots .m { position: absolute; right: 3%; bottom: -6%; width: 22%; aspect-ratio: 1 / 2; object-fit: cover; border: 4px solid #111; border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.35); }
+.txt { display: grid; gap: .8rem; align-content: start; min-width: 0; }
+.num { font: .74rem var(--f-mono); color: var(--muted); }
+h2 { font: 400 clamp(1.8rem, 3vw, 2.5rem)/1.05 var(--f-serif); }
+h2 i { color: var(--accent); }
+.txt p { color: var(--muted); }
+.txt ul { list-style: none; display: grid; gap: .35rem; font-size: .93rem; }
+.txt li { padding-left: 1.1rem; position: relative; }
+.txt li::before { content: ""; position: absolute; left: 0; top: .62em; width: .45rem; height: 1px; background: var(--fg); }
+.go { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .6rem 1.15rem; background: var(--fg); color: var(--bg); text-decoration: none; font-weight: 600; font-size: .92rem; border-radius: 999px; justify-self: start; margin-top: .3rem; }
+.go:hover { background: var(--accent); color: #fff; }
+.common { border-top: 1px solid var(--line); padding-block: 3rem 5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 2rem; }
+.common h3 { font: 400 1.4rem var(--f-serif); margin-bottom: .5rem; }
+.common p { color: var(--muted); font-size: .95rem; }
+@media (max-width: 820px) { .v { grid-template-columns: minmax(0, 1fr); } .shots { margin-bottom: 1.4rem; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="k">Rediseño · maxlangevin.com</p>
+    <h1>Ocho versiones de tu sitio. La 08 <em>reúne lo mejor</em> de todas.</h1>
+    <p class="lede">Todas comparten las mismas obras, el visor con zoom, español e inglés, WhatsApp y correo, la firma que se escribe sola y las paletas medidas en cada cuadro. Cambia la manera de contar. Ábrelas en el teléfono y en el computador: el scroll es parte de la experiencia.</p>
+  </header>
+
+  <section class="list" id="list"></section>
+
+  <section class="common">
+    <div><h3>Tu firma, vectorizada</h3><p>Sacada de la firma pintada en «El Conde». Es invisible hasta que la mano llega: se arma de izquierda a derecha siguiendo cada trazo. En la 08 tiene relieve de óleo.</p></div>
+    <div><h3>Paletas medidas</h3><p>Los colores de cada cuadro se midieron en la imagen y se muestran con su proporción real. Las notas de color son cortas y explican qué hace cada contraste.</p></div>
+    <div><h3>Pensado para vender</h3><p>Cada obra tiene un botón «Consultar por esta obra» que abre WhatsApp con el nombre de la obra. Hay sección de encargos y un enlace directo para compartir cada obra.</p></div>
+    <div><h3>Tu foto, arreglada</h3><p>El recorte con zoom venía de un error de tamaño de imagen. Ahora se ve el retrato completo, también en la versión original.</p></div>
+  </section>
+</div>
+<script>
+const V = [
+  { n: 'Original', f: 'original.html', t: 'v0', h: 'La primera <i>propuesta</i>', p: 'La versión que te encantó, con el zoom a Karin Goldberg y el viaje por Marcos 16:16. Queda tal cual, solo con la foto corregida.',
+    b: ['Zoom que entra al velo de Karin Goldberg', 'Viaje en tres paradas por Marcos 16:16', 'Sala horizontal de pinturas'] },
+  { n: '08', f: 'v8-sello.html', t: 'v8', h: 'Sello <i>(lo mejor de todas)</i>', p: 'Reúne lo mejor de las siete y suma tu entrega real. La identidad sale de tu propio sobre: verde, lacre rojo, papel de algodón y latón.',
+    b: ['El zoom a Karin Goldberg y el viaje por Marcos 16:16, con notas de color', 'Firma pintada al óleo que se escribe de izquierda a derecha', 'El sobre se abre con el scroll, sale el certificado y se escribe y firma solo', 'El cuadro gira y muestra la placa de latón; tu sello ML de lacre en todo el sitio', 'Sala con muro que toma el color de cada obra, lupa, archivo con filtros y fotos reales de la entrega'] },
+  { n: '01', f: 'v1-noche.html', t: 'v1', h: 'Noche', p: 'La evolución directa de la original. Sala oscura, ritmo de página de Apple y la cámara entrando en las telas, ahora con lo que le faltaba para vender.',
+    b: ['La cita se enciende palabra por palabra y tú la firmas', 'Notas de color dentro del zoom, con la paleta medida', 'Credenciales: Polímatas, Disney®, Fábula®, tus maestros', 'Sección de encargos y portadas limpias, sin caballete'] },
+  { n: '02', f: 'v2-museo.html', t: 'v2', h: 'Museo', p: 'Blanca e institucional, como el Rijksmuseum. La obra manda y cada cuadro se puede leer de cerca, con notas numeradas.',
+    b: ['Lectura guiada de Karin Goldberg: paleta, velo, sonrisa, encaje', 'Colección en un muro a escala real (según los cm de cada obra)', 'Vista de catálogo con número de inventario', 'Tu firma se escribe en el muro al final'] },
+  { n: '03', f: 'v3-taller.html', t: 'v3', h: 'Taller', p: 'La más personal. Lino crudo, etiquetas escritas a máquina y tú al lado de tus cuadros. Cuenta cómo se hace un retrato.',
+    b: ['Tu firma gigante se escribe al empezar a bajar', 'Fotos del taller y de las obras en el caballete', 'Cómo se hace: dibujo, color, detalle y firma', 'Mesa de luz con fotos macro que se amplían'] },
+  { n: '04', f: 'v4-editorial.html', t: 'v4', h: 'Editorial', p: 'Una revista sobre el color. La página entera toma el color medido de cada cuadro mientras bajas: verde, azul, rojo, gris.',
+    b: ['El fondo cambia al color de cada obra', 'Seis capítulos con su teoría de color, sin jerga', 'Índice tipográfico con vista previa al pasar', 'Firma gigante de cierre'] },
+  { n: '05', f: 'v5-galeria.html', t: 'v5', h: 'Galería', p: 'Una exposición para recorrer caminando. Bajar es avanzar por el muro de una sala; los cuadros cuelgan a escala y crecen cuando te acercas.',
+    b: ['Muro verde museo, luz cálida y piso de roble', 'Obras a escala entre sí, con su cartela', 'Sala I: retratos · Sala II: dibujo y grabado', 'Mapa de la sala para saltar entre salas'] },
+  { n: '06', f: 'v6-materia.html', t: 'v6', h: 'Materia <i>3D</i>', p: 'El cuadro como objeto, en 3D real. Lino tensado, bastidor de madera y relieve de óleo que giran e iluminan a medida que bajas.',
+    b: ['Karin Goldberg gira y muestra su reverso: bastidor, lino crudo y etiqueta con tu firma', 'Luz rasante que recorre Veteran George y hace aparecer la pincelada', 'Las 16 obras en un anillo que rota con el scroll; toca una para abrirla', 'Un lino que ondea y se pinta: primero el dibujo, después el color'] },
+  { n: '07', f: 'v7/index.html', t: 'v7', h: 'Estudio <i>(la guía)</i>', p: 'Hecha con el stack de la guía que compartiste: React, React Three Fiber, Drei, GSAP con ScrollTrigger, scroll suave y Tailwind. Un estudio claro, con el 3D al servicio de la historia.',
+    b: ['La firma se escribe con el porcentaje real de carga', 'Estudio modelado en Blender: caballete, lienzo con bastidor, paleta con óleo, pinceles y banqueta; arrástralo para girarlo', 'Pigmento: 40.000 partículas con los colores de Coti se ordenan hasta formar el cuadro', 'Galería horizontal con efecto de pintura líquida, cursor propio y botones magnéticos'] },
+];
+document.getElementById('list').innerHTML = V.map(v => `
+  <article class="v">
+    <a class="shots" href="${v.f}" aria-label="Abrir ${v.n === 'Original' ? 'la versión original' : 'la versión ' + v.n}"><img class="d" src="thumbs/${v.t}-d.webp" alt="" loading="lazy"><img class="m" src="thumbs/${v.t}-m.webp" alt="" loading="lazy"></a>
+    <div class="txt">
+      <p class="num">${v.n === 'Original' ? 'Versión original' : 'Versión ' + v.n}</p>
+      <h2>${v.h}</h2>
+      <p>${v.p}</p>
+      <ul>${v.b.map(x => `<li>${x}</li>`).join('')}</ul>
+      <a class="go" href="${v.f}">Abrir ${v.n === 'Original' ? 'la original' : 'la versión ' + v.n} →</a>
+    </div>
+  </article>`).join('');
+</script>
+</body>
+</html>

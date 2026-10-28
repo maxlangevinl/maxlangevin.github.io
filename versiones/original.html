@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Pintor</title>
+<meta name="description" content="Maximiliano Langevin Larraín — Pintor realista chileno. Retratos al óleo, dibujo, xilografía e ilustración.">
+<meta name="theme-color" content="#100e0c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maximiliano Langevin — Pintor">
+<meta property="og:description" content="Retratos al óleo que buscan lo que hay más allá de lo que se ve.">
+<meta property="og:image" content="https://maxlangevin.com/images/pinturas/karin_goldberg_1.jpg">
+<meta property="og:url" content="https://maxlangevin.com/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="../images/w/pinturas/karin_goldberg_1.webp">
+<style>
+/* Layout: una sala a oscuras. Escenas fijas (sticky) que el scroll recorre como una cámara
+   que entra en la tela; el dibujo vive sobre papel claro. Todo el color sale de estos tokens. */
+:root {
+  --ground: #100e0c;      /* tierra de sombra tostada, casi negro */
+  --ground-2: #1a1713;
+  --gesso: #efe9de;       /* imprimación */
+  --smoke: #a69c8f;
+  --verde: #93b197;       /* tierra verde, del fondo de Karin Goldberg */
+  --paper: #e8e1d3;       /* papel de algodón */
+  --ink: #1c1915;
+  --ink-soft: #5b5348;
+  --line: rgba(239, 233, 222, .14);
+  --line-ink: rgba(28, 25, 21, .16);
+
+  --f-display: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --f-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --gl: max(clamp(20px, 5vw, 72px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(20px, 5vw, 72px), env(safe-area-inset-right, 0px));
+  --nav-h: 60px;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+html:not(.rm) { scroll-behavior: smooth; }
+body {
+  background: var(--ground); color: var(--gesso);
+  font-family: var(--f-display); font-size: 1.0625rem; line-height: 1.6; font-weight: 400;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+main { overflow-x: clip; }
+img { display: block; height: auto; }
+[hidden] { display: none !important; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--verde); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--verde); color: var(--ground); }
+
+.wrap { padding-left: var(--gl); padding-right: var(--gr); }
+.eyebrow { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--verde); }
+.mono { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .06em; color: var(--smoke); }
+.h-xl { font-weight: 700; font-size: clamp(2.75rem, 8.4vw, 7.6rem); line-height: .94; letter-spacing: -.045em; text-wrap: balance; }
+.h-l { font-weight: 700; font-size: clamp(2.3rem, 5.6vw, 5rem); line-height: .98; letter-spacing: -.04em; text-wrap: balance; }
+.h-m { font-weight: 600; font-size: clamp(1.45rem, 2.6vw, 2.2rem); line-height: 1.12; letter-spacing: -.025em; text-wrap: balance; }
+.serif { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -.01em; }
+.lede { font-size: clamp(1.05rem, 1.35vw, 1.25rem); line-height: 1.55; color: var(--smoke); max-width: 40ch; text-wrap: pretty; }
+.skip { position: fixed; left: 12px; top: -60px; z-index: 400; background: var(--gesso); color: var(--ground); padding: .6rem 1rem; text-decoration: none; font-weight: 600; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+/* ── Botones ── */
+.pill {
+  display: inline-flex; align-items: center; gap: .55rem; min-height: 44px;
+  padding: .7rem 1.25rem; border-radius: 999px; font-weight: 600; font-size: .95rem; letter-spacing: -.005em;
+  background: var(--gesso); color: var(--ground); text-decoration: none; transition: transform .25s var(--ease), background .2s;
+}
+.pill:hover { transform: translateY(-1px); background: #fff; }
+.pill.ghost { background: transparent; color: var(--gesso); box-shadow: inset 0 0 0 1px var(--line); }
+.pill.ghost:hover { box-shadow: inset 0 0 0 1px var(--gesso); }
+.pill svg { width: 18px; height: 18px; flex: none; }
+.textlink { display: inline-flex; gap: .4rem; align-items: center; font-weight: 600; color: var(--verde); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+
+/* ── NAV ── */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--ground); }
+.nav {
+  position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding-left: var(--gl); padding-right: var(--gr);
+  transition: background .35s, box-shadow .35s;
+}
+.nav.solid { background: rgba(16, 14, 12, .72); -webkit-backdrop-filter: saturate(1.4) blur(18px); backdrop-filter: saturate(1.4) blur(18px); box-shadow: 0 1px 0 var(--line); }
+.brand { display: flex; align-items: center; gap: .65rem; text-decoration: none; font-weight: 600; font-size: .95rem; letter-spacing: -.01em; white-space: nowrap; }
+.brand img { width: 30px; height: 30px; filter: invert(1); }
+.nav-links { display: flex; gap: clamp(1rem, 2vw, 1.8rem); list-style: none; }
+.nav-links a { text-decoration: none; font-size: .82rem; color: var(--smoke); transition: color .2s; }
+.nav-links a:hover, .nav-links a.on { color: var(--gesso); }
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+.lang { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .1em; min-width: 44px; min-height: 32px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); color: var(--gesso); }
+.lang:hover { box-shadow: inset 0 0 0 1px var(--gesso); }
+.burger { display: none; width: 44px; height: 44px; position: relative; }
+.burger span { position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--gesso); transition: transform .3s var(--ease), top .3s var(--ease); }
+.burger span:nth-child(1) { top: 18px; } .burger span:nth-child(2) { top: 25px; }
+.burger[aria-expanded="true"] span:nth-child(1) { top: 21.5px; transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { top: 21.5px; transform: rotate(-45deg); }
+.drawer {
+  position: fixed; inset: 0; z-index: 130; background: var(--ground);
+  padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2rem) var(--gr) 2rem var(--gl);
+  display: flex; flex-direction: column; gap: .2rem;
+}
+.drawer a { text-decoration: none; font-weight: 700; font-size: clamp(2rem, 9vw, 3rem); letter-spacing: -.04em; line-height: 1.2; }
+
+/* ── ESCENAS (scroll) ── */
+.scene { position: relative; height: var(--len, 300vh); }
+.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; overflow: clip; }
+.zcanvas { position: absolute; inset: 0; }
+.zcanvas img { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; will-change: transform, opacity; backface-visibility: hidden; }
+.zcanvas img.layer {
+  -webkit-mask-image: radial-gradient(ellipse 72% 72% at 50% 50%, #000 60%, transparent 100%);
+          mask-image: radial-gradient(ellipse 72% 72% at 50% 50%, #000 60%, transparent 100%);
+}
+.scrim { position: absolute; inset: auto 0 0 0; height: 55%; pointer-events: none; background: linear-gradient(to top, rgba(16,14,12,.88), rgba(16,14,12,.5) 45%, transparent); opacity: 0; }
+.zt { position: absolute; z-index: 3; will-change: opacity, transform; }
+.zt.cap { left: var(--gl); right: var(--gr); bottom: calc(clamp(1.5rem, 6vh, 4rem) + env(safe-area-inset-bottom, 0px)); max-width: 34rem; text-shadow: 0 2px 24px rgba(0,0,0,.45); }
+.zt.cap .h-m + .mono { margin-top: .7rem; color: var(--gesso); opacity: .78; }
+.zt.center { inset: 0; display: grid; place-items: center; text-align: center; padding: 0 var(--gr) 0 var(--gl); pointer-events: none; }
+
+/* Hero */
+.hero-intro { top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(1rem, 5vh, 3.5rem)); left: var(--gl); right: var(--gr); text-align: center; display: grid; justify-items: center; gap: 1rem; }
+.hero-intro .h-xl { font-size: clamp(2.6rem, 8vw, 7.4rem); }
+.cue { position: absolute; z-index: 3; left: 50%; bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: grid; justify-items: center; gap: .5rem; pointer-events: none; }
+.cue .mono { color: var(--gesso); background: rgba(16,14,12,.72); padding: .35rem .8rem; border-radius: 999px; white-space: nowrap; }
+.cue i { width: 1px; height: 42px; background: linear-gradient(var(--gesso), transparent); animation: drip 2.2s var(--ease) infinite; transform-origin: top; }
+@keyframes drip { 0% { transform: scaleY(0); opacity: 1; } 70% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+.endcard { left: var(--gl); bottom: calc(clamp(1.5rem, 6vh, 4rem) + env(safe-area-inset-bottom, 0px)); display: grid; gap: .5rem; justify-items: start; max-width: 30rem; }
+.endcard .serif { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1; }
+.endcard .pill { margin-top: .8rem; }
+
+/* Manifiesto */
+.words-stage { display: grid; align-content: center; justify-items: start; gap: 2rem; padding-left: var(--gl); padding-right: var(--gr); }
+.words { font-family: var(--f-serif); font-weight: 300; font-style: italic; font-size: clamp(1.9rem, 5.2vw, 4.6rem); line-height: 1.12; letter-spacing: -.02em; max-width: 20ch; }
+.words span { opacity: .16; transition: opacity .25s linear; }
+.words span.lit { opacity: 1; }
+
+/* Viaje Marcos */
+.marcos-intro { left: var(--gl); top: 50%; transform: translateY(-50%); max-width: min(24rem, 23vw); display: grid; gap: 1rem; }
+.rail { position: absolute; z-index: 4; right: var(--gr); top: 50%; transform: translateY(-50%); display: grid; gap: .35rem; }
+.rail button { white-space: nowrap; display: flex; align-items: center; justify-content: flex-end; gap: .7rem; min-height: 40px; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--smoke); transition: color .2s; }
+.rail button::after { content: ""; width: 9px; height: 9px; border-radius: 50%; box-shadow: inset 0 0 0 1px currentColor; transition: background .2s, transform .3s var(--ease); }
+.rail button.on { color: var(--gesso); }
+.rail button.on::after { background: var(--verde); box-shadow: none; transform: scale(1.25); }
+.rail button span { text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+
+/* Track horizontal */
+.hstage { display: grid; grid-template-rows: auto 1fr; padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(.5rem, 3vh, 2rem)); }
+.h-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; padding-left: var(--gl); padding-right: var(--gr); }
+.h-head > div { display: grid; gap: .6rem; min-width: 0; }
+.h-progress { width: min(240px, 40vw); height: 2px; background: var(--line); position: relative; }
+.h-progress span { position: absolute; inset: 0; background: var(--gesso); transform-origin: left; transform: scaleX(0); }
+.track { display: flex; align-items: center; gap: clamp(1.5rem, 4vw, 4rem); width: max-content; padding-left: var(--gl); padding-right: var(--gr); will-change: transform; }
+.rm .track, .no-pin .track { width: auto; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; }
+.rm .track .work, .no-pin .track .work { scroll-snap-align: center; }
+
+/* Tarjetas de obra */
+.work { display: grid; gap: .9rem; text-align: left; justify-items: start; }
+.work .frame { display: block; position: relative; overflow: hidden; background: var(--ground-2); max-width: 100%; }
+.work img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease), filter .4s; }
+.work:hover img { transform: scale(1.035); }
+.track .work .frame { height: var(--ch); width: calc(var(--ch) * var(--a)); }
+.track { --ch: min(56svh, 560px); }
+.placard { display: grid; gap: .25rem; min-width: 0; }
+.placard .t { font-family: var(--f-serif); font-style: italic; font-size: 1.35rem; line-height: 1.15; }
+.placard .m { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .05em; color: var(--smoke); }
+.badge { position: absolute; top: .7rem; left: .7rem; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .55rem; background: rgba(16,14,12,.72); color: var(--gesso); border-radius: 999px; }
+.count { position: absolute; right: .7rem; bottom: .7rem; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .06em; padding: .3rem .55rem; background: rgba(16,14,12,.72); color: var(--gesso); border-radius: 999px; }
+
+.grid { display: grid; max-width: 75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
+.grid .work .frame { width: 100%; aspect-ratio: var(--a); }
+.cols { columns: 3 260px; column-gap: clamp(1.5rem, 3vw, 2.5rem); }
+.cols .work { break-inside: avoid; margin-bottom: clamp(1.5rem, 3vw, 2.5rem); width: 100%; }
+.cols .work .frame { width: 100%; aspect-ratio: var(--a); }
+
+/* Secciones */
+.band { padding-block: clamp(5rem, 12vh, 9rem); }
+.sec-head { display: grid; gap: 1rem; margin-bottom: clamp(2.5rem, 6vh, 4rem); max-width: 60rem; }
+
+/* El Conde */
+.conde-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); }
+.conde-art { position: sticky; top: calc(var(--nav-h) + 3vh); align-self: start; display: grid; gap: 1rem; }
+.conde-art button { display: block; width: 100%; }
+.conde-art img { width: 100%; height: auto; max-height: 82svh; object-fit: contain; object-position: left top; }
+.conde-text { display: grid; gap: clamp(2.5rem, 8vh, 5rem); padding-top: 2vh; min-width: 0; }
+.conde-text figure { display: grid; gap: .8rem; }
+.conde-text figure img { width: 100%; height: auto; }
+.conde-text figcaption { font-size: .92rem; color: var(--smoke); max-width: 52ch; }
+
+/* Lupa */
+.lupa-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+.lupa-text { display: grid; gap: 1.2rem; justify-items: start; min-width: 0; }
+.lupa-frame { position: relative; outline-offset: 6px; height: min(82svh, 860px); aspect-ratio: 1416 / 2000; max-width: 100%; cursor: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.lupa-frame.touchon { touch-action: none; }
+.lupa-frame > img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.lens {
+  position: absolute; width: clamp(150px, 18vw, 240px); aspect-ratio: 1; border-radius: 50%;
+  transform: translate(-50%, -50%); pointer-events: none; background-repeat: no-repeat;
+  box-shadow: 0 0 0 1.5px rgba(239,233,222,.9), 0 18px 50px rgba(0,0,0,.55);
+}
+.lens::after { content: attr(data-z); position: absolute; left: 50%; bottom: -1.9rem; transform: translateX(-50%); font-family: var(--f-mono); font-size: .68rem; color: var(--gesso); text-shadow: 0 1px 6px #000; white-space: nowrap; }
+
+/* Escenas de scrub: dibujo, xilografía, ilustración */
+.split { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); grid-template-rows: minmax(0, 1fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); height: 100%; padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2vh) var(--gr) 4vh var(--gl); }
+.split-text { display: grid; gap: 1.1rem; justify-items: start; min-width: 0; }
+.frames { position: relative; height: 100%; max-height: 80svh; min-height: 0; }
+.frames img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.stepper { display: flex; align-items: center; gap: .9rem; }
+.stepper .bar { width: 120px; height: 2px; background: var(--line); position: relative; }
+.stepper .bar span { position: absolute; inset: 0; background: currentColor; transform-origin: left; transform: scaleX(1); }
+
+.paper { background: var(--paper); color: var(--ink); }
+.paper .lede, .paper .mono, .paper .placard .m { color: var(--ink-soft); }
+.paper .eyebrow { color: #4f6b54; }
+.paper .stepper .bar { background: var(--line-ink); }
+.paper .work .frame { background: #ddd5c5; }
+.paper :focus-visible { outline-color: var(--ink); }
+
+.cone-art { position: relative; height: 100%; max-height: 84svh; aspect-ratio: 1333 / 2000; max-width: 100%; justify-self: center; }
+.cone-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cone-art .ghost { opacity: .1; filter: grayscale(1); }
+
+/* Bio */
+.bio { background: var(--ground-2); }
+.bio-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 7vw, 7rem); align-items: start; }
+.bio-photo { position: sticky; top: calc(var(--nav-h) + 3vh); display: grid; gap: 1.2rem; max-width: 440px; }
+.bio-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 50%; filter: grayscale(1) contrast(1.05); }
+.bio-body { display: grid; gap: 1.2rem; max-width: 62ch; min-width: 0; }
+.bio-body p { color: var(--smoke); }
+.bio-body p:first-of-type { color: var(--gesso); font-size: clamp(1.15rem, 1.6vw, 1.35rem); line-height: 1.5; }
+.bio-body em { color: var(--gesso); }
+.timeline { list-style: none; margin-top: 2.5rem; border-top: 1px solid var(--line); }
+.timeline li { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 1rem; padding-block: 1rem; border-bottom: 1px solid var(--line); }
+.timeline .y { font-family: var(--f-mono); font-size: .85rem; color: var(--verde); font-variant-numeric: tabular-nums; padding-top: .15rem; }
+
+/* Contacto */
+.contact { text-align: left; }
+.contact .h-xl { max-width: 14ch; }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: clamp(2rem, 5vh, 3.5rem); }
+.mail a { font-family: var(--f-serif); font-style: italic; font-size: clamp(1.6rem, 4.2vw, 3.2rem); text-decoration: none; line-height: 1.1; overflow-wrap: anywhere; border-bottom: 1px solid transparent; transition: border-color .2s; }
+.mail a:hover { border-bottom-color: var(--gesso); }
+.copy { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; min-height: 36px; padding: 0 .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); color: var(--smoke); }
+.copy:hover { color: var(--gesso); box-shadow: inset 0 0 0 1px var(--gesso); }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.socials { display: flex; flex-wrap: wrap; gap: .5rem 2rem; margin-top: clamp(3rem, 8vh, 5rem); list-style: none; }
+.socials a { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--smoke); text-decoration: none; display: inline-block; padding-block: .6rem; }
+.socials a:hover { color: var(--gesso); }
+footer { border-top: 1px solid var(--line); padding-block: 1.6rem calc(1.6rem + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; font-family: var(--f-mono); font-size: .72rem; color: var(--smoke); }
+
+/* ── LIGHTBOX ── */
+.lb { position: fixed; inset: 0; z-index: 300; background: rgba(10, 9, 7, .97); display: grid; grid-template-columns: minmax(0, 1fr) 360px; opacity: 0; transition: opacity .3s var(--ease); }
+.lb.open { opacity: 1; }
+.lb-media { position: relative; overflow: hidden; display: grid; place-items: center; padding: calc(1.5rem + env(safe-area-inset-top, 0px)) 4.5rem calc(1.5rem + env(safe-area-inset-bottom, 0px)) max(4.5rem, env(safe-area-inset-left, 0px)); touch-action: pan-y; }
+.lb-media img { max-width: 100%; max-height: calc(100svh - 3rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); width: auto; height: auto; object-fit: contain; cursor: zoom-in; transition: transform .35s var(--ease), opacity .25s; user-select: none; -webkit-user-drag: none; }
+.lb-media.zoomed { touch-action: none; }
+.lb-media.zoomed img { transform: scale(2.6); cursor: zoom-out; transition: transform .35s var(--ease); }
+.lb-media.panning img { transition: none; }
+.lb-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: rgba(239,233,222,.08); color: var(--gesso); transition: background .2s; }
+.lb-arrow:hover { background: rgba(239,233,222,.18); }
+.lb-arrow:disabled { opacity: .2; cursor: default; }
+.lb-arrow svg { width: 20px; height: 20px; }
+.lb-arrow.prev { left: max(1rem, env(safe-area-inset-left, 0px)); } .lb-arrow.next { right: 1rem; }
+.lb-hint { position: absolute; bottom: calc(.8rem + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; color: var(--smoke); white-space: nowrap; pointer-events: none; }
+.lb-info { border-left: 1px solid var(--line); padding: calc(4.5rem + env(safe-area-inset-top, 0px)) max(1.8rem, env(safe-area-inset-right, 0px)) calc(2rem + env(safe-area-inset-bottom, 0px)) 1.8rem; display: flex; flex-direction: column; gap: .8rem; overflow-y: auto; min-width: 0; }
+.lb-info h3 { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: 2.2rem; line-height: 1.05; letter-spacing: -.01em; }
+.lb-info .meta { display: grid; gap: .2rem; }
+.lb-info .desc { color: var(--smoke); font-size: .95rem; }
+.lb-info .cap { font-size: .92rem; border-left: 2px solid var(--verde); padding-left: .9rem; }
+.lb-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: .5rem; margin-top: auto; padding-top: 1.5rem; }
+.lb-thumbs button { aspect-ratio: 1; overflow: hidden; opacity: .45; transition: opacity .2s; box-shadow: inset 0 0 0 0 var(--gesso); }
+.lb-thumbs button.on { opacity: 1; outline: 2px solid var(--gesso); outline-offset: 2px; }
+.lb-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+.lb-close { position: absolute; z-index: 2; top: calc(1rem + env(safe-area-inset-top, 0px)); right: max(1rem, env(safe-area-inset-right, 0px)); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: rgba(239,233,222,.08); color: var(--gesso); }
+.lb-close:hover { background: rgba(239,233,222,.18); }
+.lb-close svg { width: 18px; height: 18px; }
+
+.toast { position: fixed; z-index: 320; left: 50%; bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--gesso); color: var(--ground); padding: .6rem 1.1rem; border-radius: 999px; font-weight: 600; font-size: .9rem; opacity: 0; transition: opacity .25s, transform .25s var(--ease); pointer-events: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ── Responsive ── */
+@media (max-width: 1080px) {
+  .nav-links { display: none; }
+  .burger { display: block; }
+}
+@media (max-width: 860px) {
+  :root { --nav-h: 56px; }
+  .marcos-intro { top: auto; bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px)); transform: none; right: var(--gr); max-width: none; }
+  .rail { top: auto; bottom: calc(.75rem + env(safe-area-inset-bottom, 0px)); right: auto; left: 50%; transform: translateX(-50%); display: flex; gap: .4rem; }
+  .rail button { flex-direction: row-reverse; gap: .4rem; font-size: .62rem; }
+  .zcap-marcos { bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px)) !important; }
+  .conde-grid, .bio-grid { grid-template-columns: minmax(0, 1fr); }
+  .conde-art, .bio-photo { position: static; }
+  .conde-art img { max-height: 70svh; object-position: center; }
+  .bio-photo { grid-template-columns: minmax(0, 1fr); max-width: 420px; }
+  .lupa-grid { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .lupa-frame { height: auto; width: min(100%, 520px); }
+  .split { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 1.2rem; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
+  .split .frames, .split .cone-art { order: -1; max-height: none; }
+  .split-text { gap: .7rem; }
+  .split-text .lede { font-size: .98rem; }
+  .split-text .h-l { font-size: clamp(1.9rem, 8vw, 2.6rem); }
+  .lb { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  .lb-media { padding: calc(4rem + env(safe-area-inset-top, 0px)) .5rem 3.4rem; min-height: 0; }
+  .lb-media img { max-height: 100%; }
+  .track { --ch: min(46svh, 440px); }
+  .lb-arrow { top: auto; bottom: .3rem; transform: none; width: 44px; height: 44px; }
+  .lb-hint { bottom: 1.2rem; }
+  .lb-info { border-left: 0; border-top: 1px solid var(--line); padding: 1rem var(--gr) calc(1rem + env(safe-area-inset-bottom, 0px)) var(--gl); max-height: 38svh; gap: .5rem; }
+  .lb-info h3 { font-size: 1.6rem; }
+  .lb-thumbs { display: flex; overflow-x: auto; margin-top: .5rem; padding-top: .3rem; padding-left: 3px; padding-bottom: 4px; }
+  .lb-thumbs button { width: 56px; flex: none; }
+}
+@media (max-width: 560px) {
+  .brand span { display: none; }
+  .timeline li { grid-template-columns: 4.6rem minmax(0, 1fr); }
+}
+
+/* Movimiento reducido: sin escenas largas; todo queda quieto y legible */
+.rm .scene { height: auto !important; }
+.rm .stage { position: relative; }
+.rm .hstage { height: auto; padding-bottom: 3rem; }
+.rm .cue i { animation: none; }
+@media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#pinturas" data-i18n="skip">Saltar a las obras</a>
+
+<header class="nav" id="nav">
+  <a href="#top" class="brand" aria-label="Maximiliano Langevin, inicio">
+    <img src="../images/logo_ml.png" alt="" width="30" height="30">
+    <span>Maximiliano Langevin</span>
+  </a>
+  <div class="nav-right">
+    <nav aria-label="Secciones">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#pinturas" data-i18n="nav_paintings">Pinturas</a></li>
+        <li><a href="#dibujos" data-i18n="nav_drawings">Dibujos</a></li>
+        <li><a href="#xilografia" data-i18n="nav_xilo">Xilografía</a></li>
+        <li><a href="#ilustracion" data-i18n="nav_illus">Ilustración</a></li>
+        <li><a href="#creaciones" data-i18n="nav_creat">Creaciones</a></li>
+        <li><a href="#about" data-i18n="nav_about">Biografía</a></li>
+        <li><a href="#contact" data-i18n="nav_contact">Contacto</a></li>
+      </ul>
+    </nav>
+    <button class="lang" id="lang-btn" type="button" aria-label="Switch to English">EN</button>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menú"><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" hidden>
+  <a href="#pinturas" data-i18n="nav_paintings">Pinturas</a>
+  <a href="#viaje" data-i18n="nav_journey">Marcos 16:16</a>
+  <a href="#dibujos" data-i18n="nav_drawings">Dibujos</a>
+  <a href="#xilografia" data-i18n="nav_xilo">Xilografía</a>
+  <a href="#ilustracion" data-i18n="nav_illus">Ilustración</a>
+  <a href="#creaciones" data-i18n="nav_creat">Creaciones</a>
+  <a href="#about" data-i18n="nav_about">Biografía</a>
+  <a href="#contact" data-i18n="nav_contact">Contacto</a>
+</div>
+
+<main>
+
+<!-- 1 · HERO: la cámara entra en Karin Goldberg -->
+<section class="scene" id="top" style="--len:400vh" data-zoom="hero" aria-label="Inicio">
+  <div class="stage">
+    <div class="zcanvas"></div>
+    <div class="scrim"></div>
+    <div class="zt hero-intro" data-r="0,.05" data-e=".06">
+      <p class="eyebrow" data-i18n="hero_eyebrow">Pintor realista · Santiago de Chile</p>
+      <h1 class="h-xl">Maximiliano Langevin</h1>
+    </div>
+    <div class="cue zt" data-r="0,.02" data-e=".04"><span class="mono" data-i18n="hero_cue">Baja para entrar en la pintura</span><i></i></div>
+    <div class="zt center" data-r=".15,.22" data-e=".05"><p class="h-l" data-i18n="hero_c1">Acércate.</p></div>
+    <div class="zt cap" data-r=".38,.50"><p class="h-m" data-i18n="hero_c2">Retratos al óleo que buscan lo que hay más allá de lo que se ve.</p></div>
+    <div class="zt cap" data-r=".68,.82"><p class="h-m" data-i18n="hero_c3">Cada hilo del velo, pintado a mano.</p><p class="mono" data-i18n="hero_c3_sub">Detalle · Karin Goldberg, 2025</p></div>
+    <div class="zt endcard" data-r=".95,1" data-e=".04">
+      <p class="eyebrow" data-i18n="latest">Obra reciente</p>
+      <p class="serif">Karin Goldberg</p>
+      <p class="mono" data-i18n="karin_meta">2025 · Óleo sobre lino · 48 × 68 cm</p>
+      <button class="pill" type="button" data-open="karin-goldberg"><span data-i18n="see_work">Ver la obra</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · MANIFIESTO -->
+<section class="scene" style="--len:220vh" data-words aria-label="Cita">
+  <div class="stage words-stage">
+    <blockquote class="words" id="quote"></blockquote>
+    <p class="mono">— Maximiliano Langevin</p>
+  </div>
+</section>
+
+<!-- 3 · PINTURAS: sala horizontal -->
+<section class="scene" id="pinturas" data-track aria-labelledby="pinturas-h">
+  <div class="stage hstage">
+    <div class="h-head">
+      <div>
+        <p class="eyebrow" data-i18n="paint_eyebrow">Óleo sobre tela y lino · 2020 — hoy</p>
+        <h2 class="h-l" id="pinturas-h" data-i18n="nav_paintings">Pinturas</h2>
+      </div>
+      <div>
+        <p class="mono" data-i18n="paint_hint">Toca una obra para ver sus fotos y detalles</p>
+        <div class="h-progress" aria-hidden="true"><span></span></div>
+      </div>
+    </div>
+    <div class="track" id="grid-pinturas"></div>
+  </div>
+</section>
+
+<!-- 4 · VIAJE: Marcos 16:16 -->
+<section class="scene" id="viaje" style="--len:620vh" data-zoom="marcos" aria-labelledby="marcos-h">
+  <div class="stage">
+    <div class="zcanvas"></div>
+    <div class="scrim"></div>
+    <div class="zt marcos-intro" data-r="0,.05" data-e=".05">
+      <p class="eyebrow" data-i18n="marcos_eyebrow">Obra en proceso</p>
+      <h2 class="h-l" id="marcos-h">Marcos 16:16</h2>
+      <p class="lede" data-i18n="marcos_intro">Óleo sobre tela, 77,5 × 102,5 cm. Todavía está en el caballete. Baja para recorrerla por dentro.</p>
+    </div>
+    <div class="zt cap zcap-marcos" data-r=".18,.29"><p class="h-m" data-i18n="marcos_s1">La luz de colores cae sobre el damero. Ella intenta tocarla.</p></div>
+    <div class="zt cap zcap-marcos" data-r=".49,.59"><p class="h-m" data-i18n="marcos_s2">Detrás de la reja, el retablo: dorado, sombra y madera tallada.</p></div>
+    <div class="zt cap zcap-marcos" data-r=".80,.88"><p class="h-m serif">«Qui crediderit et baptizatus fuerit salvus erit.»</p><p class="mono" data-i18n="marcos_s3_sub">Marcos 16:16 · El que crea y sea bautizado, se salvará.</p></div>
+    <div class="zt endcard zcap-marcos" data-r=".96,1" data-e=".03">
+      <p class="serif">Marcos 16:16</p>
+      <button class="pill" type="button" data-open="marcos-16-16"><span data-i18n="marcos_end">Ver fotos del proceso</span></button>
+    </div>
+    <div class="rail" id="rail-marcos" aria-label="Recorrido">
+      <button type="button" data-goto=".235"><span data-i18n="marcos_l1">La niña</span></button>
+      <button type="button" data-goto=".545"><span data-i18n="marcos_l2">El retablo</span></button>
+      <button type="button" data-goto=".84"><span data-i18n="marcos_l3">La inscripción</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · EL CONDE -->
+<section class="band wrap" id="el-conde" aria-labelledby="conde-h">
+  <div class="conde-grid">
+    <div class="conde-art">
+      <button type="button" data-open="el-conde" aria-label="El Conde">
+        <img src="../images/w/pinturas/el_conde_1.webp" alt="El Conde, óleo sobre lino en escala de grises: figura con gorra militar y abrigo de piel" width="1332" height="2000" loading="lazy" decoding="async">
+      </button>
+      <p class="mono" data-i18n="conde_meta">2024 · Óleo sobre lino · 40 × 60 cm</p>
+    </div>
+    <div class="conde-text">
+      <div class="sec-head" style="margin:0">
+        <p class="eyebrow" data-i18n="conde_eyebrow">Exposición «Polímatas» · Estadio Italiano, 2024</p>
+        <h2 class="h-l" id="conde-h">El Conde</h2>
+        <p class="lede" data-i18n="conde_p">Un retrato pintado en grises a partir de la película «El Conde». Se expuso en «Polímatas», en el Estadio Italiano, y terminó frente a quienes hicieron la película.</p>
+      </div>
+      <figure><img src="../images/w/pinturas/el_conde_2.webp" alt="" width="1200" height="1600" loading="lazy" decoding="async"><figcaption data-i18n="conde_c2">Exposición «Polímatas» en el Estadio Italiano, 2024.</figcaption></figure>
+      <figure><img src="../images/w/pinturas/el_conde_3.webp" alt="" width="1156" height="1542" loading="lazy" decoding="async"><figcaption data-i18n="conde_c3">Maximiliano Langevin a la izquierda y Francisco Uzabeaga a la derecha.</figcaption></figure>
+      <figure><img src="../images/w/pinturas/el_conde_5.webp" alt="" width="2000" height="1500" loading="lazy" decoding="async"><figcaption data-i18n="conde_c5">Juan de Dios Larraín (productor) y Pablo Larraín (director) de «El Conde» junto a la obra.</figcaption></figure>
+      <div><button class="textlink" type="button" data-open="el-conde"><span data-i18n="all_photos">Ver todas las fotos</span> →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · LUPA -->
+<section class="band wrap" id="lupa" aria-labelledby="lupa-h" style="padding-top:0">
+  <div class="lupa-grid">
+    <div class="lupa-text">
+      <p class="eyebrow">Veteran George · 2024</p>
+      <h2 class="h-l" id="lupa-h" data-i18n="lupa_title">Mira de cerca.</h2>
+      <p class="lede" data-i18n="lupa_p">Pasa el cursor sobre la pintura: la barba, la gorra, el brillo del metal. Óleo sobre lino, 28 × 40 cm.</p>
+      <button class="pill ghost" type="button" id="lupa-toggle" aria-pressed="false" hidden><span data-i18n="lupa_on">Usar la lupa con el dedo</span></button>
+      <button class="textlink" type="button" data-open="veteran-george"><span data-i18n="all_photos">Ver todas las fotos</span> →</button>
+    </div>
+    <div class="lupa-frame" id="lupa-frame" tabindex="0" aria-describedby="lupa-h">
+      <img src="../images/w/pinturas/veteran_george_1.webp" alt="Veteran George: hombre mayor con gorra de veterano, camisa roja y una escopeta, junto a un perro" width="1416" height="2000" loading="lazy" decoding="async">
+      <div class="lens" id="lens" data-z="×3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · DIBUJOS -->
+<section class="paper" id="dibujos" aria-labelledby="dibujos-h">
+  <div class="scene" style="--len:300vh" data-scrub="fade">
+    <div class="stage">
+      <div class="split">
+        <div class="split-text">
+          <p class="eyebrow" data-i18n="draw_eyebrow">Dibujos · 2019</p>
+          <h2 class="h-l" id="dibujos-h" data-i18n="draw_title">Del trazo a la forma.</h2>
+          <p class="lede" data-i18n="draw_p">Copia de un dibujo de William Bouguereau. Grafito sobre papel de algodón, 30 × 23 cm. Cinco fotos del mismo dibujo, desde las primeras líneas hasta la firma.</p>
+          <div class="stepper mono"><span><span data-i18n="stage">Etapa</span> <b class="n">5</b> / 5</span><span class="bar"><span></span></span></div>
+        </div>
+        <div class="frames">
+          <img src="../images/w/dibujos/bouguereau_1.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/dibujos/bouguereau_2.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/dibujos/bouguereau_3.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/dibujos/bouguereau_4.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/dibujos/bouguereau_5.webp" alt="Copia de Bouguereau: perfil de mujer en grafito" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap band" style="padding-top:clamp(2rem,6vh,4rem)"><div class="grid" id="grid-dibujos"></div></div>
+</section>
+
+<!-- 8 · XILOGRAFÍA -->
+<section id="xilografia" aria-labelledby="xilo-h">
+  <div class="scene" style="--len:260vh" data-cone>
+    <div class="stage">
+      <div class="split">
+        <div class="split-text">
+          <p class="eyebrow" data-i18n="xilo_eyebrow">Xilografía · 2017</p>
+          <h2 class="h-l" id="xilo-h" data-i18n="xilo_title">Tallar la luz.</h2>
+          <p class="lede" data-i18n="xilo_p">La Mosca: tallada en madera e impresa a mano sobre papel Fabriano, 30 × 70 cm. En un grabado, todo lo blanco es madera que se quitó con la gubia.</p>
+        </div>
+        <div class="cone-art">
+          <img class="ghost" src="../images/w/xilografia/la_mosca_2.webp" alt="" loading="lazy" decoding="async">
+          <img class="lit" src="../images/w/xilografia/la_mosca_2.webp" alt="La Mosca: un sapo canta frente a un micrófono bajo un cono de luz, xilografía en blanco y negro" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap band" style="padding-top:clamp(2rem,6vh,4rem)"><div class="grid" id="grid-xilografia"></div></div>
+</section>
+
+<!-- 9 · ILUSTRACIÓN -->
+<section id="ilustracion" aria-labelledby="ilus-h" style="background:var(--ground-2)">
+  <div class="scene" style="--len:260vh" data-scrub="step">
+    <div class="stage">
+      <div class="split">
+        <div class="split-text">
+          <p class="eyebrow" data-i18n="ilus_eyebrow">Ilustración · 2018 — 2021</p>
+          <h2 class="h-l" id="ilus-h" data-i18n="ilus_title">Una cabeza, seis peinados.</h2>
+          <p class="lede" data-i18n="ilus_p">Autorretrato digital hecho en Photoshop, 2018. Después vinieron sapos, cómics y animaciones en After Effects.</p>
+          <div class="stepper mono"><span><b class="n">6</b> / 6</span><span class="bar"><span></span></span></div>
+        </div>
+        <div class="frames">
+          <img src="../images/w/ilustracion/autorretrato_1.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/ilustracion/autorretrato_2.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/ilustracion/autorretrato_3.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/ilustracion/autorretrato_4.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/ilustracion/autorretrato_5.webp" alt="" loading="lazy" decoding="async">
+          <img src="../images/w/ilustracion/autorretrato_6.webp" alt="Autorretrato digital de perfil sobre fondo verde" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap band" style="padding-top:clamp(2rem,6vh,4rem)"><div class="cols" id="grid-ilustracion"></div></div>
+</section>
+
+<!-- 10 · CREACIONES -->
+<section class="band wrap" id="creaciones" aria-labelledby="creat-h">
+  <div class="sec-head">
+    <p class="eyebrow" data-i18n="creat_eyebrow">Objetos · 2020 — 2022</p>
+    <h2 class="h-l" id="creat-h" data-i18n="nav_creat">Creaciones</h2>
+    <p class="lede" data-i18n="creat_p">Cerámica esmaltada, zapatillas pintadas a mano y otros objetos que salen del taller.</p>
+  </div>
+  <div class="grid" id="grid-creaciones"></div>
+</section>
+
+<!-- 11 · BIOGRAFÍA -->
+<section class="bio band wrap" id="about" aria-labelledby="about-h">
+  <div class="bio-grid">
+    <div class="bio-photo">
+      <img src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy" decoding="async">
+      <p class="mono">Santiago, Chile · 1996</p>
+    </div>
+    <div>
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="nav_about">Biografía</p>
+        <h2 class="h-l" id="about-h">Maximiliano Langevin Larraín</h2>
+      </div>
+      <div class="bio-body" id="bio-body"></div>
+      <ol class="timeline" id="timeline"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · CONTACTO -->
+<section class="band wrap contact" id="contact" aria-labelledby="contact-h">
+  <p class="eyebrow" data-i18n="nav_contact">Contacto</p>
+  <h2 class="h-xl" id="contact-h" style="margin-top:1rem" data-i18n="contact_title">Hablemos de un retrato.</h2>
+  <p class="lede" style="margin-top:1.5rem" data-i18n="contact_p">Encargos, exposiciones o colaboraciones. Respondo personalmente.</p>
+  <div class="mail">
+    <a href="mailto:maxlangevinl@gmail.com" id="mail-link">maxlangevinl@gmail.com</a>
+    <button class="copy" type="button" id="copy-mail" data-i18n="copy">Copiar</button>
+  </div>
+  <div class="actions">
+    <a class="pill" id="wa-btn" href="https://wa.me/56987658226" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.41z"/></svg>
+      <span data-i18n="wa_btn">Escribir por WhatsApp</span>
+    </a>
+  </div>
+  <ul class="socials">
+    <li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li>
+    <li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li>
+    <li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li>
+  </ul>
+</section>
+
+<footer class="wrap">
+  <span>© 2026 Maximiliano Langevin</span>
+  <span>Langevinci®</span>
+</footer>
+</main>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-title" hidden>
+  <div class="lb-media" id="lb-media">
+    <img id="lb-img" alt="">
+    <button class="lb-arrow prev" id="lb-prev" type="button" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="lb-arrow next" id="lb-next" type="button" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
+    <p class="lb-hint" id="lb-hint" data-i18n="lb_hint">Toca la imagen para acercar</p>
+  </div>
+  <aside class="lb-info">
+    <p class="mono" id="lb-count"></p>
+    <h3 id="lb-title"></h3>
+    <div class="meta"><p class="mono" id="lb-year"></p><p class="mono" id="lb-tech"></p></div>
+    <p class="desc" id="lb-desc"></p>
+    <p class="cap" id="lb-cap" hidden></p>
+    <a class="textlink" id="lb-link" href="#" target="_blank" rel="noopener" hidden></a>
+    <div class="lb-thumbs" id="lb-thumbs"></div>
+  </aside>
+  <button class="lb-close" id="lb-close" type="button" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SIZES={'creaciones/en_llamas':[1080,1350],'creaciones/sapo_punk_1':[1000,1500],'creaciones/sapo_punk_2':[1500,1000],'creaciones/sapo_punk_3':[1000,1500],'creaciones/sapo_punk_4':[1500,1000],'creaciones/sapo_punk_5':[1000,1500],'creaciones/sapo_punk_6':[1500,1475],'creaciones/tasapo':[1198,1500],'dibujos/bouguereau_1':[1555,2000],'dibujos/bouguereau_2':[1546,2000],'dibujos/bouguereau_3':[1554,2000],'dibujos/bouguereau_4':[1579,2000],'dibujos/bouguereau_5':[1560,2000],'dibujos/parmogianino_1':[1433,2000],'dibujos/parmogianino_2':[1500,2000],'dibujos/parmogianino_3':[1500,2000],'dibujos/parmogianino_4':[1433,2000],'ilustracion/autorretrato_1':[1920,1932],'ilustracion/autorretrato_2':[1920,1932],'ilustracion/autorretrato_3':[1920,1932],'ilustracion/autorretrato_4':[1920,1932],'ilustracion/autorretrato_5':[1920,1932],'ilustracion/autorretrato_6':[1920,1932],'ilustracion/best_buds':[1920,1853],'ilustracion/covitch_19':[1152,1148],'ilustracion/high_life_1':[1545,2000],'ilustracion/high_life_2':[1545,2000],'ilustracion/high_life_3':[1545,2000],'ilustracion/high_life_4':[1545,2000],'ilustracion/high_life_5':[1545,2000],'ilustracion/melted':[1545,2000],'ilustracion/saping_1':[1920,1920],'ilustracion/saping_2':[1080,1080],'ilustracion/saping_3':[1080,1080],'ilustracion/saping_4':[1080,1080],'ilustracion/wizard_frog':[1495,2000],'maximiliano_langevin':[2000,2000],'pinturas/consu_gato':[2000,1500],'pinturas/coti_1':[1621,2000],'pinturas/coti_2':[1333,2000],'pinturas/coti_3':[2000,1333],'pinturas/coti_4':[1333,2000],'pinturas/el_conde_1':[1332,2000],'pinturas/el_conde_2':[1200,1600],'pinturas/el_conde_3':[1156,1542],'pinturas/el_conde_4':[2000,1500],'pinturas/el_conde_5':[2000,1500],'pinturas/el_jardin_de_las_delicias_1':[1495,2000],'pinturas/el_jardin_de_las_delicias_2':[2000,1333],'pinturas/el_jardin_de_las_delicias_3':[1333,2000],'pinturas/en_verano_1':[1086,1500],'pinturas/en_verano_2':[1200,1459],'pinturas/en_verano_3':[1000,1500],'pinturas/en_verano_4':[1000,1500],'pinturas/en_verano_5':[1500,978],'pinturas/en_verano_6':[1500,980],'pinturas/en_verano_7':[1500,1010],'pinturas/gallagath_1':[1611,2000],'pinturas/gallagath_2':[1459,2000],'pinturas/gallagath_3':[2000,1333],'pinturas/gallagath_4':[2000,1333],'pinturas/gallagath_5':[1333,2000],'pinturas/gallagath_6':[2000,1333],'pinturas/karin_goldberg_1':[1412,2000],'pinturas/karin_goldberg_2':[1500,2000],'pinturas/karin_goldberg_3':[1500,2000],'pinturas/karin_goldberg_4':[1500,2000],'pinturas/karin_goldberg_5':[1500,2000],'pinturas/karin_goldberg_6':[1500,2000],'pinturas/karin_goldberg_7':[1500,2000],'pinturas/karin_goldberg_8':[1500,2000],'pinturas/marcos_16_16_1':[1533,2000],'pinturas/marcos_16_16_2':[1500,2000],'pinturas/marcos_16_16_3':[2000,1500],'pinturas/marcos_16_16_4':[2000,1500],'pinturas/marcos_16_16_5':[2000,1500],'pinturas/marcos_16_16_6':[2000,1500],'pinturas/marcos_16_16_7':[2000,1500],'pinturas/santiago_1':[1500,2000],'pinturas/santiago_2':[1500,2000],'pinturas/santiago_3':[1500,2000],'pinturas/santiago_4':[1500,2000],'pinturas/veteran_george_1':[1416,2000],'pinturas/veteran_george_2':[1500,2000],'pinturas/veteran_george_3':[1511,2000],'pinturas/vicente_1':[960,1500],'pinturas/vicente_2':[1000,1500],'pinturas/vicente_3':[1000,1500],'pinturas/vicente_4':[1500,1000],'pinturas/vicente_5':[1000,1500],'pinturas/vicente_6':[1000,1500],'pinturas/vicente_7':[1500,1000],'pinturas/vicente_8':[1000,1500],'xilografia/guiseppe_1':[2000,1551],'xilografia/guiseppe_2':[1920,1583],'xilografia/guiseppe_3':[2000,1680],'xilografia/guiseppe_4':[2000,1334],'xilografia/la_mosca_1':[1301,2000],'xilografia/la_mosca_2':[1333,2000],'xilografia/la_mosca_3':[1920,1479],'xilografia/la_mosca_4':[940,2000],'xilografia/la_mosca_5':[1313,2000],'xilografia/la_mosca_6':[2000,1334],'xilografia/san_jorge_y_el_dragon_1':[1920,1170],'xilografia/san_jorge_y_el_dragon_2':[1772,1764],'xilografia/san_jorge_y_el_dragon_3':[1920,1281],'xilografia/san_jorge_y_el_dragon_4':[1651,2000]};
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (RM) document.documentElement.classList.add('rm');
+const W_ = p => `../images/w/${p}.webp`;
+const T_ = p => `../images/t/${p}.webp`;
+const ratio = p => SIZES[p] ? SIZES[p][0] / SIZES[p][1] : 0.75;
+
+// ── TEXTOS ──
+const T = {
+  es: {
+    skip: 'Saltar a las obras',
+    nav_paintings: 'Pinturas', nav_journey: 'Marcos 16:16', nav_drawings: 'Dibujos', nav_xilo: 'Xilografía',
+    nav_illus: 'Ilustración', nav_creat: 'Creaciones', nav_about: 'Biografía', nav_contact: 'Contacto',
+    hero_eyebrow: 'Pintor realista · Santiago de Chile',
+    hero_cue: 'Baja para entrar en la pintura',
+    hero_c1: 'Acércate.',
+    hero_c2: 'Retratos al óleo que buscan lo que hay más allá de lo que se ve.',
+    hero_c3: 'Cada hilo del velo, pintado a mano.',
+    hero_c3_sub: 'Detalle · Karin Goldberg, 2025',
+    latest: 'Obra reciente', karin_meta: '2025 · Óleo sobre lino · 48 × 68 cm', see_work: 'Ver la obra',
+    quote: 'Los retratos son una forma de inmortalizar al sujeto. Mi objetivo es capturar lo que va más allá de lo que se ve.',
+    paint_eyebrow: 'Óleo sobre tela y lino · 2020 — hoy',
+    paint_hint: 'Toca una obra para ver sus fotos y detalles',
+    marcos_eyebrow: 'Obra en proceso',
+    marcos_intro: 'Óleo sobre tela, 77,5 × 102,5 cm. Todavía está en el caballete. Baja para recorrerla por dentro.',
+    marcos_s1: 'La luz de colores cae sobre el damero. Ella intenta tocarla.',
+    marcos_s2: 'Detrás de la reja, el retablo: dorado, sombra y madera tallada.',
+    marcos_s3_sub: 'Marcos 16:16 · El que crea y sea bautizado, se salvará.',
+    marcos_end: 'Ver fotos del proceso',
+    marcos_l1: 'La niña', marcos_l2: 'El retablo', marcos_l3: 'La inscripción',
+    conde_meta: '2024 · Óleo sobre lino · 40 × 60 cm',
+    conde_eyebrow: 'Exposición «Polímatas» · Estadio Italiano, 2024',
+    conde_p: 'Un retrato pintado en grises a partir de la película «El Conde». Se expuso en «Polímatas», en el Estadio Italiano, y terminó frente a quienes hicieron la película.',
+    conde_c2: 'Exposición «Polímatas» en el Estadio Italiano, 2024.',
+    conde_c3: 'Maximiliano Langevin a la izquierda y Francisco Uzabeaga a la derecha.',
+    conde_c5: 'Juan de Dios Larraín (productor) y Pablo Larraín (director) de «El Conde» junto a la obra.',
+    all_photos: 'Ver todas las fotos',
+    lupa_title: 'Mira de cerca.',
+    lupa_p: 'Pasa el cursor sobre la pintura: la barba, la gorra, el brillo del metal. Óleo sobre lino, 28 × 40 cm.',
+    lupa_p_touch: 'Activa la lupa y arrastra el dedo sobre la pintura: la barba, la gorra, el brillo del metal. Óleo sobre lino, 28 × 40 cm.',
+    lupa_on: 'Usar la lupa con el dedo', lupa_off: 'Volver a desplazar la página',
+    draw_eyebrow: 'Dibujos · 2019', draw_title: 'Del trazo a la forma.',
+    draw_p: 'Copia de un dibujo de William Bouguereau. Grafito sobre papel de algodón, 30 × 23 cm. Cinco fotos del mismo dibujo, desde las primeras líneas hasta la firma.',
+    stage: 'Etapa',
+    xilo_eyebrow: 'Xilografía · 2017', xilo_title: 'Tallar la luz.',
+    xilo_p: 'La Mosca: tallada en madera e impresa a mano sobre papel Fabriano, 30 × 70 cm. En un grabado, todo lo blanco es madera que se quitó con la gubia.',
+    ilus_eyebrow: 'Ilustración · 2018 — 2021', ilus_title: 'Una cabeza, seis peinados.',
+    ilus_p: 'Autorretrato digital hecho en Photoshop, 2018. Después vinieron sapos, cómics y animaciones en After Effects.',
+    creat_eyebrow: 'Objetos · 2020 — 2022',
+    creat_p: 'Cerámica esmaltada, zapatillas pintadas a mano y otros objetos que salen del taller.',
+    contact_title: 'Hablemos de un retrato.',
+    contact_p: 'Encargos, exposiciones o colaboraciones. Respondo personalmente.',
+    copy: 'Copiar', copied: 'Correo copiado', copy_fail: 'Selecciona el correo para copiarlo',
+    wa_btn: 'Escribir por WhatsApp',
+    lb_hint: 'Toca la imagen para acercar', lb_close: 'Cerrar', lb_prev: 'Anterior', lb_next: 'Siguiente',
+    photos: 'fotos', wip: 'En proceso', ig: 'Ver la animación en Instagram', menu: 'Menú', lang_aria: 'Switch to English',
+  },
+  en: {
+    skip: 'Skip to the work',
+    nav_paintings: 'Paintings', nav_journey: 'Marcos 16:16', nav_drawings: 'Drawings', nav_xilo: 'Woodcuts',
+    nav_illus: 'Illustration', nav_creat: 'Objects', nav_about: 'Biography', nav_contact: 'Contact',
+    hero_eyebrow: 'Realist painter · Santiago, Chile',
+    hero_cue: 'Scroll to step into the painting',
+    hero_c1: 'Come closer.',
+    hero_c2: 'Oil portraits that look for what lies beyond what is seen.',
+    hero_c3: 'Every thread of the veil, painted by hand.',
+    hero_c3_sub: 'Detail · Karin Goldberg, 2025',
+    latest: 'Recent work', karin_meta: '2025 · Oil on linen · 48 × 68 cm', see_work: 'View the work',
+    quote: 'Portraits are a way to immortalize the subject. My goal is to capture what lies beyond what is seen.',
+    paint_eyebrow: 'Oil on canvas and linen · 2020 — today',
+    paint_hint: 'Tap a work to see its photos and details',
+    marcos_eyebrow: 'Work in progress',
+    marcos_intro: 'Oil on canvas, 77.5 × 102.5 cm. Still on the easel. Scroll to travel through it.',
+    marcos_s1: 'Coloured light falls across the checkered floor. She reaches out to touch it.',
+    marcos_s2: 'Behind the iron grille, the altarpiece: gold, shadow and carved wood.',
+    marcos_s3_sub: 'Mark 16:16 · He that believeth and is baptized shall be saved.',
+    marcos_end: 'See the process photos',
+    marcos_l1: 'The girl', marcos_l2: 'The altarpiece', marcos_l3: 'The inscription',
+    conde_meta: '2024 · Oil on linen · 40 × 60 cm',
+    conde_eyebrow: '"Polímatas" exhibition · Estadio Italiano, 2024',
+    conde_p: 'A portrait painted in greys, based on the film "El Conde". It was shown at "Polímatas" in the Estadio Italiano and ended up in front of the people who made the film.',
+    conde_c2: '"Polímatas" exhibition at the Estadio Italiano, 2024.',
+    conde_c3: 'Maximiliano Langevin (left) and Francisco Uzabeaga (right).',
+    conde_c5: 'Juan de Dios Larraín (producer) and Pablo Larraín (director) of "El Conde" with the work.',
+    all_photos: 'See all photos',
+    lupa_title: 'Look closer.',
+    lupa_p: 'Move your cursor over the painting: the beard, the cap, the shine on the metal. Oil on linen, 28 × 40 cm.',
+    lupa_p_touch: 'Turn on the loupe and drag your finger across the painting: the beard, the cap, the shine on the metal. Oil on linen, 28 × 40 cm.',
+    lupa_on: 'Use the loupe with your finger', lupa_off: 'Go back to scrolling',
+    draw_eyebrow: 'Drawings · 2019', draw_title: 'From line to form.',
+    draw_p: 'A copy of a drawing by William Bouguereau. Graphite on cotton paper, 30 × 23 cm. Five photos of the same drawing, from the first lines to the signature.',
+    stage: 'Stage',
+    xilo_eyebrow: 'Woodcut · 2017', xilo_title: 'Carving the light.',
+    xilo_p: 'La Mosca: carved in wood and hand-printed on Fabriano paper, 30 × 70 cm. In a woodcut, everything white is wood that was cut away with the gouge.',
+    ilus_eyebrow: 'Illustration · 2018 — 2021', ilus_title: 'One head, six haircuts.',
+    ilus_p: 'A digital self-portrait made in Photoshop, 2018. Then came frogs, comics and After Effects animations.',
+    creat_eyebrow: 'Objects · 2020 — 2022',
+    creat_p: 'Glazed ceramics, hand-painted sneakers and other objects from the studio.',
+    contact_title: "Let's talk about a portrait.",
+    contact_p: 'Commissions, exhibitions or collaborations. I answer personally.',
+    copy: 'Copy', copied: 'Email copied', copy_fail: 'Select the address to copy it',
+    wa_btn: 'Message on WhatsApp',
+    lb_hint: 'Tap the image to zoom', lb_close: 'Close', lb_prev: 'Previous', lb_next: 'Next',
+    photos: 'photos', wip: 'In progress', ig: 'Watch the animation on Instagram', menu: 'Menu', lang_aria: 'Cambiar a español',
+  }
+};
+
+const BIO = {
+  es: [
+    'Maximiliano Langevin nació en Santiago de Chile en 1996. Comenzó a explorar el dibujo y la pintura al óleo en 2019 bajo la tutela del pintor y muralista Javier Barriga, con quien estudió y refinó su técnica realista durante cinco años.',
+    'En 2024 profundizó su formación con el pintor hiperrealista Francisco Uzabeaga, desarrollando una técnica más precisa y eficiente que consolidó su estilo.',
+    'Publicista de oficio y pintor por vocación, ha construido una carrera ligada a la industria del cine, colaborando con empresas como Disney® y la productora chilena ganadora del Oscar Fábula®. Esa experiencia le dio un conocimiento profundo de fotografía, composición y dirección de arte que se nota en su pintura.',
+    'Hoy es Director Creativo en Tactica OOH, agencia especializada en innovación en vía pública.',
+    'La mayoría de sus pinturas parten de fotografías que él mismo toma. Además diseña y fabrica accesorios de pintura bajo la marca <em>Langevinci®</em>.',
+  ],
+  en: [
+    'Maximiliano Langevin was born in Santiago, Chile, in 1996. He began drawing and oil painting in 2019 under painter and muralist Javier Barriga, studying and refining his realist technique with him for five years.',
+    'In 2024 he continued his training with hyperrealist painter Francisco Uzabeaga, developing a more precise and efficient technique that consolidated his style.',
+    'An advertising professional by trade and a painter by vocation, he has built a career tied to the film industry, working with companies such as Disney® and the Oscar-winning Chilean production company Fábula®. That experience gave him a deep knowledge of photography, composition and art direction that shows in his painting.',
+    'He is currently Creative Director at Tactica OOH, an agency focused on innovation in outdoor advertising.',
+    'Most of his paintings start from photographs he takes himself. He also designs and makes painting accessories under the brand <em>Langevinci®</em>.',
+  ]
+};
+
+const TIMELINE = {
+  es: [
+    ['1996', 'Nace en Santiago de Chile.'],
+    ['2017', 'Primeras xilografías: La Mosca, Guiseppe y una copia del San Jorge de Durero.'],
+    ['2019', 'Empieza a estudiar dibujo y óleo con Javier Barriga. Copias de Parmigianino y Bouguereau.'],
+    ['2020—22', 'Primeros retratos al óleo, ilustración digital, animación y cerámica.'],
+    ['2024', 'Estudia con Francisco Uzabeaga. «El Conde» se expone en «Polímatas», Estadio Italiano.'],
+    ['2025', 'Karin Goldberg. Marcos 16:16 en el caballete.'],
+  ],
+  en: [
+    ['1996', 'Born in Santiago, Chile.'],
+    ['2017', 'First woodcuts: La Mosca, Guiseppe and a copy of Dürer’s Saint George.'],
+    ['2019', 'Starts studying drawing and oil painting with Javier Barriga. Copies after Parmigianino and Bouguereau.'],
+    ['2020—22', 'First oil portraits, digital illustration, animation and ceramics.'],
+    ['2024', 'Studies with Francisco Uzabeaga. "El Conde" is shown at "Polímatas", Estadio Italiano.'],
+    ['2025', 'Karin Goldberg. Marcos 16:16 on the easel.'],
+  ]
+};
+
+// ── OBRAS ──
+const im = (p, es = '', en = '') => ({ p, cap: { es, en } });
+const seq = (base, n) => Array.from({ length: n }, (_, i) => im(`${base}_${i + 1}`));
+const OIL_LINEN = { es: 'Óleo sobre lino', en: 'Oil on linen' };
+const OIL_CANVAS = { es: 'Óleo sobre tela', en: 'Oil on canvas' };
+const DIGITAL = { es: 'Ilustración digital en Photoshop', en: 'Digital illustration in Photoshop' };
+const ANIM = { es: 'Ilustración digital · Animación en After Effects', en: 'Digital illustration · After Effects animation' };
+const FABRIANO = { es: 'Xilografía sobre papel Fabriano', en: 'Woodcut on Fabriano paper' };
+const NONE = { es: '', en: '' };
+const POLI = ['Exposición «Polímatas» en el Estadio Italiano, 2024', '"Polímatas" exhibition at the Estadio Italiano, 2024'];
+
+const WORKS = [
+  { id: 'karin-goldberg', name: 'Karin Goldberg', cat: 'pinturas', year: '2025', tech: OIL_LINEN, dims: '48 × 68 cm', desc: NONE, imgs: seq('pinturas/karin_goldberg', 8) },
+  { id: 'marcos-16-16', name: 'Marcos 16:16', cat: 'pinturas', year: 'WIP', tech: OIL_CANVAS, dims: '77,5 × 102,5 cm',
+    desc: { es: 'Obra en proceso. La inscripción sobre la reja es Marcos 16:16 en latín.', en: 'Work in progress. The inscription above the grille is Mark 16:16 in Latin.' }, imgs: seq('pinturas/marcos_16_16', 7) },
+  { id: 'veteran-george', name: 'Veteran George', cat: 'pinturas', year: '2024', tech: OIL_LINEN, dims: '28 × 40 cm', desc: NONE, imgs: seq('pinturas/veteran_george', 3) },
+  { id: 'consu-gato', name: 'Consu gato', cat: 'pinturas', year: '2024', tech: OIL_LINEN, dims: '71 × 50 cm', desc: NONE, imgs: [im('pinturas/consu_gato')] },
+  { id: 'el-conde', name: 'El Conde', cat: 'pinturas', year: '2024', tech: OIL_LINEN, dims: '40 × 60 cm', desc: NONE,
+    imgs: [im('pinturas/el_conde_1'), im('pinturas/el_conde_2', ...POLI),
+      im('pinturas/el_conde_3', 'Maximiliano Langevin a la izquierda, Francisco Uzabeaga a la derecha. Exposición «Polímatas» en el Estadio Italiano, 2024', 'Maximiliano Langevin (left) and Francisco Uzabeaga (right). "Polímatas" exhibition at the Estadio Italiano, 2024'),
+      im('pinturas/el_conde_4', ...POLI),
+      im('pinturas/el_conde_5', 'Juan de Dios Larraín (productor) y Pablo Larraín (director) de la película «El Conde» con la obra', 'Juan de Dios Larraín (producer) and Pablo Larraín (director) of the film "El Conde" with the work')] },
+  { id: 'santiago', name: 'Santiago', cat: 'pinturas', year: '2024', tech: OIL_LINEN, dims: '40 × 50 cm', desc: NONE, imgs: seq('pinturas/santiago', 4) },
+  { id: 'vicente', name: 'Vicente', cat: 'pinturas', year: '2022', tech: OIL_LINEN, dims: '40 × 50 cm', desc: NONE, imgs: seq('pinturas/vicente', 8) },
+  { id: 'en-verano', name: 'En verano', cat: 'pinturas', year: '2022', tech: OIL_CANVAS, dims: '85 × 59 cm',
+    desc: { es: 'Reproducción de «En été — La bohémienne» de Renoir, al tamaño original de la obra.', en: 'Reproduction of Renoir’s "En été — La bohémienne", at the original size of the work.' }, imgs: seq('pinturas/en_verano', 7) },
+  { id: 'gallagath', name: 'Gallagath', cat: 'pinturas', year: '2021', tech: OIL_LINEN, dims: '50 × 70 cm', desc: NONE, imgs: [im('pinturas/gallagath_2'), im('pinturas/gallagath_1'), ...seq('pinturas/gallagath', 6).slice(2)] },
+  { id: 'coti', name: 'Coti', cat: 'pinturas', year: '2020', tech: OIL_CANVAS, dims: '50 × 40 cm', desc: NONE, imgs: seq('pinturas/coti', 4) },
+  { id: 'el-jardin', name: 'El Jardín de las Delicias', cat: 'pinturas', year: '2020', tech: OIL_CANVAS, dims: '30 × 40 cm',
+    desc: { es: 'Reproducción de un fragmento del tríptico de El Bosco.', en: 'Reproduction of a detail from Bosch’s triptych.' }, imgs: seq('pinturas/el_jardin_de_las_delicias', 3) },
+
+  { id: 'bouguereau', name: 'Bouguereau', cat: 'dibujos', year: '2019', tech: { es: 'Grafito sobre papel de algodón', en: 'Graphite on cotton paper' }, dims: '30 × 23 cm',
+    desc: { es: 'Reproducción de un dibujo de William Bouguereau.', en: 'Reproduction of a drawing by William Bouguereau.' }, imgs: [im('dibujos/bouguereau_5'), ...seq('dibujos/bouguereau', 4)] },
+  { id: 'parmigianino', name: 'Parmigianino', cat: 'dibujos', year: '2019', tech: { es: 'Sanguina sobre papel de algodón', en: 'Red chalk on cotton paper' }, dims: '40 × 29 cm',
+    desc: { es: 'Reproducción de un dibujo de Parmigianino.', en: 'Reproduction of a drawing by Parmigianino.' }, imgs: seq('dibujos/parmogianino', 4) },
+
+  { id: 'la-mosca', name: 'La Mosca', cat: 'xilografia', year: '2017', tech: FABRIANO, dims: '30 × 70 cm', desc: NONE, imgs: [im('xilografia/la_mosca_4'), im('xilografia/la_mosca_2'), im('xilografia/la_mosca_1'), im('xilografia/la_mosca_3'), im('xilografia/la_mosca_5'), im('xilografia/la_mosca_6')] },
+  { id: 'guiseppe', name: 'Guiseppe', cat: 'xilografia', year: '2017', tech: FABRIANO, dims: '33 × 35 cm', desc: NONE, imgs: [im('xilografia/guiseppe_2'), im('xilografia/guiseppe_1'), im('xilografia/guiseppe_3'), im('xilografia/guiseppe_4')] },
+  { id: 'san-jorge', name: 'San Jorge y el Dragón', cat: 'xilografia', year: '2017', tech: FABRIANO, dims: '35 × 33 cm',
+    desc: { es: 'Reproducción del grabado «San Jorge matando al dragón» de Alberto Durero.', en: 'Reproduction of "Saint George Slaying the Dragon" by Albrecht Dürer.' }, imgs: [im('xilografia/san_jorge_y_el_dragon_2'), im('xilografia/san_jorge_y_el_dragon_1'), im('xilografia/san_jorge_y_el_dragon_3'), im('xilografia/san_jorge_y_el_dragon_4')] },
+
+  { id: 'autorretrato', name: 'Autorretrato', cat: 'ilustracion', year: '2018', tech: DIGITAL, dims: '', desc: NONE, imgs: seq('ilustracion/autorretrato', 6) },
+  { id: 'wizard-frog', name: 'Wizard Frog', cat: 'ilustracion', year: '2020', tech: ANIM, dims: '', desc: NONE, imgs: [im('ilustracion/wizard_frog')] },
+  { id: 'covitch-19', name: 'COVITCH-19', cat: 'ilustracion', year: '2020', tech: ANIM, dims: '',
+    desc: { es: 'Cómic animado.', en: 'Animated comic.' }, imgs: [im('ilustracion/covitch_19')], link: 'https://www.instagram.com/p/CEhGrKED7qL/?img_index=1' },
+  { id: 'saping', name: 'Saping', cat: 'ilustracion', year: '2021', tech: DIGITAL, dims: '', desc: NONE, imgs: seq('ilustracion/saping', 4) },
+  { id: 'high-life', name: 'High Life', cat: 'ilustracion', year: '2020', tech: { es: 'Novela gráfica digital', en: 'Digital graphic novel' }, dims: '',
+    desc: { es: 'El desafío: hacer una novela gráfica en dúo. Junto a Ignacio Villegas creamos una sátira con nuestro propio estilo. La profesora quedó tan sorprendida que nos pidió presentarla al resto del curso.',
+            en: 'The challenge: make a graphic novel in pairs. With Ignacio Villegas we created a satire in our own style. The teacher was so impressed she asked us to present it to the whole class.' }, imgs: seq('ilustracion/high_life', 5) },
+  { id: 'best-buds', name: 'Best Buds', cat: 'ilustracion', year: '2020', tech: DIGITAL, dims: '', desc: NONE, imgs: [im('ilustracion/best_buds')] },
+  { id: 'melted', name: 'Melted', cat: 'ilustracion', year: '2021', tech: DIGITAL, dims: '', desc: NONE, imgs: [im('ilustracion/melted')] },
+
+  { id: 'sapo-punk', name: 'Sapo Punk', cat: 'creaciones', year: '2022', tech: { es: 'Cerámica esmaltada', en: 'Glazed ceramic' }, dims: '', desc: NONE, imgs: [im('creaciones/sapo_punk_5'), ...seq('creaciones/sapo_punk', 6).filter(x => !x.p.endsWith('_5'))] },
+  { id: 'en-llamas', name: 'En llamas', cat: 'creaciones', year: '2020', tech: { es: 'Converse pintadas con marcadores Posca', en: 'Converse sneakers painted with Posca markers' }, dims: '', desc: NONE, imgs: [im('creaciones/en_llamas')] },
+  { id: 'tasapo', name: 'Tasapo', cat: 'creaciones', year: '2022', tech: { es: 'Taza de cerámica esmaltada', en: 'Glazed ceramic mug' }, dims: '', desc: NONE, imgs: [im('creaciones/tasapo')] },
+];
+const BY_ID = Object.fromEntries(WORKS.map(w => [w.id, w]));
+
+let LANG = 'es';
+const t = k => (T[LANG][k] ?? T.es[k] ?? k);
+const yearLabel = w => w.year === 'WIP' ? t('wip') : w.year;
+const metaLine = w => [yearLabel(w), w.tech[LANG], w.dims].filter(Boolean).join(' · ');
+
+// ── TARJETAS ──
+function card(w) {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'work'; b.dataset.open = w.id;
+  const first = w.imgs[0].p;
+  b.innerHTML = `
+    <span class="frame" style="--a:${ratio(first).toFixed(4)}">
+      <img src="${T_(first)}" alt="" loading="lazy" decoding="async">
+      ${w.year === 'WIP' ? `<span class="badge">${t('wip')}</span>` : ''}
+      ${w.imgs.length > 1 ? `<span class="count">${w.imgs.length} ${t('photos')}</span>` : ''}
+    </span>
+    <span class="placard"><span class="t">${w.name}</span><span class="m">${metaLine(w)}</span></span>`;
+  b.setAttribute('aria-label', `${w.name}, ${metaLine(w)}`);
+  return b;
+}
+function renderGrids() {
+  ['pinturas', 'dibujos', 'xilografia', 'ilustracion', 'creaciones'].forEach(cat => {
+    const g = $('#grid-' + cat); g.innerHTML = '';
+    WORKS.filter(w => w.cat === cat).forEach(w => g.appendChild(card(w)));
+  });
+}
+
+// ── IDIOMA ──
+function setLang(lang) {
+  LANG = lang;
+  try { localStorage.setItem('ml-lang', lang); } catch (e) {}
+  document.documentElement.lang = lang;
+  const lb = $('#lang-btn');
+  lb.textContent = lang === 'es' ? 'EN' : 'ES';
+  lb.setAttribute('aria-label', t('lang_aria'));
+  $('#burger').setAttribute('aria-label', t('menu'));
+  $$('[data-i18n]').forEach(el => { const v = T[lang][el.dataset.i18n]; if (v !== undefined) el.textContent = v; });
+  $('#bio-body').innerHTML = BIO[lang].map(p => `<p>${p}</p>`).join('');
+  $('#timeline').innerHTML = TIMELINE[lang].map(([y, x]) => `<li><span class="y">${y}</span><span>${x}</span></li>`).join('');
+  $('#quote').innerHTML = '«' + t('quote').split(' ').map(w => `<span>${w}</span>`).join(' ') + '»';
+  $('#lb-close').setAttribute('aria-label', t('lb_close'));
+  $('#lb-prev').setAttribute('aria-label', t('lb_prev'));
+  $('#lb-next').setAttribute('aria-label', t('lb_next'));
+  lupa.setCopy && lupa.setCopy();
+  renderGrids();
+  if (LB.work) LB.show(LB.i);
+  requestAnimationFrame(() => { layoutAll(); tick(); });
+}
+
+// ── NAV ──
+const nav = $('#nav'), drawer = $('#drawer'), burger = $('#burger');
+function setDrawer(open) {
+  drawer.hidden = !open; burger.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+burger.addEventListener('click', () => setDrawer(drawer.hidden));
+drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
+$('#lang-btn').addEventListener('click', () => setLang(LANG === 'es' ? 'en' : 'es'));
+const navMap = new Map($$('#nav-links a').map(a => [a.getAttribute('href').slice(1), a]));
+const io = new IntersectionObserver(es => es.forEach(e => {
+  const a = navMap.get(e.target.id); if (!a) return;
+  if (e.isIntersecting) { navMap.forEach(x => x.classList.remove('on')); a.classList.add('on'); }
+}), { rootMargin: '-45% 0px -50% 0px' });
+navMap.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+
+// ── ESCENAS ──
+const scenes = [];
+let VH = innerHeight;
+function progressOf(el) {
+  const r = el.getBoundingClientRect();
+  const total = r.height - VH;
+  return { p: total > 0 ? clamp(-r.top / total) : 0, r };
+}
+function fadeRange(p, a, b, e) {
+  return clamp((p - (a - e)) / e) * clamp(((b + e) - p) / e);
+}
+function textLayer(el) {
+  const [a, b] = el.dataset.r.split(',').map(Number);
+  const e = el.dataset.e ? +el.dataset.e : .05;
+  return { el, a, b, e, last: -1 };
+}
+function applyText(L, p) {
+  const o = +fadeRange(p, L.a, L.b, L.e).toFixed(3);
+  if (o === L.last) return;
+  L.last = o;
+  L.el.style.opacity = o;
+  L.el.style.visibility = o < .02 ? 'hidden' : 'visible';
+  const dir = p < L.a ? 1 : p > L.b ? -1 : 0;
+  if (!L.el.classList.contains('cue') && !L.el.classList.contains('marcos-intro')) L.el.style.transform = `translate3d(0,${(1 - o) * 24 * dir}px,0)`;
+  L.el.style.pointerEvents = o > .6 ? '' : 'none';
+}
+
+// Zoom: cámara que entra en la pintura. rect = [x, y, ancho, alto] normalizados respecto a la pintura completa,
+// medidos alineando cada foto de detalle con la foto completa.
+const FULL = [0, 0, 1, 1];
+const ZCFG = {
+  hero: {
+    base: 'pinturas/karin_goldberg_1',
+    layers: [
+      { p: 'pinturas/karin_goldberg_3', rect: [.3038, .1168, .4577], fade: [.30, .40, .80, .90] },
+      { p: 'pinturas/karin_goldberg_4', rect: [.4423, .2388, .1346], fade: [.58, .68, .86, .93] },
+    ],
+    keys: [
+      { p: 0, cam: { cx: .5, cy: .2, z: .62 } },
+      { p: .12, rect: FULL, fit: 'contain', pad: .92 },
+      { p: .40, rect: [.3038, .1168, .4577, .4321], fit: 'cover' },
+      { p: .68, rect: [.4423, .2388, .1346, .1262], fit: 'cover' },
+      { p: .84, rect: [.4423, .2388, .1346, .1262], fit: 'cover', pad: 1.06 },
+      { p: .97, rect: FULL, fit: 'contain', pad: .84, dy: -.04 },
+      { p: 1, rect: FULL, fit: 'contain', pad: .84, dy: -.04 },
+    ],
+    scrim: [[.3, .5], [.62, .84], [.93, 1]],
+  },
+  marcos: {
+    base: 'pinturas/marcos_16_16_1',
+    layers: [
+      { p: 'pinturas/marcos_16_16_6', rect: [.2481, .6785, .3423], fade: [.10, .17, .30, .36] },
+      { p: 'pinturas/marcos_16_16_4', rect: [.3538, .2891, .4077], fade: [.41, .48, .60, .66] },
+      { p: 'pinturas/marcos_16_16_5', rect: [.1519, .1062, .3096], fade: [.72, .79, .89, .95] },
+    ],
+    keys: [
+      { p: 0, rect: FULL, fit: 'contain', pad: .82 },
+      { p: .05, rect: FULL, fit: 'contain', pad: .82 },
+      { p: .17, rect: [.2481, .6785, .3423, .1976] },
+      { p: .30, rect: [.2481, .6785, .3423, .1976], pad: 1.05 },
+      { p: .48, rect: [.3538, .2891, .4077, .2360] },
+      { p: .60, rect: [.3538, .2891, .4077, .2360], pad: 1.05 },
+      { p: .79, rect: [.1519, .1062, .3096, .1785] },
+      { p: .89, rect: [.1519, .1062, .3096, .1785], pad: 1.05 },
+      { p: .98, rect: FULL, fit: 'contain', pad: .88 },
+      { p: 1, rect: FULL, fit: 'contain', pad: .88 },
+    ],
+    scrim: [[0, .05], [.16, .31], [.47, .61], [.78, .9], [.95, 1]],
+    rail: [[.12, .36], [.42, .66], [.72, .95]],
+  }
+};
+
+function ZoomScene(el, cfg) {
+  const stage = $('.stage', el), canvas = $('.zcanvas', stage), scrim = $('.scrim', stage);
+  const [Pw, Ph] = SIZES[cfg.base];
+  const mk = (p, cls, eager) => {
+    const i = new Image(); i.decoding = 'async'; if (!eager) i.loading = 'lazy';
+    i.src = W_(p); i.alt = ''; i.className = cls;
+    const [w, h] = SIZES[p]; i.width = w; i.height = h; i.style.width = w + 'px'; i.style.height = h + 'px';
+    canvas.appendChild(i); return i;
+  };
+  const eager = el.id === 'top';
+  const base = mk(cfg.base, 'base', eager);
+  base.alt = el.id === 'top' ? 'Karin Goldberg, óleo sobre lino, 2025' : 'Marcos 16:16, óleo sobre tela en proceso';
+  const layers = cfg.layers.map(L => ({ ...L, el: mk(L.p, 'layer', false), size: SIZES[L.p] }));   // los detalles, diferidos
+  const texts = $$('.zt', stage).map(textLayer);
+  const rail = cfg.rail ? $$('.rail button', stage) : [];
+  let W = 1, H = 1, f0 = 1, cams = [];
+  let stillP = 0;
+
+  function camFor(k) {
+    if (k.cam) return k.cam;
+    const [x, y, w, h] = k.rect;
+    const zc = Math.min(W / (w * Pw * f0), H / (h * Ph * f0));
+    const zv = Math.max(W / (w * Pw * f0), H / (h * Ph * f0));
+    let z = k.fit === 'contain' ? zc : k.fit === 'cover' ? zv : Math.min(zv, zc * 1.4);
+    z *= (k.pad || 1);
+    return { cx: x + w / 2, cy: y + h / 2 + (k.dy || 0), z };
+  }
+  function layout() {
+    W = stage.clientWidth; H = stage.clientHeight;
+    f0 = Math.min(W / Pw, H / Ph);
+    cams = cfg.keys.map(k => ({ p: k.p, ...camFor(k) }));
+  }
+  function camAt(p) {
+    let i = 0;
+    while (i < cams.length - 2 && p > cams[i + 1].p) i++;
+    const a = cams[i], b = cams[i + 1];
+    const tt = ease(clamp((p - a.p) / ((b.p - a.p) || 1)));
+    return { cx: lerp(a.cx, b.cx, tt), cy: lerp(a.cy, b.cy, tt), z: Math.exp(lerp(Math.log(a.z), Math.log(b.z), tt)) };
+  }
+  function update(p) {
+    const c = camAt(p);
+    const S = f0 * c.z;
+    const ox = W / 2 - c.cx * Pw * S, oy = H / 2 - c.cy * Ph * S;
+    base.style.transform = `translate3d(${ox.toFixed(1)}px,${oy.toFixed(1)}px,0) scale(${S.toFixed(5)})`;
+    layers.forEach(L => {
+      const [a, b, cc, d] = L.fade;
+      const o = clamp((p - a) / (b - a)) * (1 - clamp((p - cc) / (d - cc)));
+      L.el.style.opacity = o.toFixed(3);
+      L.el.style.visibility = o < .005 ? 'hidden' : 'visible';
+      if (o < .005) return;
+      const sw = L.rect[2] * Pw * S;
+      const s = sw / L.size[0];
+      const x = ox + L.rect[0] * Pw * S, y = oy + L.rect[1] * Ph * S;
+      L.el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scale(${s.toFixed(5)})`;
+    });
+    const so = Math.max(0, ...cfg.scrim.map(([a, b]) => fadeRange(p, a, b, .05)));
+    scrim.style.opacity = so.toFixed(3);
+    texts.forEach(L => applyText(L, p));
+    rail.forEach((btn, i) => btn.classList.toggle('on', p >= cfg.rail[i][0] && p <= cfg.rail[i][1]));
+  }
+  rail.forEach(btn => btn.addEventListener('click', () => {
+    const p = +btn.dataset.goto;
+    if (RM) { stillP = p; update(p); return; }
+    const top = el.getBoundingClientRect().top + scrollY;
+    scrollTo({ top: top + p * (el.offsetHeight - VH), behavior: 'smooth' });
+  }));
+  return { el, layout, update: p => update(RM ? stillP : p) };
+}
+
+function WordsScene(el) {
+  return { el, layout() {}, update(p) {
+    const spans = $$('#quote span'); const n = spans.length;
+    const k = RM ? n : clamp((p - .1) / .7) * n;
+    spans.forEach((s, i) => s.classList.toggle('lit', i < k));
+  } };
+}
+
+function TrackScene(el) {
+  const stage = $('.stage', el), track = $('.track', el), bar = $('.h-progress span', el);
+  let dist = 0;
+  const pinned = () => !RM;
+  function layout() {
+    if (!pinned()) { el.style.height = ''; return; }
+    track.style.transform = '';
+    dist = Math.max(0, track.scrollWidth - stage.clientWidth);
+    el.style.height = (stage.clientHeight + dist) + 'px';
+  }
+  track.addEventListener('focusin', e => {
+    if (!pinned()) return;
+    const c = e.target.closest('.work'); if (!c) return;
+    const p = clamp((c.offsetLeft - stage.clientWidth * .3) / (dist || 1));
+    const top = el.getBoundingClientRect().top + scrollY;
+    scrollTo({ top: top + p * (el.offsetHeight - VH), behavior: 'instant' });
+  });
+  return { el, layout, update(p) {
+    if (!pinned()) return;
+    track.style.transform = `translate3d(${(-p * dist).toFixed(1)}px,0,0)`;
+    bar.style.transform = `scaleX(${p.toFixed(4)})`;
+  } };
+}
+
+function ScrubScene(el) {
+  const frames = $$('.frames img', el), n = frames.length;
+  const num = $('.n', el), bar = $('.stepper .bar span', el), mode = el.dataset.scrub;
+  return { el, layout() {}, update(p) {
+    const q = RM ? 1 : clamp((p - .08) / .8);
+    const f = q * (n - 1);
+    // fade: cada etapa se funde sobre la anterior; step: cambia de golpe, como animación cuadro a cuadro
+    frames.forEach((img, i) => {
+      img.style.opacity = mode === 'step' ? +(i === Math.round(f)) : (i === 0 ? 1 : clamp(f - (i - 1)));
+    });
+    num.textContent = Math.round(f) + 1;
+    bar.style.transform = `scaleX(${((Math.round(f) + 1) / n).toFixed(3)})`;
+  } };
+}
+
+function ConeScene(el) {
+  const lit = $('.lit', el);
+  return { el, layout() {}, update(p) {
+    const q = RM ? 1 : clamp((p - .05) / .75);
+    const b = lerp(7, 50, clamp(q / .6));            // el haz se abre hacia abajo
+    const a = lerp(1.5, 50, clamp((q - .6) / .4));   // y después se ilumina el resto
+    lit.style.clipPath = `polygon(${50 - a}% 0, ${50 + a}% 0, ${50 + b}% 100%, ${50 - b}% 100%)`;
+  } };
+}
+
+$$('[data-zoom]').forEach(el => scenes.push(ZoomScene(el, ZCFG[el.dataset.zoom])));
+$$('[data-words]').forEach(el => scenes.push(WordsScene(el)));
+$$('[data-track]').forEach(el => scenes.push(TrackScene(el)));
+$$('[data-scrub]').forEach(el => scenes.push(ScrubScene(el)));
+$$('[data-cone]').forEach(el => scenes.push(ConeScene(el)));
+
+function layoutAll() { VH = innerHeight; scenes.forEach(s => s.layout()); }
+function tick() {
+  for (const s of scenes) {
+    const { p, r } = progressOf(s.el);
+    if (r.bottom < -VH * .2 || r.top > VH * 1.2) continue;
+    s.update(p);
+  }
+  nav.classList.toggle('solid', scrollY > 40);
+}
+let ticking = false;
+addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; tick(); }); } }, { passive: true });
+let rz;
+addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { layoutAll(); tick(); }); });
+addEventListener('load', () => { layoutAll(); tick(); });
+
+// ── LUPA ──
+const lupa = (() => {
+  const frame = $('#lupa-frame'), lens = $('#lens'), toggle = $('#lupa-toggle');
+  const Z = 3, src = W_('pinturas/veteran_george_1');
+  const coarse = matchMedia('(hover: none)').matches;
+  let pos = { x: .53, y: .25 }, touchOn = false;
+  // la imagen grande se pide solo cuando la lupa está por entrar en pantalla
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { lens.style.backgroundImage = `url(${src})`; io.disconnect(); } }, { rootMargin: '600px 0px' });
+  io.observe(frame);
+  function place() {
+    const r = frame.getBoundingClientRect();
+    const lw = lens.offsetWidth;
+    lens.style.left = (pos.x * r.width) + 'px';
+    lens.style.top = (pos.y * r.height) + 'px';
+    lens.style.backgroundSize = `${r.width * Z}px ${r.height * Z}px`;
+    lens.style.backgroundPosition = `${-(pos.x * r.width * Z - lw / 2)}px ${-(pos.y * r.height * Z - lw / 2)}px`;
+  }
+  function move(e) {
+    if (e.pointerType === 'touch' && !touchOn) return;
+    const r = frame.getBoundingClientRect();
+    pos = { x: clamp((e.clientX - r.left) / r.width), y: clamp((e.clientY - r.top) / r.height) };
+    place();
+  }
+  frame.addEventListener('pointermove', move);
+  frame.addEventListener('pointerdown', move);
+  frame.addEventListener('keydown', e => {
+    const d = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+    if (!d) return;
+    e.preventDefault();
+    pos = { x: clamp(pos.x + d[0] * .04), y: clamp(pos.y + d[1] * .03) };
+    place();
+  });
+  if (coarse) {
+    toggle.hidden = false;
+    toggle.addEventListener('click', () => {
+      touchOn = !touchOn;
+      frame.classList.toggle('touchon', touchOn);
+      toggle.setAttribute('aria-pressed', touchOn);
+      setCopy();
+    });
+  }
+  function setCopy() {
+    const span = $('span', toggle);
+    span.textContent = t(touchOn ? 'lupa_off' : 'lupa_on');
+    const p = $('.lupa-text .lede');
+    p.textContent = t(coarse ? 'lupa_p_touch' : 'lupa_p');
+  }
+  addEventListener('resize', place);
+  new ResizeObserver(place).observe(frame);
+  return { setCopy, place };
+})();
+
+// ── LIGHTBOX ──
+const LB = (() => {
+  const box = $('#lb'), media = $('#lb-media'), img = $('#lb-img'), thumbs = $('#lb-thumbs');
+  const prev = $('#lb-prev'), next = $('#lb-next');
+  let lastFocus = null;
+  const api = { work: null, i: 0 };
+  function unzoom() { media.classList.remove('zoomed', 'panning'); }
+  api.show = i => {
+    const w = api.work; if (!w) return;
+    api.i = i = clamp(i, 0, w.imgs.length - 1);
+    unzoom();
+    const e = w.imgs[i];
+    img.src = W_(e.p);
+    img.alt = `${w.name} — ${i + 1} / ${w.imgs.length}`;
+    $('#lb-title').textContent = w.name;
+    $('#lb-count').textContent = w.imgs.length > 1 ? `${i + 1} / ${w.imgs.length}` : '';
+    $('#lb-year').textContent = [yearLabel(w), w.dims].filter(Boolean).join(' · ');
+    $('#lb-tech').textContent = w.tech[LANG];
+    $('#lb-desc').textContent = w.desc[LANG] || '';
+    const cap = e.cap[LANG]; const capEl = $('#lb-cap');
+    capEl.hidden = !cap; capEl.textContent = cap || '';
+    const link = $('#lb-link'); link.hidden = !w.link;
+    if (w.link) { link.href = w.link; link.textContent = t('ig') + ' →'; }
+    prev.disabled = i === 0; next.disabled = i === w.imgs.length - 1;
+    prev.hidden = next.hidden = w.imgs.length < 2;
+    $$('button', thumbs).forEach((b, k) => { b.classList.toggle('on', k === i); b.setAttribute('aria-current', k === i); });
+    const on = thumbs.children[i]; if (on) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    if (w.imgs[i + 1]) { const pre = new Image(); pre.src = W_(w.imgs[i + 1].p); }
+  };
+  api.open = (id, i = 0) => {
+    const w = BY_ID[id]; if (!w) return;
+    api.work = w; lastFocus = document.activeElement;
+    thumbs.innerHTML = '';
+    thumbs.hidden = w.imgs.length < 2;
+    w.imgs.forEach((e, k) => {
+      const b = document.createElement('button'); b.type = 'button';
+      b.setAttribute('aria-label', `${k + 1} / ${w.imgs.length}`);
+      b.innerHTML = `<img src="${T_(e.p)}" alt="" loading="lazy">`;
+      b.addEventListener('click', () => api.show(k));
+      thumbs.appendChild(b);
+    });
+    box.hidden = false; document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => box.classList.add('open'));
+    api.show(i);
+    $('#lb-close').focus();
+  };
+  api.close = () => {
+    box.classList.remove('open'); unzoom();
+    setTimeout(() => { box.hidden = true; img.removeAttribute('src'); }, RM ? 0 : 300);
+    document.body.style.overflow = ''; api.work = null;
+    if (lastFocus) lastFocus.focus({ preventScroll: true });
+  };
+  $('#lb-close').addEventListener('click', api.close);
+  prev.addEventListener('click', () => api.show(api.i - 1));
+  next.addEventListener('click', () => api.show(api.i + 1));
+  addEventListener('keydown', e => {
+    if (box.hidden) { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); return; }
+    if (e.key === 'Escape') api.close();
+    if (e.key === 'ArrowLeft') api.show(api.i - 1);
+    if (e.key === 'ArrowRight') api.show(api.i + 1);
+    if (e.key === 'Tab') {
+      const f = $$('button:not([hidden]):not(:disabled), a:not([hidden])', box).filter(x => x.offsetParent !== null);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  // Zoom con clic/toque. Con mouse, el cursor recorre la imagen; con el dedo, se arrastra. Sin zoom, deslizar cambia de foto.
+  const ZS = 2.6;
+  let down = null, moved = false, origin = { x: 50, y: 50 };
+  const setOrigin = o => { origin = { x: clamp(o.x, 0, 100), y: clamp(o.y, 0, 100) }; img.style.transformOrigin = `${origin.x}% ${origin.y}%`; };
+  const pointToOrigin = (cx, cy) => {
+    const r = media.getBoundingClientRect();
+    return { x: (cx - r.left - img.offsetLeft) / img.offsetWidth * 100, y: (cy - r.top - img.offsetTop) / img.offsetHeight * 100 };
+  };
+  img.addEventListener('pointerdown', e => {
+    down = { x: e.clientX, y: e.clientY, type: e.pointerType, o: { ...origin } }; moved = false;
+    try { img.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+  img.addEventListener('pointermove', e => {
+    if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 8) moved = true;
+    if (!media.classList.contains('zoomed')) return;
+    if (e.pointerType === 'mouse') { media.classList.add('panning'); setOrigin(pointToOrigin(e.clientX, e.clientY)); }
+    else if (down) {
+      media.classList.add('panning');
+      setOrigin({ x: down.o.x - (e.clientX - down.x) / ((ZS - 1) * img.offsetWidth) * 100,
+                  y: down.o.y - (e.clientY - down.y) / ((ZS - 1) * img.offsetHeight) * 100 });
+    }
+  });
+  img.addEventListener('pointercancel', () => { down = null; media.classList.remove('panning'); });
+  img.addEventListener('pointerup', e => {
+    const d = down; down = null;
+    if (!d) return;
+    if (d.type !== 'mouse') media.classList.remove('panning');
+    const dx = e.clientX - d.x;
+    if (!media.classList.contains('zoomed') && d.type !== 'mouse' && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(e.clientY - d.y)) {
+      api.show(api.i + (dx < 0 ? 1 : -1)); return;
+    }
+    if (moved) return;
+    if (media.classList.contains('zoomed')) unzoom();
+    else { setOrigin(pointToOrigin(e.clientX, e.clientY)); media.classList.add('zoomed'); }
+  });
+  img.addEventListener('mouseleave', () => media.classList.remove('panning'));
+  img.addEventListener('dragstart', e => e.preventDefault());
+  return api;
+})();
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-open]');
+  if (b) { e.preventDefault(); LB.open(b.dataset.open); }
+});
+
+// ── CONTACTO ──
+function toast(msg) {
+  const el = $('#toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2200);
+}
+$('#copy-mail').addEventListener('click', () => {
+  const mail = $('#mail-link').textContent.trim();
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#mail-link')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast(t('copy_fail')); };
+  try { navigator.clipboard.writeText(mail).then(() => toast(t('copied')), fallback); } catch (e) { fallback(); }
+});
+
+// ── INICIO ──
+let saved = null;
+try { saved = localStorage.getItem('ml-lang'); } catch (e) {}
+setLang(saved || ((navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en'));
+layoutAll(); tick();
+</script>
+<script>
+// Botón de revisión «← Versiones» (se quita al publicar la versión final)
+addEventListener('DOMContentLoaded', () => {
+  document.head.insertAdjacentHTML('beforeend', `<style>.ml-back{position:fixed;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;min-height:40px;padding:.5rem .95rem;border-radius:999px;font:600 13px/1 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none;color:#fff;background:rgba(18,18,18,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 0 1px rgba(255,255,255,.2),0 6px 18px rgba(0,0,0,.3)}.ml-back:hover{background:rgba(18,18,18,.94)}body:has(#lb:not([hidden])) .ml-back{display:none}</style>`);
+  const a = document.createElement('a'); a.className = 'ml-back'; a.href = 'index.html'; a.textContent = '← Versiones';
+  a.setAttribute('aria-label', 'Volver a todas las versiones'); document.body.appendChild(a);
+});
+</script>
+</body>
+</html>

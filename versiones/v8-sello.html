@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Sello</title>
+<meta name="description" content="Maximiliano Langevin, pintor realista chileno. Retratos al óleo, entregados con certificado de autenticidad, placa de latón y sobre lacrado.">
+<meta name="theme-color" content="#14201a">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Cormorant+Garamond:ital,wght@1,500&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+/* Sello: la identidad sale de la propia entrega de Max. Verde del sobre, rojo del lacre, papel de algodón y latón de la placa.
+   Verde y rojo son complementarios, el mismo contraste del fondo y los labios de Karin Goldberg. */
+:root {
+  --paper: #f1ece2; --paper-2: #e7e0d2; --ink: #1b1915; --ink-soft: #625a4f;
+  --green: #1c3a2f; --green-2: #24493b; --night: #131c17; --red: #c8202c; --brass: #b38f55;
+  --bg: var(--paper); --fg: var(--ink); --muted: var(--ink-soft); --accent: var(--red); --on-accent: #fff;
+  --line: rgba(27,25,21,.15);
+  --lb-bg: #101612; --lb-fg: #f1ece2; --lb-muted: #a9a294; --lb-line: rgba(241,236,226,.14);
+  --f-sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Playfair Display', Georgia, serif;
+  --f-mono: 'DM Mono', ui-monospace, Menlo, monospace;
+  --f-hand: 'Architects Daughter', 'Comic Sans MS', cursive;
+  --f-cert: 'Cormorant Garamond', Georgia, serif;
+  --gl: max(clamp(20px, 5vw, 72px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(20px, 5vw, 72px), env(safe-area-inset-right, 0px));
+  --nav-h: 62px; --ease: cubic-bezier(.22,.61,.36,1);
+}
+body { background: var(--bg); color: var(--fg); font: 400 1.0625rem/1.6 var(--f-sans); }
+::selection { background: var(--red); color: #fff; }
+.dark { --fg: #f1ece2; --muted: #b3ab9c; --line: rgba(241,236,226,.15); color: var(--fg); background: var(--night); }
+.green { --fg: #f1ece2; --muted: #b9c2b5; --line: rgba(241,236,226,.16); color: var(--fg); background: var(--green); }
+.wrap { padding-left: var(--gl); padding-right: var(--gr); }
+.band { padding-block: clamp(5rem, 13vh, 9.5rem); }
+.eyebrow { font: .74rem var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.dark .eyebrow, .green .eyebrow { color: #e9a79c; }
+.mono { font: .78rem var(--f-mono); letter-spacing: .05em; color: var(--muted); }
+.h-xl { font: 400 clamp(2.8rem, 8.4vw, 7.6rem)/.95 var(--f-serif); letter-spacing: -.025em; text-wrap: balance; }
+.h-l { font: 400 clamp(2.2rem, 5.2vw, 4.6rem)/1.02 var(--f-serif); letter-spacing: -.02em; text-wrap: balance; }
+.h-l em, .h-xl em { font-style: italic; }
+.h-m { font: 400 clamp(1.35rem, 2.3vw, 1.95rem)/1.22 var(--f-serif); letter-spacing: -.01em; text-wrap: balance; }
+.lede { font-size: clamp(1.05rem, 1.35vw, 1.2rem); line-height: 1.58; color: var(--muted); max-width: 44ch; text-wrap: pretty; }
+.sec-head { display: grid; gap: 1rem; margin-bottom: clamp(2.5rem, 6vh, 4rem); max-width: 62rem; }
+.pill { display: inline-flex; align-items: center; gap: .6rem; min-height: 46px; padding: .7rem 1.3rem; border-radius: 999px; font: 600 .95rem var(--f-sans); background: var(--fg); color: var(--bg); text-decoration: none; transition: transform .25s var(--ease), background .25s; }
+.dark .pill, .green .pill { color: var(--night); }
+.pill:hover { transform: translateY(-1px); }
+.pill.red { background: var(--red); color: #fff; }
+.pill.ghost { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px var(--line); }
+.pill svg { width: 18px; height: 18px; }
+.textlink { display: inline-flex; gap: .4rem; font-weight: 600; color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.skip { position: fixed; left: 12px; top: -60px; z-index: 400; background: var(--ink); color: var(--paper); padding: .6rem 1rem; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+/* Sello de lacre (SVG generado) */
+.seal { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* Nav */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--night); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); color: #f1ece2; transition: background .35s, color .35s, box-shadow .35s; }
+.nav.solid { background: rgba(241,236,226,.86); color: var(--ink); -webkit-backdrop-filter: saturate(1.3) blur(16px); backdrop-filter: saturate(1.3) blur(16px); box-shadow: 0 1px 0 rgba(27,25,21,.12); }
+.brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; font: 400 1.05rem var(--f-serif); white-space: nowrap; }
+.brand .bseal { width: 36px; flex: none; filter: drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
+.nav-r { display: flex; align-items: center; gap: 1.1rem; }
+.nav-links { display: flex; gap: clamp(.9rem, 1.7vw, 1.5rem); list-style: none; }
+.nav-links a { text-decoration: none; font-size: .84rem; opacity: .78; }
+.nav-links a:hover { opacity: 1; }
+.nav .pill { min-height: 38px; padding: .45rem 1rem; font-size: .82rem; background: var(--red); color: #fff; }
+.lang { font: .72rem var(--f-mono); letter-spacing: .1em; min-width: 44px; min-height: 34px; border-radius: 999px; box-shadow: inset 0 0 0 1px currentColor; opacity: .8; }
+.burger { display: none; width: 44px; height: 44px; position: relative; }
+.burger span { position: absolute; left: 12px; right: 12px; height: 1.5px; background: currentColor; transition: transform .3s, top .3s; }
+.burger span:nth-child(1) { top: 18px; } .burger span:nth-child(2) { top: 25px; }
+.burger[aria-expanded="true"] span:nth-child(1) { top: 21.5px; transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { top: 21.5px; transform: rotate(-45deg); }
+.drawer { position: fixed; inset: 0; z-index: 130; background: var(--paper); color: var(--ink); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2rem) var(--gr) 2rem var(--gl); display: flex; flex-direction: column; gap: .3rem; }
+.drawer a { text-decoration: none; font: 400 clamp(2rem, 9vw, 3rem)/1.2 var(--f-serif); }
+html.drawer-open .nav { background: var(--paper); color: var(--ink); }
+
+/* Zoom */
+#top .stage { background: var(--night); }
+.scrim { background: linear-gradient(to top, rgba(19,28,23,.92), rgba(19,28,23,.5) 45%, transparent); }
+.zt.cap { left: var(--gl); right: var(--gr); bottom: calc(clamp(1.5rem, 6vh, 4rem) + env(safe-area-inset-bottom, 0px)); max-width: 36rem; text-shadow: 0 2px 24px rgba(0,0,0,.45); display: grid; gap: .8rem; color: #f1ece2; }
+.zt.cap .mono { color: #f1ece2; opacity: .8; }
+.zt.cap .pal { max-width: 22rem; height: 10px; }
+.zt.center { inset: 0; display: grid; place-items: center; text-align: center; padding: 0 var(--gr) 0 var(--gl); pointer-events: none; color: #f1ece2; }
+.hero-intro { top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(1rem, 5vh, 3.5rem)); left: var(--gl); right: var(--gr); text-align: center; display: grid; justify-items: center; gap: 1rem; color: #f1ece2; }
+.hero-intro .eyebrow { color: #e9a79c; }
+.cue { position: absolute; z-index: 3; left: 50%; bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); translate: -50% 0; display: grid; justify-items: center; gap: .5rem; pointer-events: none; }
+.cue .mono { color: #f1ece2; background: rgba(19,28,23,.72); padding: .35rem .8rem; border-radius: 999px; white-space: nowrap; }
+.cue i { width: 1px; height: 38px; background: linear-gradient(#f1ece2, transparent); animation: drip 2.2s var(--ease) infinite; transform-origin: top; }
+@keyframes drip { 0% { transform: scaleY(0); } 70% { transform: scaleY(1); opacity: 1; } 100% { opacity: 0; } }
+.endcard { left: var(--gl); bottom: calc(clamp(1.5rem, 6vh, 4rem) + env(safe-area-inset-bottom, 0px)); display: grid; gap: .5rem; justify-items: start; max-width: 30rem; color: #f1ece2; }
+.endcard .t { font: italic 400 clamp(2rem, 4vw, 3.2rem)/1 var(--f-serif); }
+.endcard .pill { margin-top: .8rem; background: #f1ece2; color: var(--night); }
+.marcos-intro { left: var(--gl); top: 50%; translate: 0 -50%; max-width: min(24rem, 23vw); display: grid; gap: 1rem; color: #f1ece2; }
+.marcos-intro .lede { color: #c9c1b2; }
+.rail { position: absolute; z-index: 4; right: var(--gr); top: 50%; transform: translateY(-50%); display: grid; gap: .35rem; }
+.rail button { white-space: nowrap; display: flex; align-items: center; justify-content: flex-end; gap: .7rem; min-height: 40px; font: .72rem var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: #b3ab9c; }
+.rail button::after { content: ""; width: 9px; height: 9px; border-radius: 50%; box-shadow: inset 0 0 0 1px currentColor; transition: background .2s, transform .3s; }
+.rail button.on { color: #f1ece2; } .rail button.on::after { background: var(--red); box-shadow: none; transform: scale(1.25); }
+.rail span { text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+
+/* Cita + firma pintada */
+.words-stage { display: grid; align-content: center; justify-items: start; gap: 2.4rem; padding-left: var(--gl); padding-right: var(--gr); }
+.words { font: italic 400 clamp(1.9rem, 4.8vw, 4.2rem)/1.14 var(--f-serif); letter-spacing: -.015em; max-width: 22ch; }
+.words span { opacity: .14; transition: opacity .25s linear; } .words span.lit { opacity: 1; }
+.quote-sig { width: min(400px, 70vw); color: #2a1d16; margin-top: -.6rem; }
+.quote-note { max-width: 34ch; }
+
+/* Sala horizontal: el muro toma el color de la obra que está al centro */
+#obras .stage { background: var(--wall, #1d2420); transition: background-color .9s var(--ease); }
+.hstage { display: grid; grid-template-rows: auto 1fr; padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(.5rem, 3vh, 2rem)); }
+.h-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; padding-left: var(--gl); padding-right: var(--gr); }
+.h-head > div { display: grid; gap: .6rem; min-width: 0; }
+.h-progress { width: min(240px, 40vw); height: 2px; background: var(--line); position: relative; }
+.h-progress span { position: absolute; inset: 0; background: var(--fg); transform-origin: left; transform: scaleX(0); }
+.track { --ch: min(54svh, 560px); display: flex; align-items: center; gap: clamp(1.5rem, 4vw, 4rem); width: max-content; padding-left: var(--gl); padding-right: var(--gr); will-change: transform; }
+.rm .track { width: auto; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; }
+.rm .hstage { height: auto; padding-bottom: 3rem; }
+
+/* Tarjetas */
+.work { display: grid; gap: .9rem; text-align: left; justify-items: start; }
+.work .frame { display: block; position: relative; overflow: hidden; background: rgba(0,0,0,.08); max-width: 100%; box-shadow: 0 18px 40px -18px rgba(0,0,0,.45); }
+.work img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.work:hover img { transform: scale(1.035); }
+.track .work .frame { height: var(--ch); width: calc(var(--ch) * var(--a)); }
+.placard { display: grid; gap: .2rem; min-width: 0; }
+.placard .t { font: italic 400 1.3rem/1.15 var(--f-serif); }
+.placard .m { font: .72rem var(--f-mono); letter-spacing: .04em; color: var(--muted); }
+.placard .n { opacity: .7; }
+.badge { position: absolute; top: .7rem; left: .7rem; font: .66rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; padding: .3rem .55rem; background: rgba(19,28,23,.75); color: #f1ece2; border-radius: 999px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
+.grid .work .frame { width: 100%; aspect-ratio: var(--a); }
+
+/* El Conde + credenciales */
+.conde-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); }
+.conde-art { position: sticky; top: calc(var(--nav-h) + 3vh); align-self: start; display: grid; gap: 1rem; }
+.conde-art button { display: block; width: 100%; }
+.conde-art img { width: 100%; height: auto; max-height: 82svh; object-fit: contain; object-position: left top; }
+.conde-text { display: grid; gap: clamp(2.5rem, 8vh, 5rem); min-width: 0; }
+.conde-text figure { display: grid; gap: .8rem; }
+.conde-text figcaption { font-size: .92rem; color: var(--muted); max-width: 52ch; }
+.creds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.creds div { padding: 1.6rem 1.2rem 1.6rem 0; display: grid; gap: .4rem; }
+.creds b { font: 400 1.3rem var(--f-serif); }
+.creds span { font-size: .85rem; color: var(--muted); }
+
+/* Lupa */
+.lupa-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+.lupa-text { display: grid; gap: 1.2rem; justify-items: start; min-width: 0; }
+.lupa-frame { position: relative; height: min(82svh, 860px); aspect-ratio: 1416 / 2000; max-width: 100%; cursor: crosshair; touch-action: pan-y; user-select: none; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); }
+.lupa-frame.touchon { touch-action: none; }
+.lupa-frame > img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+
+/* Proceso */
+.split { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); grid-template-rows: minmax(0, 1fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); height: 100%; padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2vh) var(--gr) 4vh var(--gl); }
+.split-text { display: grid; gap: 1.1rem; justify-items: start; min-width: 0; }
+.frames { position: relative; height: 100%; max-height: 80svh; min-height: 0; }
+.frames img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.stepper { display: flex; align-items: center; gap: .9rem; }
+.stepper .bar { width: 120px; height: 2px; background: var(--line); position: relative; }
+.stepper .bar span { position: absolute; inset: 0; background: currentColor; transform-origin: left; }
+
+/* ── La entrega ── */
+.ent-stage { display: grid; place-items: center; }
+.ent-intro { left: var(--gl); right: var(--gr); top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(1rem, 5vh, 3rem)); display: grid; justify-items: center; text-align: center; gap: .9rem; }
+.ent-intro .lede { color: #c6cdc2; max-width: 40ch; }
+.ent-cap { left: var(--gl); right: var(--gr); bottom: calc(clamp(1.2rem, 4vh, 3rem) + env(safe-area-inset-bottom, 0px)); display: grid; justify-items: center; text-align: center; gap: .4rem; }
+.ent-cap .h-m { max-width: 30ch; }
+@media (min-aspect-ratio: 5/4) { .ent-cap.side { right: auto; bottom: auto; top: 50%; translate: 0 -50%; max-width: min(21rem, 24vw); justify-items: start; text-align: left; } }
+.ent-cap .mono { color: #c6cdc2; max-width: 52ch; }
+.ent-box { --W: min(520px, 84vw); position: relative; width: var(--W); height: calc(var(--W) * .68); margin-top: 12vh; }
+.env-part { position: absolute; transform: translate3d(0, var(--ey, 0px), 0); opacity: var(--eo, 1); will-change: transform, opacity; }
+.env-back { inset: 0; background: linear-gradient(#173328, #1b3c30); border-radius: 3px; box-shadow: 0 40px 70px -30px rgba(0,0,0,.6); z-index: 1; }
+.env-front { inset: 0; width: 100%; height: 100%; z-index: 4; overflow: visible; filter: drop-shadow(0 -2px 4px rgba(0,0,0,.25)); }
+.flap { left: 0; right: 0; top: 0; height: 64%; z-index: 6; will-change: transform; transform-origin: 50% 0; transform: translate3d(0, var(--ey, 0px), 0) perspective(1200px) rotateX(var(--fa, 0deg)); transform-style: preserve-3d; }
+.flap > div { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 51% 100%, 49% 100%); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flap .out { background: linear-gradient(170deg, #2a5544, #234a3b 60%, #1f4234); }
+.flap .in { background: linear-gradient(10deg, #163126, #1a392d); transform: rotateX(180deg); }
+.env-seal { width: 26%; left: 37%; top: calc(64% - 13%); z-index: 7; translate: 0 var(--sy, 0px); filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); }
+.cert-wrap { position: absolute; left: 5.5%; width: 89%; top: 3.5%; z-index: 3; transform-origin: 50% 50%; will-change: transform; }
+
+/* Certificado: tipografía y proporciones del certificado real; todo en unidades del contenedor */
+.cert { container-type: inline-size; aspect-ratio: 1.38; background: #f6f2ea; color: #23201c; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 30px 60px -25px rgba(0,0,0,.6); position: relative; overflow: hidden;
+  background-image: radial-gradient(rgba(0,0,0,.035) 1px, transparent 1.2px), radial-gradient(rgba(0,0,0,.025) 1px, transparent 1.2px); background-size: 7px 7px, 11px 11px; background-position: 0 0, 3px 5px; }
+.cert-in { position: absolute; inset: 0; display: grid; grid-template-columns: 41% 1fr; gap: 4.5cqw; padding: 5.2cqw 5cqw 7cqw 3.6cqw; }
+.cert-photo { align-self: start; background: #fff; padding: .9cqw; box-shadow: 0 .3cqw .9cqw rgba(0,0,0,.18); }
+.cert-photo img { width: 100%; aspect-ratio: .66; object-fit: cover; }
+.cert-body { display: grid; align-content: start; gap: .5cqw; position: relative; min-width: 0; }
+.cert-date { position: absolute; right: 0; top: -2.6cqw; font: 2.5cqw var(--f-hand); letter-spacing: .05em; }
+.cert-title { font: 700 4.3cqw/1.02 var(--f-serif); letter-spacing: -.01em; text-transform: uppercase; margin-top: 2.6cqw; padding-bottom: 1.3cqw; border-bottom: .18cqw solid #2a2622; }
+.cert-fields { display: grid; gap: .35cqw; margin-top: 1.5cqw; font: 600 2.15cqw/1.25 var(--f-serif); text-transform: uppercase; letter-spacing: .02em; }
+.cert-fields span { font: italic 500 2.3cqw/1.25 var(--f-cert); text-transform: none; letter-spacing: 0; }
+.cert-hand { display: grid; margin-top: .6cqw; }
+.cert-hand p { font: 2.25cqw/1.55 var(--f-hand); text-transform: uppercase; letter-spacing: .06em; border-bottom: .12cqw solid rgba(35,32,28,.75); white-space: nowrap; clip-path: inset(-20% var(--hw, 100%) -20% 0); }
+.cert-sig { width: 40%; margin: 1.3cqw 0 0 26%; color: #1d1b2e; }
+.cert-line { border-top: .14cqw solid #2a2622; margin-left: 12%; width: 72%; padding-top: .4cqw; text-align: center; font: italic 500 2.1cqw var(--f-cert); }
+.cert-foot { position: absolute; left: 0; right: 0; bottom: 2.4cqw; text-align: center; font: 1.6cqw var(--f-sans); letter-spacing: .02em; color: #4a443d; }
+.cert-stamp { position: absolute; width: 23cqw; left: 29cqw; top: 33cqw; mix-blend-mode: multiply; opacity: var(--st, 0); transform: scale(calc(1.25 - var(--st, 0) * .25)); }
+.cert-stamp svg { width: 100%; height: auto; overflow: visible; }
+
+/* El reverso: la placa */
+.back-stage { display: grid; place-items: center; perspective: 1600px; }
+.frame3d { --H: min(68svh, 640px); position: relative; height: var(--H); width: calc(var(--H) * 48 / 68); transform-style: preserve-3d; will-change: transform; }
+.frame3d .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.frame3d .front { background: #161616; padding: 2.4%; box-shadow: 0 40px 80px -30px rgba(0,0,0,.7); }
+.frame3d .front img { width: 100%; height: 100%; object-fit: cover; }
+.frame3d .back { transform: rotateY(180deg); background: #2b2b2d; box-shadow: inset 0 0 0 calc(var(--H) * .018) #3a3a3d, inset 0 0 0 calc(var(--H) * .026) #1c1c1e, 0 40px 80px -30px rgba(0,0,0,.7); overflow: hidden; }
+.frame3d .back::before { content: ""; position: absolute; inset: 4%; background: #232325; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); }
+.plaque { position: absolute; left: 27%; width: 46%; top: 11%; aspect-ratio: 3.7; border-radius: 2px; display: grid; place-content: center; text-align: center; gap: 2%; color: #3d2c12;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0 1px, rgba(0,0,0,.04) 1px 3px), linear-gradient(100deg, #8d6a33, #d9b878 28%, #b48d4f 52%, #e3c78c 74%, #9c7639);
+  box-shadow: inset 0 0 0 1px rgba(80,55,20,.6), 0 2px 5px rgba(0,0,0,.5); container-type: inline-size; }
+.plaque::after { content: ""; position: absolute; inset: 5% 2.4%; border: 1px solid rgba(70,45,15,.55); border-radius: 3px; pointer-events: none; }
+.plaque b { font: italic 600 8.5cqw/1 var(--f-sans); letter-spacing: -.01em; }
+.plaque i { font: 500 6.6cqw/1 var(--f-sans); font-style: normal; }
+.plaque small { font: 600 3.6cqw/1 var(--f-sans); }
+.bracket { position: absolute; width: 14%; aspect-ratio: 1; background: linear-gradient(135deg, #e4e6e8, #9ea2a6); clip-path: polygon(0 0, 100% 0, 100% 34%, 34% 34%, 34% 100%, 0 100%); }
+.bracket.tr { right: 2.6%; top: 2.6%; transform: scaleX(-1); } .bracket.tl { left: 2.6%; top: 2.6%; }
+.bracket.br { right: 2.6%; bottom: 2.6%; transform: scale(-1, -1); } .bracket.bl { left: 2.6%; bottom: 2.6%; transform: scaleY(-1); }
+.wire { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.back-cap { left: var(--gl); right: var(--gr); bottom: calc(clamp(1.2rem, 4vh, 3rem) + env(safe-area-inset-bottom, 0px)); display: grid; justify-items: center; text-align: center; gap: .4rem; }
+.back-cap .mono { color: #c6cdc2; max-width: 52ch; }
+.back-intro { left: var(--gl); top: 50%; translate: 0 -50%; max-width: min(22rem, 26vw); display: grid; gap: 1rem; }
+.back-intro .lede { color: #c6cdc2; }
+
+/* Fotos reales de la entrega */
+.photos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(.8rem, 2vw, 1.6rem); }
+.photos figure { display: grid; gap: .6rem; }
+.photos img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+.photos figcaption { font: .74rem var(--f-mono); color: var(--muted); }
+.includes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); border-top: 1px solid var(--line); margin-top: clamp(3rem, 8vh, 5rem); }
+.includes div { padding: 1.5rem 1.2rem 1.5rem 0; display: grid; gap: .4rem; }
+.includes b { font: 400 1.3rem var(--f-serif); }
+.includes span { font-size: .9rem; color: var(--muted); }
+
+/* Archivo */
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: clamp(2rem, 5vh, 3rem); }
+.chips button { min-height: 40px; padding: .4rem 1rem; border-radius: 999px; font: .78rem var(--f-mono); letter-spacing: .06em; text-transform: uppercase; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
+.chips button[aria-pressed="true"] { background: var(--ink); color: var(--paper); box-shadow: none; }
+
+/* Bio */
+.bio { background: var(--paper-2); }
+.bio-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 7vw, 7rem); align-items: start; }
+.bio-photo { position: sticky; top: calc(var(--nav-h) + 3vh); display: grid; gap: 1rem; max-width: 460px; }
+.bio-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.bio-body { display: grid; gap: 1.2rem; max-width: 62ch; }
+.bio-body p { color: var(--muted); }
+.bio-body p:first-child { color: var(--fg); font-size: clamp(1.15rem, 1.6vw, 1.35rem); line-height: 1.5; }
+.bio-body em { color: var(--fg); }
+.cv { margin-top: 3rem; display: grid; gap: 2rem; }
+.cv h3 { font: .74rem var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .6rem; }
+.cv li { list-style: none; display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1rem; padding-block: .7rem; border-top: 1px solid var(--line); }
+.cv li span:first-child { font: .82rem var(--f-mono); color: var(--muted); padding-top: .1rem; }
+
+/* Encargos */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); counter-reset: s; border-top: 1px solid var(--line); }
+.steps li { list-style: none; padding: 1.6rem 1.6rem 1.6rem 0; display: grid; gap: .5rem; align-content: start; counter-increment: s; }
+.steps li::before { content: counter(s, decimal-leading-zero); font: .78rem var(--f-mono); color: var(--accent); }
+.steps b { font: 400 1.35rem var(--f-serif); }
+.steps span { color: var(--muted); font-size: .95rem; }
+
+/* Contacto */
+.contact { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem 4rem; align-items: end; }
+.contact .h-xl { max-width: 13ch; }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: clamp(2rem, 5vh, 3.5rem); }
+.mail a { font: italic 400 clamp(1.5rem, 4vw, 3rem)/1.1 var(--f-serif); text-decoration: none; overflow-wrap: anywhere; }
+.copy { font: .72rem var(--f-mono); letter-spacing: .08em; text-transform: uppercase; min-height: 36px; padding: 0 .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.socials { display: flex; flex-wrap: wrap; gap: .5rem 2rem; margin-top: clamp(3rem, 8vh, 5rem); list-style: none; }
+.socials a { font: .78rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: inline-block; padding-block: .6rem; }
+.big-seal { width: clamp(150px, 20vw, 250px); transform: rotate(-8deg) scale(var(--ss, 1)); opacity: var(--so, 1); filter: drop-shadow(0 18px 20px rgba(0,0,0,.25)); }
+.end-sig { width: min(560px, 86vw); color: #2a1d16; margin-top: clamp(3rem, 8vh, 5rem); }
+footer { border-top: 1px solid var(--line); padding-block: 1.6rem calc(1.6rem + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .5rem 2rem; font: .72rem var(--f-mono); color: var(--muted); }
+
+@media (max-width: 1180px) { .nav-links { display: none; } .burger { display: block; } }
+@media (max-width: 860px) {
+  :root { --nav-h: 56px; }
+  .nav .pill { display: none; }
+  .marcos-intro { top: auto; bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px)); translate: none; right: var(--gr); max-width: none; }
+  .rail { top: auto; bottom: calc(.75rem + env(safe-area-inset-bottom, 0px)); right: auto; left: 50%; transform: translateX(-50%); display: flex; gap: .4rem; }
+  .rail button { flex-direction: row-reverse; gap: .4rem; font-size: .62rem; }
+  .zcap-m { bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px)) !important; }
+  .conde-grid, .bio-grid, .lupa-grid, .contact { grid-template-columns: minmax(0, 1fr); }
+  .conde-art, .bio-photo { position: static; }
+  .conde-art img { max-height: 70svh; object-position: center; }
+  .lupa-grid { justify-items: center; }
+  .lupa-frame { height: auto; width: min(100%, 520px); }
+  .split { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 1.2rem; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
+  .split .frames { order: -1; max-height: none; }
+  .split-text .lede { font-size: .98rem; }
+  .track { --ch: min(46svh, 440px); }
+  .photos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .back-intro { top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 1rem); translate: none; right: var(--gr); max-width: none; }
+  .frame3d { --H: min(50svh, 520px); margin-top: 18vh; }
+  .ent-box { margin-top: 18vh; }
+  .big-seal { justify-self: start; }
+}
+@media (max-width: 560px) { .brand span:not(.bseal) { display: none; } .cv li { grid-template-columns: 5.5rem minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<a class="skip" href="#obras" data-i18n="skip">Saltar a las obras</a>
+<header class="nav" id="nav">
+  <a href="#top" class="brand"><span class="bseal js-seal" data-tilt="-6"></span><span>Maximiliano Langevin</span></a>
+  <div class="nav-r">
+    <nav aria-label="Secciones"><ul class="nav-links">
+      <li><a href="#obras" data-i18n="n_works">Obras</a></li><li><a href="#viaje">Marcos 16:16</a></li>
+      <li><a href="#proceso" data-i18n="n_process">Proceso</a></li><li><a href="#entrega" data-i18n="n_delivery">La entrega</a></li>
+      <li><a href="#archivo" data-i18n="n_archive">Archivo</a></li><li><a href="#about" data-i18n="n_about">Biografía</a></li></ul></nav>
+    <a class="pill" href="#encargos" data-i18n="n_commission">Encargar un retrato</a>
+    <button class="lang js-lang" type="button">EN</button>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" data-i18n-aria="menu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="drawer" id="drawer" hidden>
+  <a href="#obras" data-i18n="n_works">Obras</a><a href="#viaje">Marcos 16:16</a><a href="#proceso" data-i18n="n_process">Proceso</a>
+  <a href="#entrega" data-i18n="n_delivery">La entrega</a><a href="#archivo" data-i18n="n_archive">Archivo</a>
+  <a href="#about" data-i18n="n_about">Biografía</a><a href="#encargos" data-i18n="n_commission">Encargar un retrato</a>
+</div>
+
+<main>
+<!-- 1 · Entrar en la pintura -->
+<section class="scene" id="top" style="--len:380vh" aria-label="Karin Goldberg">
+  <div class="stage">
+    <div class="zcanvas"></div><div class="scrim"></div>
+    <div class="zt hero-intro" data-r="0,.04" data-e=".06">
+      <p class="eyebrow" data-i18n="hero_eyebrow">Pintor realista · Santiago de Chile</p>
+      <h1 class="h-xl">Maximiliano <em>Langevin</em></h1>
+    </div>
+    <div class="cue zt" data-r="0,.02" data-e=".04" data-still><span class="mono" data-i18n="hero_cue">Baja para entrar en la pintura</span><i></i></div>
+    <div class="zt center" data-r=".15,.22" data-e=".05"><p class="h-l"><em data-i18n="hero_c1">Acércate.</em></p></div>
+    <div class="zt cap" data-r=".38,.52">
+      <p class="h-m" data-i18n="hero_c2">Verde tierra contra piel cálida. Son complementarios: el fondo frío hace que la piel se vea más viva.</p>
+      <div class="js-pal" data-id="karin-goldberg"></div>
+      <p class="mono" data-i18n="hero_c2_sub">Paleta medida en la obra</p>
+    </div>
+    <div class="zt cap" data-r=".68,.82"><p class="h-m" data-i18n="hero_c3">El punto más claro del cuadro es el velo. Cada hilo, pintado a mano.</p><p class="mono" data-i18n="hero_c3_sub">Detalle · Karin Goldberg, 2025</p></div>
+    <div class="zt endcard" data-r=".95,1" data-e=".04">
+      <p class="eyebrow" data-i18n="latest">Obra reciente</p>
+      <p class="t">Karin Goldberg</p>
+      <p class="mono" style="color:#c9c1b2" data-i18n="karin_meta">2025 · Óleo sobre lino · 48 × 68 cm</p>
+      <button class="pill" type="button" data-open="karin-goldberg"><span data-i18n="see_work">Ver la obra</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · La cita y la firma pintada -->
+<section class="scene" id="cita" style="--len:210vh" aria-label="Cita">
+  <div class="stage words-stage">
+    <blockquote class="words" id="quote"></blockquote>
+    <div class="quote-sig" id="quote-sig"></div>
+    <p class="mono quote-note" data-i18n="sig_note">La misma firma que pinta en cada cuadro terminado, con pincel y óleo.</p>
+  </div>
+</section>
+
+<!-- 3 · Sala de pinturas -->
+<section class="scene dark" id="obras" aria-labelledby="obras-h">
+  <div class="stage hstage">
+    <div class="h-head">
+      <div><p class="eyebrow" data-i18n="paint_eyebrow">Óleo sobre tela y lino · 2020 — hoy</p><h2 class="h-l" id="obras-h" data-i18n="n_paint">Pinturas</h2></div>
+      <div><p class="mono" data-i18n="paint_hint">El muro toma el color de cada obra. Toca una para ver sus vistas y consultar por ella.</p><div class="h-progress" aria-hidden="true"><span></span></div></div>
+    </div>
+    <div class="track" id="grid-pinturas"></div>
+  </div>
+</section>
+
+<!-- 4 · Viaje por Marcos 16:16 -->
+<section class="scene dark" id="viaje" style="--len:540vh" aria-labelledby="marcos-h">
+  <div class="stage">
+    <div class="zcanvas"></div><div class="scrim"></div>
+    <div class="zt marcos-intro" data-r="0,.05" data-e=".05" data-still>
+      <p class="eyebrow" data-i18n="marcos_eyebrow">Obra en proceso</p>
+      <h2 class="h-l" id="marcos-h">Marcos 16:16</h2>
+      <p class="lede" data-i18n="marcos_intro">Óleo sobre tela, 77,5 × 102,5 cm. Todavía está en el caballete. Baja para recorrerla por dentro.</p>
+    </div>
+    <div class="zt cap zcap-m" data-r=".18,.29"><p class="h-m" data-i18n="marcos_s1">La luz de colores cae sobre el damero. Ella intenta tocarla.</p><p class="mono" data-i18n="marcos_s1_sub">El blanco y negro del piso es neutro: el color queda solo para la luz.</p></div>
+    <div class="zt cap zcap-m" data-r=".49,.59"><p class="h-m" data-i18n="marcos_s2">Detrás de la reja, el retablo: dorado, sombra y madera tallada.</p></div>
+    <div class="zt cap zcap-m" data-r=".80,.88"><p class="h-m"><em>«Qui crediderit et baptizatus fuerit salvus erit.»</em></p><p class="mono" data-i18n="marcos_s3_sub">Marcos 16:16 · El que crea y sea bautizado, se salvará.</p></div>
+    <div class="zt endcard zcap-m" data-r=".96,1" data-e=".03">
+      <p class="t">Marcos 16:16</p>
+      <button class="pill" type="button" data-open="marcos-16-16"><span data-i18n="marcos_end">Ver fotos del proceso</span></button>
+    </div>
+    <div class="rail" aria-label="Recorrido">
+      <button type="button" data-goto=".235" data-range=".12,.36"><span data-i18n="marcos_l1">La niña</span></button>
+      <button type="button" data-goto=".545" data-range=".42,.66"><span data-i18n="marcos_l2">El retablo</span></button>
+      <button type="button" data-goto=".84" data-range=".72,.95"><span data-i18n="marcos_l3">La inscripción</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · Mira de cerca -->
+<section class="band wrap" id="lupa" aria-labelledby="lupa-h">
+  <div class="lupa-grid">
+    <div class="lupa-text">
+      <p class="eyebrow">Veteran George · 2024</p>
+      <h2 class="h-l" id="lupa-h" data-i18n="lupa_title">Mira de cerca.</h2>
+      <p class="lede" id="lupa-p"></p>
+      <button class="pill ghost" type="button" id="lupa-toggle" aria-pressed="false" hidden></button>
+      <button class="textlink" type="button" data-open="veteran-george"><span data-i18n="all_photos">Ver todas las fotos</span> →</button>
+    </div>
+    <div class="lupa-frame" id="lupa-frame" aria-describedby="lupa-h">
+      <img src="../images/w/pinturas/veteran_george_1.webp" alt="Veteran George: hombre mayor con gorra de veterano, camisa roja y una escopeta, junto a un perro" width="1416" height="2000" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- 6 · El Conde y credenciales -->
+<section class="band wrap" id="el-conde" aria-labelledby="conde-h" style="padding-top:0">
+  <div class="conde-grid">
+    <div class="conde-art">
+      <button type="button" data-open="el-conde" aria-label="El Conde"><img src="../images/w/pinturas/el_conde_1.webp" alt="El Conde, óleo en grises: figura con gorra militar y abrigo de piel" width="1332" height="2000" loading="lazy"></button>
+      <p class="mono" data-i18n="conde_meta">2024 · Óleo sobre lino · 40 × 60 cm</p>
+    </div>
+    <div class="conde-text">
+      <div class="sec-head" style="margin:0">
+        <p class="eyebrow" data-i18n="conde_eyebrow">Exposición «Polímatas» · Estadio Italiano, 2024</p>
+        <h2 class="h-l" id="conde-h">El Conde</h2>
+        <p class="lede" data-i18n="conde_p">Un retrato en grisalla a partir de la película «El Conde». Se expuso en «Polímatas» y terminó frente a quienes hicieron la película.</p>
+      </div>
+      <figure><img src="../images/w/pinturas/el_conde_2.webp" alt="" width="1200" height="1600" loading="lazy"><figcaption data-i18n="conde_c2">Exposición «Polímatas» en el Estadio Italiano, 2024.</figcaption></figure>
+      <figure><img src="../images/w/pinturas/el_conde_5.webp" alt="" width="2000" height="1500" loading="lazy"><figcaption data-i18n="conde_c5">Juan de Dios Larraín (productor) y Pablo Larraín (director) de «El Conde» junto a la obra.</figcaption></figure>
+      <div><button class="textlink" type="button" data-open="el-conde"><span data-i18n="all_photos">Ver todas las fotos</span> →</button></div>
+    </div>
+  </div>
+  <div class="creds" style="margin-top:clamp(4rem,10vh,7rem)">
+    <div><b>Polímatas 2024</b><span data-i18n="cr1">Exposición colectiva, Estadio Italiano</span></div>
+    <div><b>Disney® · Fábula®</b><span data-i18n="cr2">Colaboraciones en cine y publicidad</span></div>
+    <div><b>Javier Barriga</b><span data-i18n="cr3">Cinco años de taller, desde 2019</span></div>
+    <div><b>Francisco Uzabeaga</b><span data-i18n="cr4">Formación en hiperrealismo, 2024</span></div>
+  </div>
+</section>
+
+<!-- 7 · Proceso -->
+<section id="proceso" aria-labelledby="proc-h" style="background:var(--paper-2)">
+  <div class="scene" style="--len:260vh" data-scrub="fade">
+    <div class="stage"><div class="split">
+      <div class="split-text">
+        <p class="eyebrow" data-i18n="proc_eyebrow">Proceso · dibujo, 2019</p>
+        <h2 class="h-l" id="proc-h" data-i18n="proc_title">Del trazo a la forma.</h2>
+        <p class="lede" data-i18n="proc_p">Copia de un dibujo de William Bouguereau. Grafito sobre papel de algodón, 30 × 23 cm. Cinco fotos del mismo dibujo, desde las primeras líneas hasta la firma.</p>
+        <div class="stepper mono"><span><span data-i18n="stage">Etapa</span> <b class="n">5</b> / 5</span><span class="bar"><span></span></span></div>
+      </div>
+      <div class="frames">
+        <img src="../images/w/dibujos/bouguereau_1.webp" alt="" loading="lazy"><img src="../images/w/dibujos/bouguereau_2.webp" alt="" loading="lazy">
+        <img src="../images/w/dibujos/bouguereau_3.webp" alt="" loading="lazy"><img src="../images/w/dibujos/bouguereau_4.webp" alt="" loading="lazy">
+        <img src="../images/w/dibujos/bouguereau_5.webp" alt="Copia de Bouguereau: perfil de mujer en grafito" loading="lazy">
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 8 · La entrega: el sobre se abre y sale el certificado -->
+<section class="scene green" id="entrega" style="--len:520vh" aria-labelledby="ent-h">
+  <div class="stage ent-stage">
+    <div class="zt ent-intro" data-r="0,.1" data-e=".05">
+      <p class="eyebrow" data-i18n="ent_eyebrow">La entrega</p>
+      <h2 class="h-l" id="ent-h" data-i18n="ent_title">Cada obra sale del taller lacrada.</h2>
+      <p class="lede" data-i18n="ent_p">Sobre verde, sello de lacre con su monograma y, adentro, el certificado de autenticidad. Baja para abrirlo.</p>
+    </div>
+    <div class="ent-box" id="ent-box">
+      <div class="env-part env-back"></div>
+      <div class="cert-wrap" id="cert-wrap">
+        <article class="cert" aria-label="Certificado de autenticidad de Karin Goldberg">
+          <div class="cert-in">
+            <div class="cert-photo"><img src="../images/t/pinturas/karin_goldberg_1.webp" alt="" loading="lazy"></div>
+            <div class="cert-body">
+              <p class="cert-date">08 / 08 / 2026</p>
+              <h3 class="cert-title">Certificado<br>de autenticidad</h3>
+              <div class="cert-fields">
+                <p>Título: <span>Karin Goldberg</span></p>
+                <p>Técnica: <span>Óleo sobre lino</span></p>
+                <p>Dimensiones: <span>48 x 68 cm</span></p>
+                <p>Año de realización: <span>2025</span></p>
+                <p>Artista: <span>Maximiliano Langevin Larraín</span></p>
+              </div>
+              <div class="cert-hand" id="cert-hand">
+                <p>Certifico que esta obra</p><p>es una creación original</p><p>realizada por mí y garan-</p><p>tizo su autenticidad</p>
+              </div>
+              <div class="cert-sig" id="cert-sig"></div>
+              <p class="cert-line">Firma</p>
+            </div>
+          </div>
+          <div class="cert-stamp" id="cert-stamp" aria-hidden="true"></div>
+          <p class="cert-foot">@max_langevinci &nbsp;|&nbsp; maxlangevinl@gmail.com</p>
+        </article>
+      </div>
+      <svg class="env-part env-front" viewBox="0 0 100 68" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,0 L48,37 L52,37 L100,0 L100,68 L0,68 Z" fill="#214437"/>
+        <path d="M0,68 L49,33 L51,33 L100,68 Z" fill="#265041"/>
+        <path d="M0,68 L49,33 L51,33 L100,68" fill="none" stroke="rgba(0,0,0,.35)" stroke-width=".25" vector-effect="non-scaling-stroke"/>
+        <path d="M0,0 L48,37 M100,0 L52,37" fill="none" stroke="rgba(0,0,0,.25)" stroke-width=".2" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="env-part flap" id="flap"><div class="out"></div><div class="in"></div></div>
+      <div class="env-part env-seal js-seal" id="env-seal" data-tilt="8"></div>
+    </div>
+    <div class="zt ent-cap side" data-r=".2,.42"><p class="h-m" data-i18n="ent_c1">El lacre lleva su monograma: ML.</p><p class="mono" data-i18n="ent_c1_sub">Verde y rojo son complementarios, el mismo contraste del fondo y los labios de Karin Goldberg.</p></div>
+    <div class="zt ent-cap" data-r=".64,.98"><p class="h-m" data-i18n="ent_c2">Certificado de autenticidad, escrito y firmado a mano.</p><p class="mono" data-i18n="ent_c2_sub">Papel de algodón, foto de la obra, sello en relieve y la firma de Max.</p></div>
+  </div>
+</section>
+
+<!-- 9 · El reverso -->
+<section class="scene green" id="reverso" style="--len:300vh" aria-labelledby="rev-h">
+  <div class="stage back-stage">
+    <div class="zt back-intro" data-r="0,.3" data-e=".06">
+      <p class="eyebrow" data-i18n="rev_eyebrow">El reverso</p>
+      <h2 class="h-l" id="rev-h" data-i18n="rev_title">Y atrás, su nombre en latón.</h2>
+      <p class="lede" data-i18n="rev_p">Marco de aluminio, colgador de acero y una placa grabada con el título, el año y el autor.</p>
+    </div>
+    <div class="frame3d" id="frame3d">
+      <div class="face front"><img src="../images/w/pinturas/karin_goldberg_1.webp" alt="Karin Goldberg enmarcada" loading="lazy"></div>
+      <div class="face back" aria-label="Reverso del cuadro con placa de latón: Karin Goldberg, 2025, Maximiliano Langevin Larraín">
+        <svg class="wire" viewBox="0 0 100 141" preserveAspectRatio="none" aria-hidden="true"><path d="M8,46 Q50,58 92,46" fill="none" stroke="#111" stroke-width=".5"/><rect x="5" y="43" width="6" height="5" rx="1" fill="#b9bdc1"/><rect x="89" y="43" width="6" height="5" rx="1" fill="#b9bdc1"/></svg>
+        <span class="bracket tl"></span><span class="bracket tr"></span><span class="bracket bl"></span><span class="bracket br"></span>
+        <div class="plaque"><b>Karin Goldberg</b><i>2025</i><small>Maximiliano Langevin Larrain</small></div>
+      </div>
+    </div>
+    <div class="zt back-cap" data-r=".72,1" data-e=".05"><p class="h-m" data-i18n="rev_c">Placa de latón grabada, al reverso de cada obra.</p></div>
+  </div>
+</section>
+
+<section class="band wrap green" id="entrega-fotos" aria-labelledby="fotos-h" style="padding-top:clamp(2rem,6vh,4rem)">
+  <div class="sec-head"><p class="eyebrow" data-i18n="ph_eyebrow">Fotos reales</p><h2 class="h-m" id="fotos-h" data-i18n="ph_title">Así se entregó «Karin Goldberg».</h2></div>
+  <div class="photos">
+    <figure><img src="../images/t/entrega/sobre_lacrado.webp" alt="Sobre verde cerrado con sello de lacre rojo ML" width="820" height="1093" loading="lazy"><figcaption data-i18n="ph1">Sobre lacrado</figcaption></figure>
+    <figure><img src="../images/t/entrega/certificado_ventana.webp" alt="Certificado de autenticidad saliendo del sobre" width="820" height="1093" loading="lazy"><figcaption data-i18n="ph2">Certificado de autenticidad</figcaption></figure>
+    <figure><img src="../images/t/entrega/certificado_sobre.webp" alt="Certificado dentro del sobre abierto" width="820" height="1093" loading="lazy"><figcaption data-i18n="ph3">Firma y sello en relieve</figcaption></figure>
+    <figure><img src="../images/t/entrega/placa_reverso.webp" alt="Placa de latón en el reverso del marco" width="820" height="1093" loading="lazy"><figcaption data-i18n="ph4">Placa al reverso</figcaption></figure>
+  </div>
+  <div class="includes">
+    <div><b data-i18n="in1">Certificado</b><span data-i18n="in1s">Escrito y firmado a mano, con foto de la obra y sello en relieve.</span></div>
+    <div><b data-i18n="in2">Sello de lacre</b><span data-i18n="in2s">Monograma ML, hecho a pedido.</span></div>
+    <div><b data-i18n="in3">Placa de latón</b><span data-i18n="in3s">Título, año y autor, grabados al reverso.</span></div>
+    <div><b data-i18n="in4">Firma pintada</b><span data-i18n="in4s">Con pincel y óleo, sobre la tela.</span></div>
+  </div>
+</section>
+
+<!-- 10 · Archivo -->
+<section class="band wrap" id="archivo" aria-labelledby="arch-h">
+  <div class="sec-head"><p class="eyebrow" data-i18n="arch_eyebrow">Archivo · 2017 — hoy</p><h2 class="h-l" id="arch-h" data-i18n="arch_title">Todo lo que sale del taller.</h2>
+    <p class="lede" data-i18n="arch_p">Pintura, dibujo, xilografía, ilustración y objetos. Toca una obra para ver todas sus fotos.</p></div>
+  <div class="chips" id="chips" role="group" aria-label="Filtrar por técnica"></div>
+  <div class="grid" id="archive"></div>
+</section>
+
+<!-- 11 · Biografía -->
+<section class="bio band wrap" id="about" aria-labelledby="about-h">
+  <div class="bio-grid">
+    <div class="bio-photo"><img src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="mono">Santiago, Chile · 1996</p></div>
+    <div>
+      <div class="sec-head"><p class="eyebrow" data-i18n="n_about">Biografía</p><h2 class="h-l" id="about-h">Maximiliano Langevin Larraín</h2></div>
+      <div class="bio-body" id="bio-body"></div>
+      <div class="cv" id="cv"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · Encargos y contacto -->
+<section class="band wrap" id="encargos" aria-labelledby="enc-h">
+  <div class="sec-head"><p class="eyebrow" data-i18n="enc_eyebrow">Encargos</p><h2 class="h-l" id="enc-h" data-i18n="enc_title">Un retrato tuyo, o de alguien que quieres.</h2>
+    <p class="lede" data-i18n="enc_p">Así funciona un encargo, de la primera conversación al sobre lacrado.</p></div>
+  <ol class="steps" id="steps"></ol>
+</section>
+
+<section class="band wrap" id="contact" aria-labelledby="contact-h" style="padding-top:0">
+  <div class="contact">
+    <div>
+      <p class="eyebrow" data-i18n="contact_eyebrow">Contacto</p>
+      <h2 class="h-xl" id="contact-h" style="margin-top:1rem" data-i18n="contact_title">Hablemos de un retrato.</h2>
+      <p class="lede" style="margin-top:1.5rem" data-i18n="contact_p">Encargos, exposiciones o colaboraciones. Respondo personalmente.</p>
+      <div class="mail"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a><button class="copy js-copy" type="button" data-i18n="copy">Copiar</button></div>
+      <div class="actions">
+        <a class="pill red js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.41z"/></svg><span data-i18n="wa">Escribir por WhatsApp</span></a>
+      </div>
+      <ul class="socials"><li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li><li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+    </div>
+    <div class="big-seal js-seal" id="big-seal" data-tilt="0" aria-hidden="true"></div>
+  </div>
+  <div class="end-sig" id="end-sig"></div>
+</section>
+<footer class="wrap"><span>© 2026 Maximiliano Langevin · Langevinci®</span><span data-i18n="foot">Óleo, lino, lacre y latón.</span></footer>
+</main>
+
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+const { $, $$, clamp, lerp, ease, RM } = ML;
+const LOGO = 'M53.3,90.0C55.9,89.7 57.1,89.6 58.2,89.3C58.5,89.3 59.0,89.2 59.3,89.1C62.5,88.4 66.7,86.7 69.6,85.1C70.1,84.8 70.7,84.4 70.9,84.3C77.8,80.4 84.4,72.5 87.5,64.5C88.5,61.7 89.0,60.0 89.6,57.0C90.4,52.4 90.3,46.2 89.3,41.7C89.2,40.9 88.7,39.2 88.6,38.8C88.3,37.6 87.6,35.5 87.3,34.9C87.2,34.7 87.1,34.4 87.0,34.3C84.8,28.8 80.2,22.7 75.2,18.7C74.0,17.7 71.1,15.7 70.9,15.7C70.9,15.7 70.5,15.5 70.1,15.2C69.3,14.8 67.3,13.7 66.4,13.3C66.2,13.2 65.7,13.0 65.4,12.9C65.1,12.8 64.8,12.6 64.7,12.6C64.6,12.6 64.5,12.6 64.5,12.5C64.4,12.5 64.3,12.4 64.1,12.4C64.0,12.3 63.6,12.2 63.2,12.1C61.1,11.3 57.8,10.5 55.4,10.2C53.0,9.9 52.1,9.8 49.8,9.8C46.9,9.8 45.6,9.9 42.8,10.4C41.7,10.6 39.3,11.2 38.8,11.4C38.6,11.4 38.1,11.6 37.6,11.7C37.2,11.8 36.7,12.0 36.6,12.1C36.5,12.1 36.0,12.3 35.7,12.4C27.4,15.5 19.7,22.1 15.1,30.0C14.3,31.4 13.0,34.1 12.6,35.2C12.5,35.5 12.3,35.9 12.3,36.0C12.2,36.3 11.5,38.2 11.4,38.8C11.3,39.2 11.1,39.8 10.9,40.6C10.8,40.8 10.7,41.6 10.6,42.2C10.3,43.3 10.3,43.9 10.0,46.4C9.8,47.7 9.8,52.5 10.0,53.7C10.0,54.2 10.1,55.1 10.2,55.6C10.3,56.5 10.5,57.4 10.8,58.8C10.9,59.3 11.2,60.7 11.5,61.5C11.7,62.4 12.3,64.0 12.7,65.1C15.5,71.8 20.0,77.6 25.8,82.0C26.5,82.6 29.0,84.3 29.1,84.3C29.1,84.3 29.5,84.5 29.9,84.8C30.7,85.3 32.8,86.3 33.6,86.7C33.9,86.8 34.2,87.0 34.5,87.1C35.5,87.5 37.6,88.2 39.0,88.6C39.3,88.7 39.7,88.8 39.8,88.9C40.0,88.9 40.4,89.0 40.7,89.1C41.1,89.2 41.6,89.3 41.9,89.3C42.8,89.5 43.6,89.7 44.7,89.8C45.3,89.9 46.1,90.0 46.5,90.0C47.7,90.2 52.1,90.2 53.3,90.0ZM46.3,87.7C43.5,87.3 43.5,87.3 41.9,87.0C40.1,86.6 37.2,85.7 35.8,85.1C35.6,85.0 35.2,84.8 34.9,84.7C27.3,81.7 19.7,74.4 15.9,66.5C14.8,64.0 14.2,62.7 13.7,60.8C13.6,60.5 13.5,60.1 13.5,60.0C13.4,59.7 13.3,59.3 13.0,58.1C12.3,55.1 12.1,52.9 12.2,49.3C12.3,46.0 12.4,45.1 12.9,42.5C15.2,30.5 23.8,20.0 35.4,15.1C38.6,13.7 41.7,12.9 46.2,12.3C47.4,12.1 52.4,12.1 53.7,12.3C56.1,12.6 57.0,12.8 59.1,13.2C60.0,13.4 62.9,14.4 63.6,14.6C63.7,14.7 63.9,14.8 64.1,14.9C64.3,14.9 64.5,15.0 64.7,15.1C70.4,17.4 76.3,22.0 80.1,27.1C82.6,30.4 85.1,35.2 86.0,38.1C86.0,38.4 86.1,38.7 86.2,39.0C86.7,40.6 86.8,41.5 86.8,43.6C86.9,45.7 86.8,46.7 86.3,48.9C84.4,57.1 74.1,66.4 65.4,68.0C63.5,68.4 63.5,68.4 59.9,68.7C58.4,68.9 55.6,68.9 55.2,68.7C54.8,68.6 54.7,68.3 54.9,68.1C55.0,67.9 56.1,64.7 57.2,61.2C57.5,60.0 57.4,60.1 58.8,59.8C61.1,59.4 63.1,58.7 64.4,58.1C70.7,55.0 75.2,48.8 75.2,43.4C75.2,39.1 72.4,35.3 69.2,35.4C64.9,35.4 59.6,42.3 57.6,50.7C57.6,50.9 57.5,51.2 57.4,51.4C57.4,51.6 57.3,51.9 57.2,52.2C57.2,52.5 57.1,53.0 57.0,53.2C56.9,53.5 56.8,53.9 56.8,54.1C56.6,55.1 56.4,55.6 56.0,57.0C55.7,58.0 55.7,58.0 52.3,58.2C47.4,58.6 43.1,57.6 40.8,55.5C39.6,54.4 39.2,54.4 38.6,55.0C38.1,55.5 38.1,55.8 38.5,56.5C39.5,57.9 42.1,59.5 44.5,60.0C46.4,60.5 49.0,60.7 50.8,60.6C55.3,60.3 54.9,60.3 54.7,61.1C54.2,62.7 54.0,63.3 53.7,64.3C53.5,65.0 53.1,66.0 52.9,66.5C52.7,67.1 52.5,67.7 52.4,67.9C52.2,68.5 52.0,68.5 49.1,67.9C48.9,67.8 48.4,67.7 48.2,67.7C47.9,67.6 47.5,67.5 47.3,67.4C47.1,67.4 46.5,67.2 46.0,67.1C45.4,67.0 44.8,66.8 44.6,66.8C44.3,66.7 43.7,66.6 43.1,66.4C41.8,66.1 38.9,66.1 38.1,66.4C35.3,67.4 33.8,69.4 33.4,72.7C33.2,73.7 33.3,75.4 33.6,76.2C33.7,76.4 33.8,76.8 33.9,77.0C34.5,79.1 36.1,81.2 37.9,82.0C40.0,83.0 41.5,82.9 43.8,81.7C47.2,79.9 51.0,75.9 53.1,71.9L53.5,71.1L55.7,71.2C58.9,71.2 62.3,70.9 65.9,70.3C67.3,70.1 69.9,69.3 70.9,68.8C71.2,68.7 71.5,68.6 71.5,68.6C71.6,68.6 73.7,67.5 74.6,67.0C78.0,64.9 81.6,61.6 84.5,57.7C86.0,55.6 86.1,55.5 87.2,53.3C87.6,52.4 87.9,52.2 87.8,52.8C87.8,53.0 87.7,53.4 87.7,53.9C87.5,55.6 87.2,57.0 86.8,59.1C86.5,60.4 85.5,63.1 85.1,64.2C85.0,64.4 84.8,64.8 84.7,65.1C82.1,71.8 75.6,79.0 68.6,82.9C67.8,83.4 65.6,84.5 65.1,84.7C64.8,84.8 64.4,85.0 64.2,85.1C61.7,86.2 58.0,87.1 54.3,87.6C53.1,87.8 47.3,87.8 46.3,87.7ZM39.6,80.1C38.0,79.7 36.8,78.1 35.9,75.6C35.7,75.0 35.7,72.4 35.9,71.9C36.5,70.4 37.3,69.4 38.5,68.9C39.7,68.3 42.2,68.5 45.1,69.3C45.3,69.4 45.8,69.5 46.2,69.6C46.6,69.7 47.2,69.9 47.5,70.0C47.9,70.1 48.6,70.2 49.1,70.3C50.2,70.5 50.9,70.7 50.9,70.8C50.9,71.0 49.7,72.9 48.9,74.0C45.9,78.0 41.8,80.7 39.6,80.1ZM28.5,58.0C33.4,57.1 39.6,50.3 44.4,40.5C45.6,37.9 45.9,37.4 46.6,35.7C46.6,35.5 46.8,35.2 46.9,34.9C47.2,34.2 47.3,33.9 47.6,33.2C47.9,32.5 47.8,33.9 47.4,35.8C47.3,36.7 47.0,38.8 46.7,40.6C46.4,43.3 46.7,44.4 47.8,44.1C48.3,44.0 48.7,43.5 49.3,42.3C49.7,41.6 50.2,40.6 50.5,40.1C50.8,39.5 51.1,39.1 51.1,39.1C51.1,39.0 51.3,38.6 51.6,38.0C52.0,37.4 52.2,37.0 52.2,36.9C52.2,36.9 52.5,36.5 52.8,35.9C53.1,35.4 53.4,34.8 53.5,34.6C53.7,34.1 54.0,34.0 53.9,34.3C53.9,34.5 53.8,35.2 53.6,35.9C53.5,36.7 53.3,37.5 53.3,37.8C53.2,38.1 53.1,39.0 52.9,39.7C52.8,40.4 52.6,41.3 52.6,41.6C52.5,41.9 52.4,42.8 52.2,43.4C52.1,44.1 51.9,45.0 51.9,45.3C51.8,45.7 51.7,46.5 51.5,47.2C51.4,47.9 51.2,48.7 51.2,49.1C50.9,50.3 50.6,52.3 50.5,52.8C50.1,54.2 50.5,55.0 51.5,55.0C52.3,55.0 52.7,54.5 53.0,52.5C53.4,50.8 54.0,47.3 54.2,46.1C54.3,45.7 54.4,45.1 54.4,44.7C54.5,44.3 54.6,43.7 54.7,43.3C54.7,42.9 54.9,42.3 54.9,41.9C55.3,39.5 55.4,39.0 55.6,37.9C55.8,37.1 56.5,33.2 56.7,32.6C57.3,30.0 57.6,28.7 58.2,26.9C59.1,24.1 59.2,23.8 58.7,23.3C58.2,22.8 57.3,22.8 56.9,23.2C56.5,23.7 55.5,25.5 53.5,29.5C50.8,34.8 49.6,36.8 49.9,35.6C50.0,35.4 50.1,34.9 50.1,34.4C50.3,33.3 50.4,32.1 50.6,31.1C50.7,30.7 50.8,30.1 50.8,29.7C50.9,29.4 50.9,29.0 51.0,28.8C51.0,28.6 51.1,28.2 51.2,27.8C51.4,26.4 51.5,25.9 51.7,25.0C51.8,24.5 51.9,23.9 52.0,23.6C52.1,23.2 52.2,22.4 52.5,21.4C52.5,21.1 52.6,20.6 52.7,20.3C52.8,20.0 52.9,19.5 52.9,19.3C53.0,19.0 53.1,18.5 53.2,18.1C53.2,17.8 53.4,17.3 53.4,17.0C53.8,15.3 53.6,14.5 52.6,14.5C51.8,14.5 51.2,15.2 50.6,17.0C50.5,17.4 50.3,17.8 50.2,18.0C50.2,18.1 50.0,18.6 49.9,19.0C49.7,19.5 49.5,20.3 49.3,20.9C48.9,22.0 48.9,22.2 48.5,23.5C48.3,24.0 48.1,24.9 47.9,25.4C47.7,26.0 47.5,26.8 47.3,27.2C47.2,27.7 47.0,28.1 47.0,28.3C46.9,28.4 46.8,28.8 46.7,29.0C46.5,29.5 46.2,30.4 46.0,30.9C46.0,31.0 45.8,31.4 45.7,31.8C45.5,32.2 45.4,32.5 45.3,32.6C45.2,32.7 45.2,32.8 45.2,32.9C45.2,33.0 45.1,33.3 45.0,33.6C44.8,33.9 44.6,34.3 44.6,34.5C40.0,45.2 33.9,53.4 29.0,55.4C27.6,55.9 25.9,55.2 25.2,53.7C24.6,52.3 24.3,49.2 24.7,47.5C25.0,46.0 25.2,45.4 25.7,44.2C25.9,43.9 26.0,43.7 26.0,43.6C26.0,43.5 27.1,41.7 27.6,41.0C29.3,38.8 30.9,37.7 33.2,37.1C34.7,36.8 36.5,37.9 37.4,39.5C37.8,40.4 38.5,41.1 38.9,41.1C39.7,41.1 40.3,40.2 39.9,39.4C38.9,36.8 37.4,35.3 35.4,34.8C34.8,34.6 33.2,34.6 32.7,34.8C32.5,34.8 32.1,34.9 31.9,35.0C28.5,36.0 25.0,39.5 23.5,43.4C23.1,44.5 23.0,44.7 22.9,45.0C22.9,45.2 22.8,45.7 22.7,46.0C21.9,49.0 21.8,51.3 22.5,53.6C23.0,55.7 24.8,57.5 26.8,57.9C27.7,58.1 27.7,58.1 28.5,58.0ZM58.5,57.1C58.5,57.0 58.6,56.7 58.7,56.4C58.7,56.1 58.8,55.7 58.9,55.5C59.0,55.2 59.1,54.8 59.1,54.6C59.2,54.3 59.3,53.9 59.4,53.7C59.4,53.4 59.5,53.0 59.6,52.8C59.7,52.5 59.8,52.0 59.9,51.6C60.3,49.9 60.8,48.2 61.2,47.3C61.3,47.1 61.4,46.8 61.5,46.5C63.8,41.3 67.2,37.6 69.5,37.9C71.5,38.1 73.2,41.5 72.7,44.4C71.7,50.1 66.5,55.4 59.9,57.1C58.8,57.4 58.5,57.4 58.5,57.1Z';
+const S = {
+  es: { skip: 'Saltar a las obras', n_works: 'Obras', n_paint: 'Pinturas', n_process: 'Proceso', n_delivery: 'La entrega', n_archive: 'Archivo', n_about: 'Biografía', n_commission: 'Encargar un retrato',
+    hero_eyebrow: 'Pintor realista · Santiago de Chile', hero_cue: 'Baja para entrar en la pintura', hero_c1: 'Acércate.',
+    hero_c2: 'Verde tierra contra piel cálida. Son complementarios: el fondo frío hace que la piel se vea más viva.', hero_c2_sub: 'Paleta medida en la obra',
+    hero_c3: 'El punto más claro del cuadro es el velo. Cada hilo, pintado a mano.', hero_c3_sub: 'Detalle · Karin Goldberg, 2025',
+    latest: 'Obra reciente', karin_meta: '2025 · Óleo sobre lino · 48 × 68 cm', see_work: 'Ver la obra',
+    quote: 'Los retratos son una forma de inmortalizar al sujeto. Mi objetivo es capturar lo que va más allá de lo que se ve.',
+    sig_note: 'La misma firma que pinta en cada cuadro terminado, con pincel y óleo.',
+    paint_eyebrow: 'Óleo sobre tela y lino · 2020 — hoy', paint_hint: 'El muro toma el color de cada obra. Toca una para ver sus vistas y consultar por ella.',
+    marcos_eyebrow: 'Obra en proceso', marcos_intro: 'Óleo sobre tela, 77,5 × 102,5 cm. Todavía está en el caballete. Baja para recorrerla por dentro.',
+    marcos_s1: 'La luz de colores cae sobre el damero. Ella intenta tocarla.', marcos_s1_sub: 'El blanco y negro del piso es neutro: el color queda solo para la luz.',
+    marcos_s2: 'Detrás de la reja, el retablo: dorado, sombra y madera tallada.', marcos_s3_sub: 'Marcos 16:16 · El que crea y sea bautizado, se salvará.',
+    marcos_end: 'Ver fotos del proceso', marcos_l1: 'La niña', marcos_l2: 'El retablo', marcos_l3: 'La inscripción',
+    lupa_title: 'Mira de cerca.', lupa_p: 'Pasa el cursor sobre la pintura: la barba, la gorra, el brillo del metal. Óleo sobre lino, 28 × 40 cm.',
+    lupa_p_touch: 'Activa la lupa y arrastra el dedo sobre la pintura: la barba, la gorra, el brillo del metal. Óleo sobre lino, 28 × 40 cm.',
+    lupa_on: 'Usar la lupa con el dedo', lupa_off: 'Volver a desplazar la página', all_photos: 'Ver todas las fotos',
+    conde_meta: '2024 · Óleo sobre lino · 40 × 60 cm', conde_eyebrow: 'Exposición «Polímatas» · Estadio Italiano, 2024',
+    conde_p: 'Un retrato en grisalla a partir de la película «El Conde». Se expuso en «Polímatas» y terminó frente a quienes hicieron la película.',
+    conde_c2: 'Exposición «Polímatas» en el Estadio Italiano, 2024.', conde_c5: 'Juan de Dios Larraín (productor) y Pablo Larraín (director) de «El Conde» junto a la obra.',
+    cr1: 'Exposición colectiva, Estadio Italiano', cr2: 'Colaboraciones en cine y publicidad', cr3: 'Cinco años de taller, desde 2019', cr4: 'Formación en hiperrealismo, 2024',
+    proc_eyebrow: 'Proceso · dibujo, 2019', proc_title: 'Del trazo a la forma.', proc_p: 'Copia de un dibujo de William Bouguereau. Grafito sobre papel de algodón, 30 × 23 cm. Cinco fotos del mismo dibujo, desde las primeras líneas hasta la firma.', stage: 'Etapa',
+    ent_eyebrow: 'La entrega', ent_title: 'Cada obra sale del taller lacrada.', ent_p: 'Sobre verde, sello de lacre con su monograma y, adentro, el certificado de autenticidad. Baja para abrirlo.',
+    ent_c1: 'El lacre lleva su monograma: ML.', ent_c1_sub: 'Verde y rojo son complementarios, el mismo contraste del fondo y los labios de Karin Goldberg.',
+    ent_c2: 'Certificado de autenticidad, escrito y firmado a mano.', ent_c2_sub: 'Papel de algodón, foto de la obra, sello en relieve y la firma de Max.',
+    rev_eyebrow: 'El reverso', rev_title: 'Y atrás, su nombre en latón.', rev_p: 'Marco de aluminio, colgador de acero y una placa grabada con el título, el año y el autor.',
+    rev_c: 'Placa de latón grabada, al reverso de cada obra.',
+    ph_eyebrow: 'Fotos reales', ph_title: 'Así se entregó «Karin Goldberg».', ph1: 'Sobre lacrado', ph2: 'Certificado de autenticidad', ph3: 'Firma y sello en relieve', ph4: 'Placa al reverso',
+    in1: 'Certificado', in1s: 'Escrito y firmado a mano, con foto de la obra y sello en relieve.', in2: 'Sello de lacre', in2s: 'Monograma ML, hecho a pedido.',
+    in3: 'Placa de latón', in3s: 'Título, año y autor, grabados al reverso.', in4: 'Firma pintada', in4s: 'Con pincel y óleo, sobre la tela.',
+    arch_eyebrow: 'Archivo · 2017 — hoy', arch_title: 'Todo lo que sale del taller.', arch_p: 'Pintura, dibujo, xilografía, ilustración y objetos. Toca una obra para ver todas sus fotos.', all: 'Todo',
+    enc_eyebrow: 'Encargos', enc_title: 'Un retrato tuyo, o de alguien que quieres.', enc_p: 'Así funciona un encargo, de la primera conversación al sobre lacrado.',
+    contact_eyebrow: 'Contacto', contact_title: 'Hablemos de un retrato.', contact_p: 'Encargos, exposiciones o colaboraciones. Respondo personalmente.', foot: 'Óleo, lino, lacre y latón.' },
+  en: { skip: 'Skip to the work', n_works: 'Work', n_paint: 'Paintings', n_process: 'Process', n_delivery: 'Delivery', n_archive: 'Archive', n_about: 'Biography', n_commission: 'Commission a portrait',
+    hero_eyebrow: 'Realist painter · Santiago, Chile', hero_cue: 'Scroll to step into the painting', hero_c1: 'Come closer.',
+    hero_c2: 'Earth green against warm skin. They are complementaries: the cool ground makes the skin look more alive.', hero_c2_sub: 'Palette measured on the work',
+    hero_c3: 'The lightest point in the picture is the veil. Every thread, painted by hand.', hero_c3_sub: 'Detail · Karin Goldberg, 2025',
+    latest: 'Recent work', karin_meta: '2025 · Oil on linen · 48 × 68 cm', see_work: 'View the work',
+    quote: 'Portraits are a way to immortalize the subject. My goal is to capture what lies beyond what is seen.',
+    sig_note: 'The same signature he paints on every finished picture, with brush and oil.',
+    paint_eyebrow: 'Oil on canvas and linen · 2020 — today', paint_hint: 'The wall takes on the colour of each work. Tap one to see its views and ask about it.',
+    marcos_eyebrow: 'Work in progress', marcos_intro: 'Oil on canvas, 77.5 × 102.5 cm. Still on the easel. Scroll to travel through it.',
+    marcos_s1: 'Coloured light falls across the chequered floor. She reaches out to touch it.', marcos_s1_sub: 'The black-and-white floor is neutral: colour is kept for the light.',
+    marcos_s2: 'Behind the grille, the altarpiece: gold, shadow and carved wood.', marcos_s3_sub: 'Mark 16:16 · He that believeth and is baptized shall be saved.',
+    marcos_end: 'See the process photos', marcos_l1: 'The girl', marcos_l2: 'The altarpiece', marcos_l3: 'The inscription',
+    lupa_title: 'Look closer.', lupa_p: 'Move your cursor over the painting: the beard, the cap, the shine on the metal. Oil on linen, 28 × 40 cm.',
+    lupa_p_touch: 'Turn on the loupe and drag your finger across the painting: the beard, the cap, the shine on the metal. Oil on linen, 28 × 40 cm.',
+    lupa_on: 'Use the loupe with your finger', lupa_off: 'Go back to scrolling', all_photos: 'See all photos',
+    conde_meta: '2024 · Oil on linen · 40 × 60 cm', conde_eyebrow: '"Polímatas" exhibition · Estadio Italiano, 2024',
+    conde_p: 'A grisaille portrait based on the film "El Conde". It was shown at "Polímatas" and ended up in front of the people who made the film.',
+    conde_c2: '"Polímatas" exhibition at the Estadio Italiano, 2024.', conde_c5: 'Juan de Dios Larraín (producer) and Pablo Larraín (director) of "El Conde" with the work.',
+    cr1: 'Group exhibition, Estadio Italiano', cr2: 'Film and advertising work', cr3: 'Five years in his studio, from 2019', cr4: 'Training in hyperrealism, 2024',
+    proc_eyebrow: 'Process · drawing, 2019', proc_title: 'From line to form.', proc_p: 'A copy of a drawing by William Bouguereau. Graphite on cotton paper, 30 × 23 cm. Five photos of the same drawing, from the first lines to the signature.', stage: 'Stage',
+    ent_eyebrow: 'Delivery', ent_title: 'Every work leaves the studio under seal.', ent_p: 'A green envelope, a wax seal with his monogram and, inside, the certificate of authenticity. Scroll to open it.',
+    ent_c1: 'The wax carries his monogram: ML.', ent_c1_sub: 'Green and red are complementaries, the same contrast as Karin Goldberg’s background and lips.',
+    ent_c2: 'A certificate of authenticity, written and signed by hand.', ent_c2_sub: 'Cotton paper, a photo of the work, an embossed seal and Max’s signature.',
+    rev_eyebrow: 'The back', rev_title: 'And on the back, its name in brass.', rev_p: 'Aluminium frame, steel hanger and a plaque engraved with the title, year and artist.',
+    rev_c: 'An engraved brass plaque on the back of every work.',
+    ph_eyebrow: 'Real photos', ph_title: 'How "Karin Goldberg" was delivered.', ph1: 'Sealed envelope', ph2: 'Certificate of authenticity', ph3: 'Signature and embossed seal', ph4: 'Plaque on the back',
+    in1: 'Certificate', in1s: 'Written and signed by hand, with a photo of the work and an embossed seal.', in2: 'Wax seal', in2s: 'ML monogram, made to order.',
+    in3: 'Brass plaque', in3s: 'Title, year and artist, engraved on the back.', in4: 'Painted signature', in4s: 'With brush and oil, on the canvas.',
+    arch_eyebrow: 'Archive · 2017 — today', arch_title: 'Everything that leaves the studio.', arch_p: 'Painting, drawing, woodcut, illustration and objects. Tap a work to see all its photos.', all: 'All',
+    enc_eyebrow: 'Commissions', enc_title: 'A portrait of you, or of someone you love.', enc_p: 'How a commission works, from the first conversation to the sealed envelope.',
+    contact_eyebrow: 'Contact', contact_title: "Let's talk about a portrait.", contact_p: 'Commissions, exhibitions or collaborations. I answer personally.', foot: 'Oil, linen, wax and brass.' }
+};
+
+// ── Sello de lacre: gota irregular, disco presionado y el monograma en relieve ──
+let sealN = 0;
+function sealSVG(tilt = 0) {
+  const id = 'wax' + (++sealN), N = 40, pts = [];
+  for (let i = 0; i < N; i++) {
+    const a = i / N * Math.PI * 2;
+    const r = 52 + 2.6 * Math.sin(3 * a + sealN) + 1.8 * Math.sin(7 * a + 2 * sealN) + 1.1 * Math.sin(13 * a + .5);
+    pts.push([Math.cos(a) * r, Math.sin(a) * r]);
+  }
+  let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < N; i++) {      // Catmull-Rom → Bézier
+    const p0 = pts[(i - 1 + N) % N], p1 = pts[i], p2 = pts[(i + 1) % N], p3 = pts[(i + 2) % N];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6], c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += `C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  const L = `<path d="${LOGO}" fill-rule="evenodd"/>`;
+  return `<svg class="seal" viewBox="-60 -60 120 120" role="img" aria-label="Sello de lacre ML">
+    <defs>
+      <radialGradient id="${id}a" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#f0565b"/><stop offset=".45" stop-color="#d0222e"/><stop offset="1" stop-color="#93101a"/></radialGradient>
+      <radialGradient id="${id}b" cx="60%" cy="66%" r="70%"><stop offset="0" stop-color="#d82a35"/><stop offset=".7" stop-color="#c41d29"/><stop offset="1" stop-color="#9e121c"/></radialGradient>
+    </defs>
+    <g transform="rotate(${tilt})">
+      <path d="${d}" fill="url(#${id}a)"/>
+      <circle r="42" fill="url(#${id}b)"/>
+      <circle r="42" fill="none" stroke="#ff8a86" stroke-opacity=".45" stroke-width="1.2" transform="translate(.8 .9)"/>
+      <circle r="42.6" fill="none" stroke="#7e0c15" stroke-opacity=".55" stroke-width="1.2"/>
+      <g transform="translate(-40 -40) scale(.8)">
+        <g fill="#7a0a13" fill-opacity=".6" transform="translate(.9 1.1)">${L}</g>
+        <g fill="#ff9b95" fill-opacity=".55" transform="translate(-.7 -.8)">${L}</g>
+        <g fill="#d3242f">${L}</g>
+      </g>
+      <ellipse cx="-20" cy="-26" rx="14" ry="6" fill="#fff" fill-opacity=".16" transform="rotate(-30 -20 -26)"/>
+    </g></svg>`;
+}
+$$('.js-seal').forEach(el => el.innerHTML = sealSVG(+(el.dataset.tilt || 0)));
+
+// ── Sello en relieve del certificado: el papel mismo, levantado ──
+(function () {
+  const sig = ML.SIG, k = 52 / sig.w;
+  const ring = `<circle r="47" fill="none" stroke-width="1.2"/><circle r="35" fill="none" stroke-width=".8"/>
+    <defs><path id="ca" d="M-41,0 A41,41 0 0 1 41,0"/><path id="cb" d="M-41,0 A41,41 0 0 0 41,0"/></defs>
+    <text font-family="Playfair Display, serif" font-size="7.4" letter-spacing="1.6"><textPath href="#ca" startOffset="50%" text-anchor="middle">CERTIFICATE OF AUTHENTICITY</textPath></text>
+    <text font-family="Playfair Display, serif" font-size="7.4" letter-spacing="1.6" dominant-baseline="hanging"><textPath href="#cb" startOffset="50%" text-anchor="middle">CERTIFICATE OF AUTHENTICITY</textPath></text>
+    <path d="${sig.fill}" fill-rule="evenodd" transform="translate(${-sig.w * k / 2} ${-sig.h * k / 2}) scale(${k})" stroke="none"/>`;
+  $('#cert-stamp').innerHTML = `<svg viewBox="-50 -50 100 100">
+    <g fill="rgba(60,50,40,.22)" stroke="rgba(60,50,40,.22)" transform="translate(.5 .6)">${ring}</g>
+    <g fill="rgba(255,255,255,.9)" stroke="rgba(255,255,255,.9)" transform="translate(-.35 -.4)">${ring}</g></svg>`;
+})();
+
+// ── Zoom: Karin Goldberg y Marcos 16:16 ──
+ML.zoomScene($('#top'), {
+  base: 'pinturas/karin_goldberg_1', eager: true, alt: 'Karin Goldberg, óleo sobre lino, 2025',
+  layers: [
+    { p: 'pinturas/karin_goldberg_3', rect: [.3038, .1168, .4577], fade: [.30, .40, .80, .90] },
+    { p: 'pinturas/karin_goldberg_4', rect: [.4423, .2388, .1346], fade: [.58, .68, .86, .93] },
+  ],
+  keys: [
+    { p: 0, cam: { cx: .5, cy: .2, z: .62 } }, { p: .12, rect: ML.FULL, fit: 'contain', pad: .92 },
+    { p: .40, rect: [.3038, .1168, .4577, .4321], fit: 'cover' }, { p: .68, rect: [.4423, .2388, .1346, .1262], fit: 'cover' },
+    { p: .84, rect: [.4423, .2388, .1346, .1262], fit: 'cover', pad: 1.06 },
+    { p: .97, rect: ML.FULL, fit: 'contain', pad: .84, dy: -.04 }, { p: 1, rect: ML.FULL, fit: 'contain', pad: .84, dy: -.04 },
+  ],
+  scrim: [[.3, .52], [.62, .84], [.93, 1]],
+});
+ML.zoomScene($('#viaje'), {
+  base: 'pinturas/marcos_16_16_1', alt: 'Marcos 16:16, óleo en proceso',
+  layers: [
+    { p: 'pinturas/marcos_16_16_6', rect: [.2481, .6785, .3423], fade: [.10, .17, .30, .36] },
+    { p: 'pinturas/marcos_16_16_4', rect: [.3538, .2891, .4077], fade: [.41, .48, .60, .66] },
+    { p: 'pinturas/marcos_16_16_5', rect: [.1519, .1062, .3096], fade: [.72, .79, .89, .95] },
+  ],
+  keys: [
+    { p: 0, rect: ML.FULL, fit: 'contain', pad: .82 }, { p: .05, rect: ML.FULL, fit: 'contain', pad: .82 },
+    { p: .17, rect: [.2481, .6785, .3423, .1976] }, { p: .30, rect: [.2481, .6785, .3423, .1976], pad: 1.05 },
+    { p: .48, rect: [.3538, .2891, .4077, .2360] }, { p: .60, rect: [.3538, .2891, .4077, .2360], pad: 1.05 },
+    { p: .79, rect: [.1519, .1062, .3096, .1785] }, { p: .89, rect: [.1519, .1062, .3096, .1785], pad: 1.05 },
+    { p: .98, rect: ML.FULL, fit: 'contain', pad: .88 }, { p: 1, rect: ML.FULL, fit: 'contain', pad: .88 },
+  ],
+  scrim: [[0, .05], [.16, .31], [.47, .61], [.78, .9], [.95, 1]],
+});
+
+// ── Cita: las palabras se encienden y después la firma se pinta de izquierda a derecha ──
+const quoteSig = ML.signature($('#quote-sig'), { paint: true });
+ML.scene($('#cita'), { layout() {}, update(p) {
+  const spans = $$('#quote span'), n = spans.length;
+  const k = RM ? n : clamp((p - .04) / .46) * n;
+  spans.forEach((s, i) => s.classList.toggle('lit', i < k));
+  quoteSig(clamp((p - .52) / .3));
+} });
+
+// ── Sala horizontal: el muro toma el color medido de la obra del centro, oscurecido para que la obra mande ──
+(function () {
+  const el = $('#obras'), stage = $('.stage', el), track = $('.track', el), bar = $('.h-progress span', el);
+  let dist = 0, lastWall = '';
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const wallOf = id => { const p = ML.PALETTES[id]; if (!p) return '#1d2420'; const [r, g, b] = hex(p[0][0]); const m = (c, t) => Math.round(c * .5 + t * .5); return `rgb(${m(r, 19)},${m(g, 26)},${m(b, 22)})`; };
+  ML.scene(el, {
+    layout() { if (RM) { el.style.height = ''; return; } track.style.transform = ''; dist = Math.max(0, track.scrollWidth - stage.clientWidth); el.style.height = (stage.clientHeight + dist) + 'px'; },
+    update(p) {
+      if (!RM) { track.style.transform = `translate3d(${(-p * dist).toFixed(1)}px,0,0)`; bar.style.transform = `scaleX(${p.toFixed(4)})`; }
+      const cx = stage.clientWidth / 2; let best = null, bd = 1e9;
+      $$('.work', track).forEach(c => { const r = c.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - cx); if (d < bd) { bd = d; best = c; } });
+      const w = best ? wallOf(best.dataset.open) : '';
+      if (w && w !== lastWall) { lastWall = w; stage.style.setProperty('--wall', w); }
+    }
+  });
+  track.addEventListener('focusin', e => {
+    if (RM) return; const c = e.target.closest('.work'); if (!c) return;
+    const p = clamp((c.offsetLeft - stage.clientWidth * .3) / (dist || 1));
+    scrollTo({ top: el.getBoundingClientRect().top + scrollY + p * (el.offsetHeight - innerHeight), behavior: 'instant' });
+  });
+})();
+
+// ── Proceso: el dibujo aparece etapa por etapa ──
+$$('[data-scrub]').forEach(el => {
+  const frames = $$('.frames img', el), n = frames.length, num = $('.n', el), bar = $('.stepper .bar span', el);
+  ML.scene(el, { layout() {}, update(p) {
+    const f = (RM ? 1 : clamp((p - .08) / .8)) * (n - 1);
+    frames.forEach((img, i) => img.style.opacity = i === 0 ? 1 : clamp(f - (i - 1)));
+    num.textContent = Math.round(f) + 1; bar.style.transform = `scaleX(${((Math.round(f) + 1) / n).toFixed(3)})`;
+  } });
+});
+
+// ── La entrega: el sobre se abre, sale el certificado, se escribe y se firma ──
+(function () {
+  const el = $('#entrega'), box = $('#ent-box'), wrap = $('#cert-wrap'), flap = $('#flap'), seal = $('#env-seal');
+  const parts = $$('.env-part', box), hand = $$('#cert-hand p'), stamp = $('#cert-stamp');
+  const texts = $$('.zt', el).map(ML.textLayer);
+  const certSig = ML.signature($('#cert-sig'), { pen: 40 });
+  let target = { x: 0, y: 0, s: 1 }, H = 1;
+  function layout() {
+    const s0 = wrap.style.transform, b0 = box.style.transform; wrap.style.transform = 'none'; box.style.transform = 'none';
+    const r = wrap.getBoundingClientRect(), b = box.getBoundingClientRect(), vw = innerWidth, vh = innerHeight;
+    H = b.height;
+    const wide = vw > vh;
+    const maxW = Math.min(vw * (wide ? .78 : .94), 980, (vh * (wide ? .66 : .56)) * 1.38);
+    const s = maxW / r.width;
+    const cy = vh * (wide ? .46 : .44);
+    // centro del certificado en reposo, relativo a la pantalla, sin contar el desplazamiento del sticky
+    target = { x: vw / 2 - (r.left + r.width / 2), y: cy - (r.top - b.top + (vh - b.height) / 2 + parseFloat(getComputedStyle(box).marginTop) / 2 + r.height / 2), s };
+    wrap.style.transform = s0; box.style.transform = b0;
+  }
+  function update(p) {
+    if (RM) p = 1;
+    const fa = ease(clamp((p - .1) / .14)) * 180;                       // la solapa se abre
+    const out = ease(clamp((p - .24) / .2));                            // el certificado sube
+    const go = ease(clamp((p - .44) / .14));                            // el sobre se va y el certificado viene al frente
+    flap.style.setProperty('--fa', `${fa.toFixed(1)}deg`);
+    flap.style.zIndex = fa > 90 ? 2 : 6;
+    seal.style.setProperty('--sy', `${(-(Math.sin(fa * Math.PI / 360) ** 2) * H * 1.27).toFixed(1)}px`);
+    seal.style.zIndex = fa > 90 ? 1 : 7;
+    const bshift = H * .42 * ease(clamp((p - .08) / .2)); // al abrirse, el sobre baja para que la solapa quepa
+    box.style.transform = `translate3d(0,${bshift.toFixed(1)}px,0)`;
+    const ey = go * innerHeight * .75;
+    parts.forEach(n => { n.style.setProperty('--ey', ey.toFixed(1) + 'px'); n.style.setProperty('--eo', (1 - clamp((go - .35) / .5)).toFixed(3)); });
+    const y0 = -out * H * .78;
+    const x = lerp(0, target.x, go), y = lerp(y0, target.y - bshift, go), s = lerp(1, target.s, go);
+    wrap.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scale(${s.toFixed(4)})`;
+    wrap.style.zIndex = go > .02 ? 8 : 3;
+    // escritura a mano: línea por línea, de izquierda a derecha
+    const w = clamp((p - .6) / .16) * hand.length;
+    hand.forEach((h, i) => h.style.setProperty('--hw', `${(100 - clamp(w - i) * 100).toFixed(1)}%`));
+    certSig(clamp((p - .77) / .09));
+    stamp.style.setProperty('--st', ease(clamp((p - .87) / .05)).toFixed(3));
+    texts.forEach(L => ML.applyText(L, p));
+  }
+  ML.scene(el, { layout, update });
+})();
+
+// ── El reverso: el cuadro gira y la cámara se acerca a la placa ──
+(function () {
+  const el = $('#reverso'), f = $('#frame3d'), texts = $$('.zt', el).map(ML.textLayer);
+  ML.scene(el, { layout() {}, update(p) {
+    if (RM) p = .7;
+    const wide = innerWidth > innerHeight;
+    const r = ease(clamp((p - .12) / .38)) * 180;
+    const z = ease(clamp((p - .52) / .2));
+    const sx = (wide ? 1 - z : 0) * innerWidth * .12;            // a la derecha mientras se lee la intro, al centro después
+    const s = 1 + z * (wide ? 1.55 : 1.25);
+    // la placa está arriba: al acercarse, el cuadro baja para dejarla al centro
+    const ty = z * f.offsetHeight * .36 * s;
+    f.style.transform = `translate3d(${sx.toFixed(1)}px,${ty.toFixed(1)}px,0) scale(${s.toFixed(3)}) rotateY(${r.toFixed(1)}deg) rotateX(${(Math.sin(r * Math.PI / 180) * 6).toFixed(2)}deg)`;
+    texts.forEach(L => ML.applyText(L, p));
+  } });
+})();
+
+// ── Lupa ──
+const coarse = matchMedia('(hover: none)').matches;
+const lp = ML.loupe($('#lupa-frame'), ML.W_('pinturas/veteran_george_1'), { start: { x: .53, y: .25 } });
+let touchOn = false;
+const lt = $('#lupa-toggle');
+if (coarse) { lt.hidden = false; lt.addEventListener('click', () => { touchOn = !touchOn; lp.toggleTouch(touchOn); lt.setAttribute('aria-pressed', touchOn); lt.textContent = ML.t(touchOn ? 'lupa_off' : 'lupa_on'); }); }
+
+// ── Firma final y sello ──
+const endSig = ML.signature($('#end-sig'), { paint: true });
+ML.endScene($('#end-sig'), endSig, .55);
+ML.viewScene($('#big-seal'), q => { const e = ease(q); $('#big-seal').style.setProperty('--ss', (1.6 - .6 * e).toFixed(3)); $('#big-seal').style.setProperty('--so', clamp(q * 2.2).toFixed(3)); }, .98, .62);
+
+// ── Archivo con filtros ──
+let cat = 'all';
+function renderArchive() {
+  const g = $('#archive'); g.innerHTML = '';
+  ML.WORKS.filter(w => cat === 'all' || w.cat === cat).forEach(w => g.appendChild(ML.card(w)));
+  $$('#chips button').forEach(b => b.setAttribute('aria-pressed', b.dataset.cat === cat));
+}
+$('#chips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; cat = b.dataset.cat; renderArchive(); });
+
+// ── Contenido que depende del idioma ──
+function render() {
+  const L = ML.lang;
+  const tr = $('#grid-pinturas'); tr.innerHTML = '';
+  ML.WORKS.filter(w => w.cat === 'pinturas').forEach(w => tr.appendChild(ML.card(w)));
+  $('#quote').innerHTML = '«' + ML.t('quote').split(' ').map(w => `<span>${w}</span>`).join(' ') + '»';
+  $$('.js-pal').forEach(d => d.innerHTML = ML.paletteHTML(d.dataset.id));
+  const cats = ML.t('cats');
+  $('#chips').innerHTML = [['all', ML.t('all')], ...ML.CATS.map(c => [c, cats[c]])].map(([c, n]) => `<button type="button" data-cat="${c}" aria-pressed="false">${n}</button>`).join('');
+  renderArchive();
+  $('#bio-body').innerHTML = ML.BIO[L].map(p => `<p>${p}</p>`).join('');
+  $('#cv').innerHTML = ML.CV[L].map(([h, rows]) => `<div><h3>${h}</h3><ul>${rows.map(([a, b]) => `<li><span>${a}</span><span>${b}</span></li>`).join('')}</ul></div>`).join('');
+  $('#steps').innerHTML = ML.COMMISSION[L].map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('');
+  $('#lupa-p').textContent = ML.t(coarse ? 'lupa_p_touch' : 'lupa_p');
+  lt.textContent = ML.t(touchOn ? 'lupa_off' : 'lupa_on');
+  ML.layoutAll(); ML.tick();
+}
+ML.onLang(render);
+
+// ── Nav ──
+const nav = $('#nav'), drawer = $('#drawer'), burger = $('#burger');
+const setDrawer = open => { drawer.hidden = !open; burger.setAttribute('aria-expanded', open); document.documentElement.classList.toggle('lb-open', open); document.documentElement.classList.toggle('drawer-open', open); };
+burger.addEventListener('click', () => setDrawer(drawer.hidden));
+drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); });
+ML.onTick(() => nav.classList.toggle('solid', scrollY > 40));
+
+ML.boot({ strings: S });
+</script>
+</body>
+</html>
