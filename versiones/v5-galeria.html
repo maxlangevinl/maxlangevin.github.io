@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Galería</title>
+<meta name="description" content="Una exposición de Maximiliano Langevin para recorrer caminando: las obras colgadas a escala.">
+<meta name="theme-color" content="#28322c">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,500;0,700;1,400&family=Marcellus&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+/* Galería: un muro verde museo, luz cálida sobre cada cuadro, piso de roble. Las obras cuelgan a escala real.
+   Letras de vinilo romanas para los textos de sala, sans sobria para las cartelas. */
+:root {
+  --wall: #2f3b34; --wall-2: #26302a; --floor: #3a2a1d; --fg: #f1ebdf; --muted: #b9b3a5; --bg: #1c211e;
+  --line: rgba(241,235,223,.16); --accent: #d9b77a; --on-accent: #1c211e;
+  --f-sans: 'Karla', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Marcellus', 'Trajan Pro', Georgia, serif;
+  --f-mono: 'Karla', 'Helvetica Neue', Arial, sans-serif;
+  --gl: max(clamp(20px, 5vw, 72px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(20px, 5vw, 72px), env(safe-area-inset-right, 0px));
+  --nav-h: 58px; --title-style: normal;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font: 400 1.05rem/1.62 var(--f-sans); }
+::selection { background: var(--accent); color: var(--bg); }
+.wrap { padding-left: var(--gl); padding-right: var(--gr); }
+.band { padding-block: clamp(5rem, 12vh, 8rem); }
+.vinyl { font-family: var(--f-serif); font-weight: 400; letter-spacing: .04em; }
+.lbl { font: 700 .72rem var(--f-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+.lede { color: var(--muted); max-width: 44ch; font-size: 1.1rem; }
+.btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 46px; padding: .7rem 1.3rem; border-radius: 2px; font: 700 .9rem var(--f-sans); letter-spacing: .04em; text-decoration: none; background: var(--accent); color: var(--bg); }
+.btn.line { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.skip { position: fixed; left: 12px; top: -60px; z-index: 400; background: var(--fg); color: var(--bg); padding: .6rem 1rem; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--wall-2); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); background: linear-gradient(rgba(20,25,22,.75), transparent); transition: background .35s; }
+.nav.scrolled { background: rgba(28,33,30,.86); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.brand { font: 400 1.05rem var(--f-serif); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; white-space: nowrap; }
+.nav-r { display: flex; align-items: center; gap: 1rem; }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a { text-decoration: none; font-size: .85rem; color: var(--muted); }
+.nav-links a:hover { color: var(--fg); }
+.lang { font: 700 .72rem var(--f-sans); letter-spacing: .1em; min-width: 44px; min-height: 34px; box-shadow: inset 0 0 0 1px var(--line); }
+.burger { display: none; width: 44px; height: 44px; position: relative; }
+.burger span { position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--fg); transition: transform .3s, top .3s; }
+.burger span:nth-child(1) { top: 18px; } .burger span:nth-child(2) { top: 25px; }
+.burger[aria-expanded="true"] span:nth-child(1) { top: 21.5px; transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { top: 21.5px; transform: rotate(-45deg); }
+.drawer { position: fixed; inset: 0; z-index: 130; background: var(--wall-2); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2rem) var(--gr) 2rem var(--gl); display: flex; flex-direction: column; gap: .3rem; }
+.drawer a { text-decoration: none; font: 400 clamp(2rem, 9vw, 2.8rem)/1.25 var(--f-serif); }
+
+/* La sala */
+.sala-stage { background:
+  radial-gradient(120% 70% at 50% 0%, rgba(255,240,210,.07), transparent 60%),
+  linear-gradient(var(--wall) 0 calc(100% - var(--floor-h)), var(--floor) calc(100% - var(--floor-h)));
+  --floor-h: 15%; }
+.sala-stage::before { content: ""; position: absolute; left: 0; right: 0; bottom: var(--floor-h); height: 10px; background: linear-gradient(#232b26, #1b211d); z-index: 1; }
+.sala-stage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: var(--floor-h); background:
+  repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 160px),
+  linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.05) 40%, rgba(0,0,0,.4)); z-index: 1; }
+.world { position: absolute; left: 0; top: 0; bottom: 0; will-change: transform; z-index: 2; }
+.piece { position: absolute; display: block; }
+.piece .spot { position: absolute; left: 50%; width: 260%; aspect-ratio: 1.2; translate: -50% -38%; top: 0; background: radial-gradient(closest-side, rgba(255,226,170,.22), rgba(255,226,170,.08) 50%, transparent 72%); pointer-events: none; opacity: .5; }
+.piece button { position: absolute; inset: 0; transform-origin: 50% 50%; will-change: transform; }
+.piece img { width: 100%; height: 100%; object-fit: cover; box-shadow: 0 2px 3px rgba(0,0,0,.4), 0 18px 34px -10px rgba(0,0,0,.65); }
+.piece .label { position: absolute; left: 0; top: 100%; margin-top: 18px; width: max-content; max-width: 230px; display: grid; gap: .05rem; font-size: .8rem; line-height: 1.35; color: var(--muted); }
+.piece .label b { font: 400 1.05rem var(--f-serif); color: var(--fg); letter-spacing: .02em; }
+.panel { position: absolute; display: grid; gap: 1rem; align-content: center; }
+.panel .vinyl.big { font-size: clamp(2.4rem, 5.4vw, 5.2rem); line-height: 1.02; }
+.panel .vinyl.mid { font-size: clamp(1.9rem, 3.4vw, 3.2rem); line-height: 1.05; }
+.panel p { color: var(--muted); max-width: 32ch; font-size: 1rem; }
+.panel .sig { width: min(420px, 70vw); color: var(--fg); }
+.hint { position: absolute; z-index: 4; left: 50%; bottom: calc(var(--floor-h) / 2); translate: -50% 50%; font: 700 .72rem var(--f-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--fg); opacity: .8; white-space: nowrap; transition: opacity .4s; }
+.map { position: absolute; z-index: 5; left: var(--gl); right: var(--gr); bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); display: grid; gap: .5rem; }
+.map-track { position: relative; height: 2px; background: rgba(241,235,223,.2); }
+.map-track span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--fg); transform-origin: left; }
+.map-rooms { position: relative; height: 26px; }
+.map-rooms button { position: absolute; top: 0; translate: -0% 0; font: 700 .68rem var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; min-height: 26px; }
+.map-rooms button.on { color: var(--fg); }
+.rm .world { position: relative; }
+.rm .sala-stage { overflow-x: auto; }
+
+/* Archivo */
+.archive { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
+.work { display: grid; gap: .8rem; text-align: left; }
+.work .frame { display: block; position: relative; overflow: hidden; aspect-ratio: var(--a); background: #2a2f2b; }
+.work .frame img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
+.work:hover .frame img { transform: scale(1.04); }
+.placard { display: grid; gap: .05rem; }
+.placard .t { font: 400 1.15rem var(--f-serif); }
+.placard .m { font-size: .8rem; color: var(--muted); }
+.placard .n { opacity: .7; }
+.badge { position: absolute; top: .5rem; left: .5rem; font: 700 .65rem var(--f-sans); letter-spacing: .1em; text-transform: uppercase; padding: .25rem .5rem; background: var(--accent); color: var(--bg); }
+
+/* Bio */
+.bio { background: var(--wall-2); }
+.bio-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+.bio-photo { display: grid; gap: .7rem; max-width: 460px; }
+.bio-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; filter: grayscale(1); }
+.bio-body { display: grid; gap: 1.1rem; max-width: 62ch; }
+.bio-body p { color: var(--muted); }
+.bio-body p:first-child { color: var(--fg); font-size: 1.25rem; line-height: 1.5; }
+.cv { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 1.5rem 3rem; }
+.cv h3 { font: 700 .72rem var(--f-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; }
+.cv li { list-style: none; display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .8rem; padding-block: .55rem; border-top: 1px solid var(--line); font-size: .93rem; }
+.cv li span:first-child { color: var(--muted); }
+
+/* Encargos y contacto */
+.enc ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 2rem; counter-reset: s; margin-top: 2.5rem; }
+.enc li { list-style: none; counter-increment: s; display: grid; gap: .45rem; border-top: 1px solid var(--accent); padding-top: 1rem; }
+.enc li::before { content: counter(s, upper-roman); font: 400 1.8rem var(--f-serif); color: var(--accent); }
+.enc b { font: 400 1.3rem var(--f-serif); }
+.enc span { color: var(--muted); }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: 2rem; }
+.mail a { font: 400 clamp(1.5rem, 4vw, 2.8rem)/1.1 var(--f-serif); text-decoration: none; overflow-wrap: anywhere; }
+.copy { font: 700 .7rem var(--f-sans); letter-spacing: .1em; text-transform: uppercase; min-height: 36px; padding: 0 .9rem; box-shadow: inset 0 0 0 1px var(--line); }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
+.socials { display: flex; flex-wrap: wrap; gap: .4rem 1.8rem; list-style: none; margin-top: 2.5rem; }
+.socials a { font: 700 .74rem var(--f-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: inline-block; padding-block: .6rem; }
+footer { border-top: 1px solid var(--line); padding-block: 1.4rem calc(1.4rem + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 2rem; font-size: .8rem; color: var(--muted); }
+
+@media (max-width: 960px) { .nav-links { display: none; } .burger { display: block; } }
+@media (max-width: 860px) { .bio-grid { grid-template-columns: minmax(0, 1fr); } .piece .label { max-width: 190px; } .sala-stage { --floor-h: 13%; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#archivo" data-i18n="skip">Saltar la sala</a>
+<header class="nav" id="nav">
+  <a class="brand" href="#top">Max Langevin</a>
+  <div class="nav-r">
+    <nav aria-label="Secciones"><ul class="nav-links">
+      <li><a href="#top" data-i18n="n_room">La sala</a></li><li><a href="#archivo" data-i18n="n_archive">Archivo</a></li>
+      <li><a href="#about" data-i18n="n_about">El artista</a></li><li><a href="#encargos" data-i18n="n_commission">Encargos</a></li><li><a href="#contact" data-i18n="n_contact">Contacto</a></li></ul></nav>
+    <button class="lang js-lang" type="button">EN</button>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" data-i18n-aria="menu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="drawer" id="drawer" hidden>
+  <a href="#top" data-i18n="n_room">La sala</a><a href="#archivo" data-i18n="n_archive">Archivo</a><a href="#about" data-i18n="n_about">El artista</a>
+  <a href="#encargos" data-i18n="n_commission">Encargos</a><a href="#contact" data-i18n="n_contact">Contacto</a>
+</div>
+
+<main>
+<section class="scene" id="top" aria-label="Sala de exposición">
+  <div class="stage sala-stage" id="sala">
+    <div class="world" id="world"></div>
+    <p class="hint" id="hint" data-i18n="hint">Baja para recorrer la sala</p>
+    <div class="map" id="map"><div class="map-rooms" id="map-rooms"></div><div class="map-track"><span id="map-bar"></span></div></div>
+  </div>
+</section>
+
+<section class="band wrap" id="archivo" aria-labelledby="arch-h">
+  <div style="display:grid;gap:1rem;margin-bottom:2.5rem;max-width:60rem">
+    <p class="lbl" data-i18n="arch_k">Archivo</p>
+    <h2 class="vinyl" id="arch-h" style="font-size:clamp(2.2rem,4.6vw,4rem);line-height:1.05" data-i18n="arch_h">Ilustración y objetos</h2>
+    <p class="lede" data-i18n="arch_p">Lo que no cuelga en la sala: ilustración digital, cómic, animación y cerámica.</p>
+  </div>
+  <div class="archive" id="archive"></div>
+</section>
+
+<section class="bio band wrap" id="about" aria-labelledby="about-h">
+  <div class="bio-grid">
+    <div class="bio-photo"><img src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="lbl" style="color:var(--muted)">Santiago, Chile · 1996</p></div>
+    <div>
+      <p class="lbl" data-i18n="n_about">El artista</p>
+      <h2 class="vinyl" id="about-h" style="font-size:clamp(2.2rem,4.6vw,4rem);line-height:1.05;margin:.8rem 0 2rem">Maximiliano Langevin Larraín</h2>
+      <div class="bio-body" id="bio-body"></div>
+      <div class="cv" id="cv"></div>
+    </div>
+  </div>
+</section>
+
+<section class="band wrap enc" id="encargos" aria-labelledby="enc-h">
+  <p class="lbl" data-i18n="n_commission">Encargos</p>
+  <h2 class="vinyl" id="enc-h" style="font-size:clamp(2.2rem,4.6vw,4rem);line-height:1.05;margin-top:.8rem;max-width:22ch" data-i18n="enc_h">Tu retrato, en la próxima sala.</h2>
+  <ol id="steps"></ol>
+</section>
+
+<section class="band wrap" id="contact" aria-labelledby="contact-h" style="padding-top:0">
+  <p class="lbl" data-i18n="n_contact">Contacto</p>
+  <h2 class="vinyl" id="contact-h" style="font-size:clamp(2.2rem,4.6vw,4rem);line-height:1.05;margin-top:.8rem" data-i18n="contact_h">Encargos, exposiciones, colaboraciones.</h2>
+  <div class="mail"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a><button class="copy js-copy" type="button" data-i18n="copy">Copiar</button></div>
+  <div class="actions"><a class="btn js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener"><span data-i18n="wa">Escribir por WhatsApp</span></a></div>
+  <ul class="socials"><li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li><li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+</section>
+<footer class="wrap"><span>© 2026 Maximiliano Langevin</span><span>Langevinci®</span></footer>
+</main>
+
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+const { $, $$, clamp, smooth, RM } = ML;
+const S = {
+  es: { skip: 'Saltar la sala', n_room: 'La sala', n_archive: 'Archivo', n_about: 'El artista', n_commission: 'Encargos', n_contact: 'Contacto',
+    hint: 'Baja para recorrer la sala', in_k: 'Exposición permanente', in_p: 'Óleos, dibujos y grabados de 2017 a hoy. Las obras cuelgan a escala: en pantalla guardan la proporción real de sus tamaños entre sí.',
+    r1: 'Sala I', r1t: 'Retratos', r1p: 'Óleo sobre tela y lino. La mayoría parte de fotografías que el propio pintor toma.',
+    r2: 'Sala II', r2t: 'Dibujo y grabado', r2p: 'Copias de maestros en grafito y sanguina, y xilografías talladas e impresas a mano.',
+    out_t: 'Gracias por la visita.', out_p: '¿Te imaginas un retrato tuyo en esta pared?', out_b: 'Encargar un retrato',
+    arch_k: 'Archivo', arch_h: 'Ilustración y objetos', arch_p: 'Lo que no cuelga en la sala: ilustración digital, cómic, animación y cerámica.',
+    enc_h: 'Tu retrato, en la próxima sala.', contact_h: 'Encargos, exposiciones, colaboraciones.', exit: 'Salida' },
+  en: { skip: 'Skip the room', n_room: 'The room', n_archive: 'Archive', n_about: 'The artist', n_commission: 'Commissions', n_contact: 'Contact',
+    hint: 'Scroll to walk through the room', in_k: 'Permanent exhibition', in_p: 'Oils, drawings and prints from 2017 to today. The works hang to scale: on screen they keep the real proportion of their sizes to each other.',
+    r1: 'Room I', r1t: 'Portraits', r1p: 'Oil on canvas and linen. Most start from photographs the painter takes himself.',
+    r2: 'Room II', r2t: 'Drawing and print', r2p: 'Copies after masters in graphite and red chalk, and woodcuts carved and printed by hand.',
+    out_t: 'Thank you for visiting.', out_p: 'Can you picture a portrait of yours on this wall?', out_b: 'Commission a portrait',
+    arch_k: 'Archive', arch_h: 'Illustration and objects', arch_p: 'What does not hang in the room: digital illustration, comics, animation and ceramics.',
+    enc_h: 'Your portrait, in the next room.', contact_h: 'Commissions, exhibitions, collaborations.', exit: 'Exit' }
+};
+const ROOM1 = ['karin-goldberg', 'marcos-16-16', 'veteran-george', 'el-conde', 'consu-gato', 'santiago', 'vicente', 'en-verano', 'gallagath', 'coti', 'el-jardin'];
+const ROOM2 = ['bouguereau', 'parmigianino', 'la-mosca', 'guiseppe', 'san-jorge'];
+
+// Construcción del muro. Unidades: centímetros reales → px con k.
+const world = $('#world'), stageEl = $('#sala'), scn = $('#top');
+let k = 4, travel = 0, W = 1, H = 1, pieces = [], rooms = [], entrySig = null, yEye = 0;
+function build() {
+  W = stageEl.clientWidth; H = stageEl.clientHeight;
+  const floorY = H * (W < 860 ? .87 : .85);
+  k = Math.min(H * .5 / 102.5, W * .78 / 77.5);
+  yEye = Math.max(floorY - 150 * k * (W < 860 ? .78 : .92), H * .4);   // línea de centro de las obras, a la altura de los ojos
+  const gap = Math.max(75 * k, W < 860 ? W * .42 : 0);
+  let x = W * .5 - Math.min(W * .42, 420);
+  world.innerHTML = ''; pieces = []; rooms = [];
+  const L = ML.lang;
+  const panel = (html, w) => { const d = document.createElement('div'); d.className = 'panel'; d.style.left = x + 'px'; d.style.top = (yEye - H * .3) + 'px'; d.style.height = (H * .6) + 'px'; d.style.width = w + 'px'; d.innerHTML = html; world.appendChild(d); x += w + gap * .8; return d; };
+  // entrada
+  const pw = Math.min(W * .84, 840);
+  const entry = panel(`<p class="lbl">${ML.t('in_k')}</p><div class="sig" id="entry-sig"></div><h1 class="vinyl mid" style="font-size:clamp(1.5rem,2.6vw,2.4rem)">Maximiliano Langevin</h1><p>${ML.t('in_p')}</p>`, pw);
+  entrySig = ML.signature($('#entry-sig', entry), { label: 'Max Langevin' });
+  const hang = (id) => {
+    const w = ML.BY_ID[id], a = ML.ratio(w.imgs[0].p);
+    // alto real en cm; si la foto y las medidas no coinciden en orientación, manda la foto
+    let hcm = w.cm ? w.cm[1] : 45;
+    if (w.cm && (a >= 1) !== (w.cm[0] >= w.cm[1])) hcm = w.cm[0];
+    const h = hcm * k;
+    const wd = h * a;
+    const d = document.createElement('div'); d.className = 'piece'; d.style.left = x + 'px'; d.style.top = (yEye - h / 2) + 'px'; d.style.width = wd + 'px'; d.style.height = h + 'px';
+    d.innerHTML = `<span class="spot"></span><button type="button" data-open="${id}" aria-label="${w.name}, ${ML.metaLine(w)}"><img src="${ML.T_(w.imgs[0].p)}" alt="" loading="lazy"></button><span class="label"><b>${w.name}</b><span>${ML.yearLabel(w)}</span><span>${w.tech[L]}</span><span>${w.dims}</span></span>`;
+    world.appendChild(d); pieces.push({ el: d, btn: $('button', d), spot: $('.spot', d), label: $('.label', d), x: x + wd / 2, h });
+    x += wd + gap;
+  };
+  const room = (n, t, p) => { rooms.push({ name: ML.t(n), x }); panel(`<p class="lbl">${ML.t(n)}</p><h2 class="vinyl big">${ML.t(t)}</h2><p>${ML.t(p)}</p>`, Math.min(W * .7, 520)); };
+  room('r1', 'r1t', 'r1p'); ROOM1.forEach(hang);
+  room('r2', 'r2t', 'r2p'); ROOM2.forEach(hang);
+  rooms.push({ name: ML.t('exit'), x });
+  panel(`<h2 class="vinyl big">${ML.t('out_t')}</h2><p>${ML.t('out_p')}</p><div><a class="btn" href="#encargos">${ML.t('out_b')}</a></div>`, Math.min(W * .8, 620));
+  const worldW = x - gap * .8 + W * .5 - Math.min(W * .3, 310);
+  world.style.width = worldW + 'px';
+  travel = Math.max(0, worldW - W);
+  if (!RM) scn.style.height = (H + travel) + 'px'; else scn.style.height = '';
+  $('#map-rooms').innerHTML = rooms.map((r, i) => `<button type="button" data-x="${r.x}" style="left:${(clamp((r.x - W * .1) / travel) * 100).toFixed(1)}%">${r.name}</button>`).join('');
+}
+function goX(px) { const p = clamp((px - W * .1) / (travel || 1)); scrollTo({ top: scn.getBoundingClientRect().top + scrollY + p * (scn.offsetHeight - innerHeight), behavior: 'smooth' }); }
+$('#map-rooms').addEventListener('click', e => { const b = e.target.closest('[data-x]'); if (b) goX(+b.dataset.x); });
+world.addEventListener('focusin', e => { if (RM) return; const pc = e.target.closest('.piece'); if (!pc) return; const P = pieces.find(q => q.el === pc); const p = clamp((P.x - W / 2) / (travel || 1)); scrollTo({ top: scn.getBoundingClientRect().top + scrollY + p * (scn.offsetHeight - innerHeight), behavior: 'instant' }); });
+
+ML.scene(scn, {
+  layout() { build(); },
+  update(p) {
+    if (RM) { entrySig && entrySig(1); return; }
+    const off = p * travel;
+    world.style.transform = `translate3d(${(-off).toFixed(1)}px,0,0)`;
+    pieces.forEach(P => {
+      const d = Math.abs(P.x - off - W / 2) / (W * .55);
+      const c = 1 - smooth(clamp(d));
+      const s = 1 + Math.max(0, Math.min(.3, H * .66 / P.h - 1)) * c;
+      P.btn.style.transform = `scale(${s.toFixed(4)})`;
+      P.label.style.transform = `translateY(${((s - 1) * P.h / 2).toFixed(1)}px)`;
+      P.spot.style.opacity = (.35 + .65 * c).toFixed(3);
+    });
+    entrySig && entrySig(clamp(off / (W * .45)));
+    $('#hint').style.opacity = off > 40 ? 0 : .8;
+    $('#map-bar').style.transform = `scaleX(${p.toFixed(4)})`;
+    $$('#map-rooms button').forEach((b, i, all) => { const x = +b.dataset.x, nx = all[i + 1] ? +all[i + 1].dataset.x : Infinity; b.classList.toggle('on', off + W / 2 >= x && off + W / 2 < nx); });
+  }
+});
+
+function render() {
+  const L = ML.lang;
+  const g = $('#archive'); g.innerHTML = '';
+  ML.WORKS.filter(w => w.cat === 'ilustracion' || w.cat === 'creaciones').forEach(w => g.appendChild(ML.card(w)));
+  $('#bio-body').innerHTML = ML.BIO[L].map(p => `<p>${p}</p>`).join('');
+  $('#cv').innerHTML = ML.CV[L].map(([h, rows]) => `<div><h3>${h}</h3><ul>${rows.map(([a, b]) => `<li><span>${a}</span><span>${b}</span></li>`).join('')}</ul></div>`).join('');
+  $('#steps').innerHTML = ML.COMMISSION[L].map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('');
+  build();
+}
+ML.onLang(render);
+
+const drawer = $('#drawer'), burger = $('#burger');
+const setDrawer = open => { drawer.hidden = !open; burger.setAttribute('aria-expanded', open); document.documentElement.classList.toggle('lb-open', open); };
+burger.addEventListener('click', () => setDrawer(drawer.hidden));
+drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); });
+// fuera de la sala, la barra lleva fondo para que el texto no pase por debajo
+const navEl = document.querySelector('.nav'), hall = document.getElementById('sala') || document.querySelector('.scene');
+ML.onTick(() => { const r = hall ? hall.getBoundingClientRect() : { bottom: 0 }; navEl.classList.toggle('scrolled', r.bottom < innerHeight * .2); });
+ML.boot({ strings: S });
+</script>
+</body>
+</html>

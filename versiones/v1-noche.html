@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Noche</title>
+<meta name="description" content="Maximiliano Langevin, pintor realista chileno. Retratos al óleo.">
+<meta name="theme-color" content="#100e0c">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+/* Noche: una sala a oscuras, la cámara entra en las telas. Grotesca firme para hablar, serif itálica para las obras. */
+:root {
+  --bg: #100e0c; --bg-2: #1a1713; --fg: #efe9de; --muted: #a69c8f; --accent: #93b197; --on-accent: #100e0c;
+  --paper: #e8e1d3; --ink: #1c1915; --ink-soft: #5b5348;
+  --line: rgba(239,233,222,.14); --line-ink: rgba(28,25,21,.16);
+  --f-sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Newsreader', Georgia, serif;
+  --f-mono: 'DM Mono', ui-monospace, Menlo, monospace;
+  --gl: max(clamp(20px, 5vw, 72px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(20px, 5vw, 72px), env(safe-area-inset-right, 0px));
+  --nav-h: 60px; --ease: cubic-bezier(.22,.61,.36,1);
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font: 400 1.0625rem/1.6 var(--f-sans); }
+::selection { background: var(--accent); color: var(--bg); }
+.wrap { padding-left: var(--gl); padding-right: var(--gr); }
+.band { padding-block: clamp(5rem, 12vh, 9rem); }
+.eyebrow { font: .74rem var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.mono { font: .78rem var(--f-mono); letter-spacing: .05em; color: var(--muted); }
+.h-xl { font-weight: 700; font-size: clamp(2.6rem, 8vw, 7.4rem); line-height: .94; letter-spacing: -.045em; text-wrap: balance; }
+.h-l { font-weight: 700; font-size: clamp(2.2rem, 5.4vw, 4.8rem); line-height: .98; letter-spacing: -.04em; text-wrap: balance; }
+.h-m { font-weight: 600; font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.14; letter-spacing: -.025em; text-wrap: balance; }
+.serif { font-family: var(--f-serif); font-style: italic; font-weight: 400; }
+.lede { font-size: clamp(1.05rem, 1.35vw, 1.22rem); line-height: 1.55; color: var(--muted); max-width: 42ch; text-wrap: pretty; }
+.sec-head { display: grid; gap: 1rem; margin-bottom: clamp(2.5rem, 6vh, 4rem); max-width: 62rem; }
+.pill { display: inline-flex; align-items: center; gap: .55rem; min-height: 44px; padding: .7rem 1.25rem; border-radius: 999px; font: 600 .95rem var(--f-sans); background: var(--fg); color: var(--bg); text-decoration: none; transition: transform .25s var(--ease); }
+.pill:hover { transform: translateY(-1px); }
+.pill.ghost { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px var(--line); }
+.pill svg { width: 18px; height: 18px; }
+.textlink { display: inline-flex; gap: .4rem; font-weight: 600; color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.skip { position: fixed; left: 12px; top: -60px; z-index: 400; background: var(--fg); color: var(--bg); padding: .6rem 1rem; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+/* Nav */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 150; background: var(--bg); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 140; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: var(--gl); padding-right: var(--gr); transition: background .35s, box-shadow .35s; }
+.nav.solid { background: rgba(16,14,12,.74); -webkit-backdrop-filter: saturate(1.4) blur(18px); backdrop-filter: saturate(1.4) blur(18px); box-shadow: 0 1px 0 var(--line); }
+.brand { display: flex; align-items: center; gap: .65rem; text-decoration: none; font-weight: 600; font-size: .95rem; white-space: nowrap; }
+.brand img { width: 30px; height: 30px; filter: invert(1); }
+.nav-r { display: flex; align-items: center; gap: 1.1rem; }
+.nav-links { display: flex; gap: clamp(.9rem, 1.8vw, 1.6rem); list-style: none; }
+.nav-links a { text-decoration: none; font-size: .82rem; color: var(--muted); }
+.nav-links a:hover { color: var(--fg); }
+.nav .pill { min-height: 36px; padding: .45rem .95rem; font-size: .82rem; }
+.lang { font: .72rem var(--f-mono); letter-spacing: .1em; min-width: 44px; min-height: 32px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); }
+.burger { display: none; width: 44px; height: 44px; position: relative; }
+.burger span { position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--fg); transition: transform .3s, top .3s; }
+.burger span:nth-child(1) { top: 18px; } .burger span:nth-child(2) { top: 25px; }
+.burger[aria-expanded="true"] span:nth-child(1) { top: 21.5px; transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { top: 21.5px; transform: rotate(-45deg); }
+.drawer { position: fixed; inset: 0; z-index: 130; background: var(--bg); padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2rem) var(--gr) 2rem var(--gl); display: flex; flex-direction: column; gap: .2rem; }
+.drawer a { text-decoration: none; font-weight: 700; font-size: clamp(2rem, 9vw, 3rem); letter-spacing: -.04em; line-height: 1.2; }
+
+/* Zoom */
+.scrim { background: linear-gradient(to top, rgba(16,14,12,.9), rgba(16,14,12,.5) 45%, transparent); }
+.zt.cap { left: var(--gl); right: var(--gr); bottom: calc(clamp(1.5rem, 6vh, 4rem) + env(safe-area-inset-bottom, 0px)); max-width: 36rem; text-shadow: 0 2px 24px rgba(0,0,0,.45); display: grid; gap: .8rem; }
+.zt.cap .mono { color: var(--fg); opacity: .8; }
+.zt.cap .pal { max-width: 22rem; height: 10px; }
+.zt.center { inset: 0; display: grid; place-items: center; text-align: center; padding: 0 var(--gr) 0 var(--gl); pointer-events: none; }
+.hero-intro { top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(1rem, 5vh, 3.5rem)); left: var(--gl); right: var(--gr); text-align: center; display: grid; justify-items: center; gap: 1rem; }
+.cue { position: absolute; z-index: 3; left: 50%; bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); translate: -50% 0; display: grid; justify-items: center; gap: .5rem; pointer-events: none; }
+.cue .mono { color: var(--fg); background: rgba(16,14,12,.72); padding: .35rem .8rem; border-radius: 999px; white-space: nowrap; }
+.cue i { width: 1px; height: 38px; background: linear-gradient(var(--fg), transparent); animation: drip 2.2s var(--ease) infinite; transform-origin: top; }
+@keyframes drip { 0% { transform: scaleY(0); } 70% { transform: scaleY(1); opacity: 1; } 100% { opacity: 0; } }
+.endcard { left: var(--gl); bottom: calc(clamp(1.5rem, 6vh, 4rem) + env(safe-area-inset-bottom, 0px)); display: grid; gap: .5rem; justify-items: start; max-width: 30rem; }
+.endcard .serif { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1; }
+.endcard .pill { margin-top: .8rem; }
+.marcos-intro { left: var(--gl); top: 50%; translate: 0 -50%; max-width: min(24rem, 23vw); display: grid; gap: 1rem; }
+.rail { position: absolute; z-index: 4; right: var(--gr); top: 50%; transform: translateY(-50%); display: grid; gap: .35rem; }
+.rail button { white-space: nowrap; display: flex; align-items: center; justify-content: flex-end; gap: .7rem; min-height: 40px; font: .72rem var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.rail button::after { content: ""; width: 9px; height: 9px; border-radius: 50%; box-shadow: inset 0 0 0 1px currentColor; transition: background .2s, transform .3s; }
+.rail button.on { color: var(--fg); } .rail button.on::after { background: var(--accent); box-shadow: none; transform: scale(1.25); }
+.rail span { text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+
+/* Cita + firma */
+.words-stage { display: grid; align-content: center; justify-items: start; gap: 2.2rem; padding-left: var(--gl); padding-right: var(--gr); }
+.words { font: italic 300 clamp(1.9rem, 5vw, 4.4rem)/1.12 var(--f-serif); letter-spacing: -.02em; max-width: 21ch; }
+.words span { opacity: .16; transition: opacity .25s linear; } .words span.lit { opacity: 1; }
+.quote-sig { width: min(340px, 62vw); color: var(--fg); margin-top: -.5rem; }
+
+/* Sala horizontal */
+.hstage { display: grid; grid-template-rows: auto 1fr; padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + clamp(.5rem, 3vh, 2rem)); }
+.h-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; padding-left: var(--gl); padding-right: var(--gr); }
+.h-head > div { display: grid; gap: .6rem; min-width: 0; }
+.h-progress { width: min(240px, 40vw); height: 2px; background: var(--line); position: relative; }
+.h-progress span { position: absolute; inset: 0; background: var(--fg); transform-origin: left; transform: scaleX(0); }
+.track { --ch: min(54svh, 560px); display: flex; align-items: center; gap: clamp(1.5rem, 4vw, 4rem); width: max-content; padding-left: var(--gl); padding-right: var(--gr); will-change: transform; }
+.rm .track { width: auto; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; }
+.rm .hstage { height: auto; padding-bottom: 3rem; }
+
+/* Tarjetas */
+.work { display: grid; gap: .9rem; text-align: left; justify-items: start; }
+.work .frame { display: block; position: relative; overflow: hidden; background: var(--bg-2); max-width: 100%; }
+.work img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.work:hover img { transform: scale(1.035); }
+.track .work .frame { height: var(--ch); width: calc(var(--ch) * var(--a)); }
+.placard { display: grid; gap: .2rem; min-width: 0; }
+.placard .t { font: italic 400 1.35rem/1.15 var(--f-serif); }
+.placard .m { font: .72rem var(--f-mono); letter-spacing: .04em; color: var(--muted); }
+.placard .n { opacity: .7; }
+.badge { position: absolute; top: .7rem; left: .7rem; font: .66rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; padding: .3rem .55rem; background: rgba(16,14,12,.72); color: var(--fg); border-radius: 999px; }
+.grid { display: grid; max-width: 75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
+.grid .work .frame, .cols .work .frame { width: 100%; aspect-ratio: var(--a); }
+.cols { columns: 3 260px; column-gap: clamp(1.5rem, 3vw, 2.5rem); }
+.cols .work { break-inside: avoid; margin-bottom: clamp(1.5rem, 3vw, 2.5rem); width: 100%; }
+
+/* Color medido */
+.color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem); }
+.cstudy { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 1.1rem; align-items: start; text-align: left; }
+.cstudy img { width: 96px; aspect-ratio: 4 / 5; object-fit: cover; }
+.cstudy .t { font: italic 400 1.3rem/1.1 var(--f-serif); }
+.cstudy p { font-size: .93rem; line-height: 1.55; color: var(--muted); margin-top: .5rem; }
+.cstudy .pal { margin-top: .7rem; }
+
+/* El Conde */
+.conde-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); }
+.conde-art { position: sticky; top: calc(var(--nav-h) + 3vh); align-self: start; display: grid; gap: 1rem; }
+.conde-art button { display: block; width: 100%; }
+.conde-art img { width: 100%; height: auto; max-height: 82svh; object-fit: contain; object-position: left top; }
+.conde-text { display: grid; gap: clamp(2.5rem, 8vh, 5rem); min-width: 0; }
+.conde-text figure { display: grid; gap: .8rem; }
+.conde-text figure img { width: 100%; height: auto; }
+.conde-text figcaption { font-size: .92rem; color: var(--muted); max-width: 52ch; }
+.creds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.creds div { padding: 1.6rem 1.2rem 1.6rem 0; display: grid; gap: .4rem; }
+.creds b { font-weight: 600; font-size: 1.15rem; letter-spacing: -.01em; }
+.creds span { font-size: .85rem; color: var(--muted); }
+
+/* Lupa */
+.lupa-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+.lupa-text { display: grid; gap: 1.2rem; justify-items: start; min-width: 0; }
+.lupa-frame { position: relative; height: min(82svh, 860px); aspect-ratio: 1416 / 2000; max-width: 100%; cursor: crosshair; touch-action: pan-y; user-select: none; }
+.lupa-frame.touchon { touch-action: none; }
+.lupa-frame > img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+
+/* Scrubs */
+.split { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); grid-template-rows: minmax(0, 1fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); height: 100%; padding: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 2vh) var(--gr) 4vh var(--gl); }
+.split-text { display: grid; gap: 1.1rem; justify-items: start; min-width: 0; }
+.frames { position: relative; height: 100%; max-height: 80svh; min-height: 0; }
+.frames img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.stepper { display: flex; align-items: center; gap: .9rem; }
+.stepper .bar { width: 120px; height: 2px; background: var(--line); position: relative; }
+.stepper .bar span { position: absolute; inset: 0; background: currentColor; transform-origin: left; }
+.paper { background: var(--paper); color: var(--ink); }
+.paper .lede, .paper .mono, .paper .placard .m { color: var(--ink-soft); }
+.paper .eyebrow { color: #4f6b54; }
+.paper .stepper .bar { background: var(--line-ink); }
+.paper .work .frame { background: #ddd5c5; }
+.paper :focus-visible { outline-color: var(--ink); }
+.cone-art { position: relative; height: 100%; max-height: 84svh; aspect-ratio: 1333 / 2000; max-width: 100%; justify-self: center; }
+.cone-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cone-art .ghost { opacity: .1; filter: grayscale(1); }
+
+/* Bio */
+.bio { background: var(--bg-2); }
+.bio-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 7vw, 7rem); align-items: start; }
+.bio-photo { position: sticky; top: calc(var(--nav-h) + 3vh); display: grid; gap: 1rem; max-width: 460px; }
+.bio-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; filter: grayscale(1); }
+.bio-body { display: grid; gap: 1.2rem; max-width: 62ch; }
+.bio-body p { color: var(--muted); }
+.bio-body p:first-child { color: var(--fg); font-size: clamp(1.15rem, 1.6vw, 1.35rem); line-height: 1.5; }
+.bio-body em { color: var(--fg); }
+.cv { margin-top: 3rem; display: grid; gap: 2rem; }
+.cv h3 { font: .74rem var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .6rem; }
+.cv li { list-style: none; display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1rem; padding-block: .7rem; border-top: 1px solid var(--line); }
+.cv li span:first-child { font: .82rem var(--f-mono); color: var(--muted); padding-top: .1rem; }
+
+/* Encargos */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0; counter-reset: s; border-top: 1px solid var(--line); }
+.steps li { list-style: none; padding: 1.6rem 1.6rem 1.6rem 0; display: grid; gap: .5rem; counter-increment: s; }
+.steps li::before { content: counter(s, decimal-leading-zero); font: .78rem var(--f-mono); color: var(--accent); }
+.steps b { font-weight: 600; font-size: 1.2rem; letter-spacing: -.01em; }
+.steps span { color: var(--muted); font-size: .95rem; }
+
+/* Contacto */
+.contact .h-xl { max-width: 14ch; }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: clamp(2rem, 5vh, 3.5rem); }
+.mail a { font: italic 400 clamp(1.6rem, 4.2vw, 3.2rem)/1.1 var(--f-serif); text-decoration: none; overflow-wrap: anywhere; }
+.copy { font: .72rem var(--f-mono); letter-spacing: .08em; text-transform: uppercase; min-height: 36px; padding: 0 .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.socials { display: flex; flex-wrap: wrap; gap: .5rem 2rem; margin-top: clamp(3rem, 8vh, 5rem); list-style: none; }
+.socials a { font: .78rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: inline-block; padding-block: .6rem; }
+footer { border-top: 1px solid var(--line); padding-block: 1.6rem calc(1.6rem + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .5rem 2rem; font: .72rem var(--f-mono); color: var(--muted); }
+.foot-sig { width: 120px; color: var(--fg); }
+
+@media (max-width: 1180px) { .nav-links { display: none; } .burger { display: block; } }
+@media (max-width: 860px) {
+  :root { --nav-h: 56px; }
+  .nav .pill { display: none; }
+  .marcos-intro { top: auto; bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px)); translate: none; right: var(--gr); max-width: none; }
+  .rail { top: auto; bottom: calc(.75rem + env(safe-area-inset-bottom, 0px)); right: auto; left: 50%; transform: translateX(-50%); display: flex; gap: .4rem; }
+  .rail button { flex-direction: row-reverse; gap: .4rem; font-size: .62rem; }
+  .zcap-m { bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px)) !important; }
+  .conde-grid, .bio-grid { grid-template-columns: minmax(0, 1fr); }
+  .conde-art, .bio-photo { position: static; }
+  .conde-art img { max-height: 70svh; object-position: center; }
+  .lupa-grid { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .lupa-frame { height: auto; width: min(100%, 520px); }
+  .split { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 1.2rem; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
+  .split .frames, .split .cone-art { order: -1; max-height: none; }
+  .split-text .lede { font-size: .98rem; }
+  .split-text .h-l { font-size: clamp(1.9rem, 8vw, 2.6rem); }
+  .track { --ch: min(46svh, 440px); }
+}
+@media (max-width: 560px) { .brand span { display: none; } .cv li { grid-template-columns: 5.5rem minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<a class="skip" href="#pinturas" data-i18n="skip">Saltar a las obras</a>
+<header class="nav" id="nav">
+  <a href="#top" class="brand"><img src="../images/logo_ml.png" alt="" width="30" height="30"><span>Maximiliano Langevin</span></a>
+  <div class="nav-r">
+    <nav aria-label="Secciones"><ul class="nav-links">
+      <li><a href="#pinturas" data-i18n="n_paint">Pinturas</a></li><li><a href="#viaje">Marcos 16:16</a></li>
+      <li><a href="#color" data-i18n="n_color">Color</a></li><li><a href="#dibujos" data-i18n="n_draw">Dibujos</a></li>
+      <li><a href="#xilografia" data-i18n="n_xilo">Xilografía</a></li><li><a href="#ilustracion" data-i18n="n_illus">Ilustración</a></li>
+      <li><a href="#about" data-i18n="n_about">Biografía</a></li></ul></nav>
+    <a class="pill" href="#encargos" data-i18n="n_commission">Encargar un retrato</a>
+    <button class="lang js-lang" type="button">EN</button>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" data-i18n-aria="menu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="drawer" id="drawer" hidden>
+  <a href="#pinturas" data-i18n="n_paint">Pinturas</a><a href="#viaje">Marcos 16:16</a><a href="#color" data-i18n="n_color">Color</a>
+  <a href="#dibujos" data-i18n="n_draw">Dibujos</a><a href="#xilografia" data-i18n="n_xilo">Xilografía</a><a href="#ilustracion" data-i18n="n_illus">Ilustración</a>
+  <a href="#about" data-i18n="n_about">Biografía</a><a href="#encargos" data-i18n="n_commission">Encargar un retrato</a>
+</div>
+
+<main>
+<section class="scene" id="top" style="--len:380vh" aria-label="Karin Goldberg">
+  <div class="stage">
+    <div class="zcanvas"></div><div class="scrim"></div>
+    <div class="zt hero-intro" data-r="0,.04" data-e=".06">
+      <p class="eyebrow" data-i18n="hero_eyebrow">Pintor realista · Santiago de Chile</p>
+      <h1 class="h-xl">Maximiliano Langevin</h1>
+    </div>
+    <div class="cue zt" data-r="0,.02" data-e=".04" data-still><span class="mono" data-i18n="hero_cue">Baja para entrar en la pintura</span><i></i></div>
+    <div class="zt center" data-r=".15,.22" data-e=".05"><p class="h-l" data-i18n="hero_c1">Acércate.</p></div>
+    <div class="zt cap" data-r=".38,.52">
+      <p class="h-m" data-i18n="hero_c2">Verde tierra contra piel cálida. Son complementarios: el fondo frío hace que la piel se vea más viva.</p>
+      <div class="js-pal" data-id="karin-goldberg"></div>
+      <p class="mono" data-i18n="hero_c2_sub">Paleta medida en la obra</p>
+    </div>
+    <div class="zt cap" data-r=".68,.82"><p class="h-m" data-i18n="hero_c3">El punto más claro del cuadro es el velo. Cada hilo, pintado a mano.</p><p class="mono" data-i18n="hero_c3_sub">Detalle · Karin Goldberg, 2025</p></div>
+    <div class="zt endcard" data-r=".95,1" data-e=".04">
+      <p class="eyebrow" data-i18n="latest">Obra reciente</p>
+      <p class="serif">Karin Goldberg</p>
+      <p class="mono" data-i18n="karin_meta">2025 · Óleo sobre lino · 48 × 68 cm</p>
+      <button class="pill" type="button" data-open="karin-goldberg"><span data-i18n="see_work">Ver la obra</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="cita" style="--len:200vh" aria-label="Cita">
+  <div class="stage words-stage">
+    <blockquote class="words" id="quote"></blockquote>
+    <div class="quote-sig" id="quote-sig"></div>
+  </div>
+</section>
+
+<section class="scene" id="pinturas" aria-labelledby="pinturas-h">
+  <div class="stage hstage">
+    <div class="h-head">
+      <div><p class="eyebrow" data-i18n="paint_eyebrow">Óleo sobre tela y lino · 2020 — hoy</p><h2 class="h-l" id="pinturas-h" data-i18n="n_paint">Pinturas</h2></div>
+      <div><p class="mono" data-i18n="paint_hint">Toca una obra para ver sus vistas, su paleta y consultar por ella</p><div class="h-progress" aria-hidden="true"><span></span></div></div>
+    </div>
+    <div class="track" id="grid-pinturas"></div>
+  </div>
+</section>
+
+<section class="scene" id="viaje" style="--len:540vh" aria-labelledby="marcos-h">
+  <div class="stage">
+    <div class="zcanvas"></div><div class="scrim"></div>
+    <div class="zt marcos-intro" data-r="0,.05" data-e=".05" data-still>
+      <p class="eyebrow" data-i18n="marcos_eyebrow">Obra en proceso</p>
+      <h2 class="h-l" id="marcos-h">Marcos 16:16</h2>
+      <p class="lede" data-i18n="marcos_intro">Óleo sobre tela, 77,5 × 102,5 cm. Todavía está en el caballete. Baja para recorrerla por dentro.</p>
+    </div>
+    <div class="zt cap zcap-m" data-r=".18,.29"><p class="h-m" data-i18n="marcos_s1">La luz de colores cae sobre el damero. Ella intenta tocarla.</p><p class="mono" data-i18n="marcos_s1_sub">El blanco y negro del piso es neutro: el color queda solo para la luz.</p></div>
+    <div class="zt cap zcap-m" data-r=".49,.59"><p class="h-m" data-i18n="marcos_s2">Detrás de la reja, el retablo: dorado, sombra y madera tallada.</p></div>
+    <div class="zt cap zcap-m" data-r=".80,.88"><p class="h-m serif">«Qui crediderit et baptizatus fuerit salvus erit.»</p><p class="mono" data-i18n="marcos_s3_sub">Marcos 16:16 · El que crea y sea bautizado, se salvará.</p></div>
+    <div class="zt endcard zcap-m" data-r=".96,1" data-e=".03">
+      <p class="serif">Marcos 16:16</p>
+      <button class="pill" type="button" data-open="marcos-16-16"><span data-i18n="marcos_end">Ver fotos del proceso</span></button>
+    </div>
+    <div class="rail" aria-label="Recorrido">
+      <button type="button" data-goto=".235" data-range=".12,.36"><span data-i18n="marcos_l1">La niña</span></button>
+      <button type="button" data-goto=".545" data-range=".42,.66"><span data-i18n="marcos_l2">El retablo</span></button>
+      <button type="button" data-goto=".84" data-range=".72,.95"><span data-i18n="marcos_l3">La inscripción</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="band wrap" id="color" aria-labelledby="color-h">
+  <div class="sec-head">
+    <p class="eyebrow" data-i18n="color_eyebrow">Lectura de color</p>
+    <h2 class="h-l" id="color-h" data-i18n="color_title">Cada cuadro, su paleta.</h2>
+    <p class="lede" data-i18n="color_p">Medimos los colores de cada pintura. Las barras muestran cuánto ocupa cada uno en la tela. Al lado, lo que hace ese color en el cuadro.</p>
+  </div>
+  <div class="color-grid" id="color-grid"></div>
+</section>
+
+<section class="band wrap" id="el-conde" aria-labelledby="conde-h" style="padding-top:0">
+  <div class="conde-grid">
+    <div class="conde-art">
+      <button type="button" data-open="el-conde" aria-label="El Conde"><img src="../images/w/pinturas/el_conde_1.webp" alt="El Conde, óleo en grises: figura con gorra militar y abrigo de piel" width="1332" height="2000" loading="lazy"></button>
+      <p class="mono" data-i18n="conde_meta">2024 · Óleo sobre lino · 40 × 60 cm</p>
+    </div>
+    <div class="conde-text">
+      <div class="sec-head" style="margin:0">
+        <p class="eyebrow" data-i18n="conde_eyebrow">Exposición «Polímatas» · Estadio Italiano, 2024</p>
+        <h2 class="h-l" id="conde-h">El Conde</h2>
+        <p class="lede" data-i18n="conde_p">Un retrato en grisalla a partir de la película «El Conde». Se expuso en «Polímatas» y terminó frente a quienes hicieron la película.</p>
+      </div>
+      <figure><img src="../images/w/pinturas/el_conde_2.webp" alt="" width="1200" height="1600" loading="lazy"><figcaption data-i18n="conde_c2">Exposición «Polímatas» en el Estadio Italiano, 2024.</figcaption></figure>
+      <figure><img src="../images/w/pinturas/el_conde_5.webp" alt="" width="2000" height="1500" loading="lazy"><figcaption data-i18n="conde_c5">Juan de Dios Larraín (productor) y Pablo Larraín (director) de «El Conde» junto a la obra.</figcaption></figure>
+      <div><button class="textlink" type="button" data-open="el-conde"><span data-i18n="all_photos">Ver todas las fotos</span> →</button></div>
+    </div>
+  </div>
+  <div class="creds" style="margin-top:clamp(4rem,10vh,7rem)">
+    <div><b>Polímatas 2024</b><span data-i18n="cr1">Exposición colectiva, Estadio Italiano</span></div>
+    <div><b>Disney® · Fábula®</b><span data-i18n="cr2">Colaboraciones en cine y publicidad</span></div>
+    <div><b>Javier Barriga</b><span data-i18n="cr3">Cinco años de taller, desde 2019</span></div>
+    <div><b>Francisco Uzabeaga</b><span data-i18n="cr4">Formación en hiperrealismo, 2024</span></div>
+  </div>
+</section>
+
+<section class="band wrap" id="lupa" aria-labelledby="lupa-h" style="padding-top:0">
+  <div class="lupa-grid">
+    <div class="lupa-text">
+      <p class="eyebrow">Veteran George · 2024</p>
+      <h2 class="h-l" id="lupa-h" data-i18n="lupa_title">Mira de cerca.</h2>
+      <p class="lede" id="lupa-p"></p>
+      <button class="pill ghost" type="button" id="lupa-toggle" aria-pressed="false" hidden></button>
+      <button class="textlink" type="button" data-open="veteran-george"><span data-i18n="all_photos">Ver todas las fotos</span> →</button>
+    </div>
+    <div class="lupa-frame" id="lupa-frame" aria-describedby="lupa-h">
+      <img src="../images/w/pinturas/veteran_george_1.webp" alt="Veteran George: hombre mayor con gorra de veterano, camisa roja y una escopeta, junto a un perro" width="1416" height="2000" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="paper" id="dibujos" aria-labelledby="dibujos-h">
+  <div class="scene" style="--len:260vh" data-scrub="fade">
+    <div class="stage"><div class="split">
+      <div class="split-text">
+        <p class="eyebrow" data-i18n="draw_eyebrow">Dibujos · 2019</p>
+        <h2 class="h-l" id="dibujos-h" data-i18n="draw_title">Del trazo a la forma.</h2>
+        <p class="lede" data-i18n="draw_p">Copia de un dibujo de William Bouguereau. Grafito sobre papel de algodón, 30 × 23 cm. Cinco fotos del mismo dibujo, desde las primeras líneas hasta la firma.</p>
+        <div class="stepper mono"><span><span data-i18n="stage">Etapa</span> <b class="n">5</b> / 5</span><span class="bar"><span></span></span></div>
+      </div>
+      <div class="frames">
+        <img src="../images/w/dibujos/bouguereau_1.webp" alt="" loading="lazy"><img src="../images/w/dibujos/bouguereau_2.webp" alt="" loading="lazy">
+        <img src="../images/w/dibujos/bouguereau_3.webp" alt="" loading="lazy"><img src="../images/w/dibujos/bouguereau_4.webp" alt="" loading="lazy">
+        <img src="../images/w/dibujos/bouguereau_5.webp" alt="Copia de Bouguereau: perfil de mujer en grafito" loading="lazy">
+      </div>
+    </div></div>
+  </div>
+  <div class="wrap band" style="padding-top:clamp(2rem,6vh,4rem)"><div class="grid" id="grid-dibujos"></div></div>
+</section>
+
+<section id="xilografia" aria-labelledby="xilo-h">
+  <div class="scene" style="--len:240vh" data-cone>
+    <div class="stage"><div class="split">
+      <div class="split-text">
+        <p class="eyebrow" data-i18n="xilo_eyebrow">Xilografía · 2017</p>
+        <h2 class="h-l" id="xilo-h" data-i18n="xilo_title">Tallar la luz.</h2>
+        <p class="lede" data-i18n="xilo_p">La Mosca: tallada en madera e impresa a mano sobre papel Fabriano, 30 × 70 cm. En un grabado, todo lo blanco es madera que se quitó con la gubia.</p>
+      </div>
+      <div class="cone-art">
+        <img class="ghost" src="../images/w/xilografia/la_mosca_2.webp" alt="" loading="lazy">
+        <img class="lit" src="../images/w/xilografia/la_mosca_2.webp" alt="La Mosca: un sapo canta frente a un micrófono bajo un cono de luz" loading="lazy">
+      </div>
+    </div></div>
+  </div>
+  <div class="wrap band" style="padding-top:clamp(2rem,6vh,4rem)"><div class="grid" id="grid-xilografia"></div></div>
+</section>
+
+<section id="ilustracion" aria-labelledby="ilus-h" style="background:var(--bg-2)">
+  <div class="scene" style="--len:240vh" data-scrub="step">
+    <div class="stage"><div class="split">
+      <div class="split-text">
+        <p class="eyebrow" data-i18n="ilus_eyebrow">Ilustración · 2018 — 2021</p>
+        <h2 class="h-l" id="ilus-h" data-i18n="ilus_title">Una cabeza, seis peinados.</h2>
+        <p class="lede" data-i18n="ilus_p">Autorretrato digital hecho en Photoshop, 2018. Después vinieron sapos, cómics y animaciones en After Effects.</p>
+        <div class="stepper mono"><span><b class="n">6</b> / 6</span><span class="bar"><span></span></span></div>
+      </div>
+      <div class="frames">
+        <img src="../images/w/ilustracion/autorretrato_1.webp" alt="" loading="lazy"><img src="../images/w/ilustracion/autorretrato_2.webp" alt="" loading="lazy">
+        <img src="../images/w/ilustracion/autorretrato_3.webp" alt="" loading="lazy"><img src="../images/w/ilustracion/autorretrato_4.webp" alt="" loading="lazy">
+        <img src="../images/w/ilustracion/autorretrato_5.webp" alt="" loading="lazy"><img src="../images/w/ilustracion/autorretrato_6.webp" alt="Autorretrato digital de perfil" loading="lazy">
+      </div>
+    </div></div>
+  </div>
+  <div class="wrap band" style="padding-top:clamp(2rem,6vh,4rem)"><div class="cols" id="grid-ilustracion"></div></div>
+</section>
+
+<section class="band wrap" id="creaciones" aria-labelledby="creat-h">
+  <div class="sec-head"><p class="eyebrow" data-i18n="creat_eyebrow">Objetos · 2020 — 2022</p><h2 class="h-l" id="creat-h" data-i18n="creat_title">Fuera del lienzo</h2>
+    <p class="lede" data-i18n="creat_p">Cerámica esmaltada, zapatillas pintadas a mano y otros objetos que salen del taller.</p></div>
+  <div class="grid" id="grid-creaciones"></div>
+</section>
+
+<section class="bio band wrap" id="about" aria-labelledby="about-h">
+  <div class="bio-grid">
+    <div class="bio-photo"><img src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy"><p class="mono">Santiago, Chile · 1996</p></div>
+    <div>
+      <div class="sec-head"><p class="eyebrow" data-i18n="n_about">Biografía</p><h2 class="h-l" id="about-h">Maximiliano Langevin Larraín</h2></div>
+      <div class="bio-body" id="bio-body"></div>
+      <div class="cv" id="cv"></div>
+    </div>
+  </div>
+</section>
+
+<section class="band wrap" id="encargos" aria-labelledby="enc-h">
+  <div class="sec-head"><p class="eyebrow" data-i18n="enc_eyebrow">Encargos</p><h2 class="h-l" id="enc-h" data-i18n="enc_title">Un retrato tuyo, o de alguien que quieres.</h2>
+    <p class="lede" data-i18n="enc_p">Así funciona un encargo, de la primera conversación a la firma.</p></div>
+  <ol class="steps" id="steps"></ol>
+</section>
+
+<section class="band wrap contact" id="contact" aria-labelledby="contact-h" style="padding-top:0">
+  <p class="eyebrow" data-i18n="contact_eyebrow">Contacto</p>
+  <h2 class="h-xl" id="contact-h" style="margin-top:1rem" data-i18n="contact_title">Hablemos de un retrato.</h2>
+  <p class="lede" style="margin-top:1.5rem" data-i18n="contact_p">Encargos, exposiciones o colaboraciones. Respondo personalmente.</p>
+  <div class="mail"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a><button class="copy js-copy" type="button" data-i18n="copy">Copiar</button></div>
+  <div class="actions">
+    <a class="pill js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.41z"/></svg><span data-i18n="wa">Escribir por WhatsApp</span></a>
+  </div>
+  <ul class="socials"><li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li><li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+</section>
+<footer class="wrap"><span>© 2026 Maximiliano Langevin · Langevinci®</span><div class="foot-sig" id="foot-sig"></div></footer>
+</main>
+
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script>
+const { $, $$, clamp, lerp, RM } = ML;
+const S = {
+  es: { skip: 'Saltar a las obras', n_paint: 'Pinturas', n_color: 'Color', n_draw: 'Dibujos', n_xilo: 'Xilografía', n_illus: 'Ilustración', n_about: 'Biografía', n_commission: 'Encargar un retrato',
+    hero_eyebrow: 'Pintor realista · Santiago de Chile', hero_cue: 'Baja para entrar en la pintura', hero_c1: 'Acércate.',
+    hero_c2: 'Verde tierra contra piel cálida. Son complementarios: el fondo frío hace que la piel se vea más viva.', hero_c2_sub: 'Paleta medida en la obra',
+    hero_c3: 'El punto más claro del cuadro es el velo. Cada hilo, pintado a mano.', hero_c3_sub: 'Detalle · Karin Goldberg, 2025',
+    latest: 'Obra reciente', karin_meta: '2025 · Óleo sobre lino · 48 × 68 cm', see_work: 'Ver la obra',
+    quote: 'Los retratos son una forma de inmortalizar al sujeto. Mi objetivo es capturar lo que va más allá de lo que se ve.',
+    paint_eyebrow: 'Óleo sobre tela y lino · 2020 — hoy', paint_hint: 'Toca una obra para ver sus vistas, su paleta y consultar por ella',
+    marcos_eyebrow: 'Obra en proceso', marcos_intro: 'Óleo sobre tela, 77,5 × 102,5 cm. Todavía está en el caballete. Baja para recorrerla por dentro.',
+    marcos_s1: 'La luz de colores cae sobre el damero. Ella intenta tocarla.', marcos_s1_sub: 'El blanco y negro del piso es neutro: el color queda solo para la luz.',
+    marcos_s2: 'Detrás de la reja, el retablo: dorado, sombra y madera tallada.', marcos_s3_sub: 'Marcos 16:16 · El que crea y sea bautizado, se salvará.',
+    marcos_end: 'Ver fotos del proceso', marcos_l1: 'La niña', marcos_l2: 'El retablo', marcos_l3: 'La inscripción',
+    color_eyebrow: 'Lectura de color', color_title: 'Cada cuadro, su paleta.', color_p: 'Medimos los colores de cada pintura. Las barras muestran cuánto ocupa cada uno en la tela. Al lado, lo que hace ese color en el cuadro.',
+    conde_meta: '2024 · Óleo sobre lino · 40 × 60 cm', conde_eyebrow: 'Exposición «Polímatas» · Estadio Italiano, 2024',
+    conde_p: 'Un retrato en grisalla a partir de la película «El Conde». Se expuso en «Polímatas» y terminó frente a quienes hicieron la película.',
+    conde_c2: 'Exposición «Polímatas» en el Estadio Italiano, 2024.', conde_c5: 'Juan de Dios Larraín (productor) y Pablo Larraín (director) de «El Conde» junto a la obra.',
+    all_photos: 'Ver todas las fotos', cr1: 'Exposición colectiva, Estadio Italiano', cr2: 'Colaboraciones en cine y publicidad', cr3: 'Cinco años de taller, desde 2019', cr4: 'Formación en hiperrealismo, 2024',
+    lupa_title: 'Mira de cerca.', lupa_p: 'Pasa el cursor sobre la pintura: la barba, la gorra, el brillo del metal. Óleo sobre lino, 28 × 40 cm.',
+    lupa_p_touch: 'Activa la lupa y arrastra el dedo sobre la pintura: la barba, la gorra, el brillo del metal. Óleo sobre lino, 28 × 40 cm.',
+    lupa_on: 'Usar la lupa con el dedo', lupa_off: 'Volver a desplazar la página',
+    draw_eyebrow: 'Dibujos · 2019', draw_title: 'Del trazo a la forma.', draw_p: 'Copia de un dibujo de William Bouguereau. Grafito sobre papel de algodón, 30 × 23 cm. Cinco fotos del mismo dibujo, desde las primeras líneas hasta la firma.', stage: 'Etapa',
+    xilo_eyebrow: 'Xilografía · 2017', xilo_title: 'Tallar la luz.', xilo_p: 'La Mosca: tallada en madera e impresa a mano sobre papel Fabriano, 30 × 70 cm. En un grabado, todo lo blanco es madera que se quitó con la gubia.',
+    ilus_eyebrow: 'Ilustración · 2018 — 2021', ilus_title: 'Una cabeza, seis peinados.', ilus_p: 'Autorretrato digital hecho en Photoshop, 2018. Después vinieron sapos, cómics y animaciones en After Effects.',
+    creat_eyebrow: 'Objetos · 2020 — 2022', creat_title: 'Fuera del lienzo', creat_p: 'Cerámica esmaltada, zapatillas pintadas a mano y otros objetos que salen del taller.',
+    enc_eyebrow: 'Encargos', enc_title: 'Un retrato tuyo, o de alguien que quieres.', enc_p: 'Así funciona un encargo, de la primera conversación a la firma.',
+    contact_eyebrow: 'Contacto', contact_title: 'Hablemos de un retrato.', contact_p: 'Encargos, exposiciones o colaboraciones. Respondo personalmente.' },
+  en: { skip: 'Skip to the work', n_paint: 'Paintings', n_color: 'Colour', n_draw: 'Drawings', n_xilo: 'Woodcuts', n_illus: 'Illustration', n_about: 'Biography', n_commission: 'Commission a portrait',
+    hero_eyebrow: 'Realist painter · Santiago, Chile', hero_cue: 'Scroll to step into the painting', hero_c1: 'Come closer.',
+    hero_c2: 'Earth green against warm skin. They are complementaries: the cool ground makes the skin look more alive.', hero_c2_sub: 'Palette measured on the work',
+    hero_c3: 'The lightest point in the picture is the veil. Every thread, painted by hand.', hero_c3_sub: 'Detail · Karin Goldberg, 2025',
+    latest: 'Recent work', karin_meta: '2025 · Oil on linen · 48 × 68 cm', see_work: 'View the work',
+    quote: 'Portraits are a way to immortalize the subject. My goal is to capture what lies beyond what is seen.',
+    paint_eyebrow: 'Oil on canvas and linen · 2020 — today', paint_hint: 'Tap a work to see its views, its palette and to ask about it',
+    marcos_eyebrow: 'Work in progress', marcos_intro: 'Oil on canvas, 77.5 × 102.5 cm. Still on the easel. Scroll to travel through it.',
+    marcos_s1: 'Coloured light falls across the chequered floor. She reaches out to touch it.', marcos_s1_sub: 'The black-and-white floor is neutral: colour is kept for the light.',
+    marcos_s2: 'Behind the grille, the altarpiece: gold, shadow and carved wood.', marcos_s3_sub: 'Mark 16:16 · He that believeth and is baptized shall be saved.',
+    marcos_end: 'See the process photos', marcos_l1: 'The girl', marcos_l2: 'The altarpiece', marcos_l3: 'The inscription',
+    color_eyebrow: 'Reading colour', color_title: 'Each picture, its palette.', color_p: 'We measured the colours of each painting. The bars show how much of the canvas each one takes. Beside them, what that colour does in the picture.',
+    conde_meta: '2024 · Oil on linen · 40 × 60 cm', conde_eyebrow: '"Polímatas" exhibition · Estadio Italiano, 2024',
+    conde_p: 'A grisaille portrait based on the film "El Conde". It was shown at "Polímatas" and ended up in front of the people who made the film.',
+    conde_c2: '"Polímatas" exhibition at the Estadio Italiano, 2024.', conde_c5: 'Juan de Dios Larraín (producer) and Pablo Larraín (director) of "El Conde" with the work.',
+    all_photos: 'See all photos', cr1: 'Group exhibition, Estadio Italiano', cr2: 'Film and advertising work', cr3: 'Five years in his studio, from 2019', cr4: 'Training in hyperrealism, 2024',
+    lupa_title: 'Look closer.', lupa_p: 'Move your cursor over the painting: the beard, the cap, the shine on the metal. Oil on linen, 28 × 40 cm.',
+    lupa_p_touch: 'Turn on the loupe and drag your finger across the painting: the beard, the cap, the shine on the metal. Oil on linen, 28 × 40 cm.',
+    lupa_on: 'Use the loupe with your finger', lupa_off: 'Go back to scrolling',
+    draw_eyebrow: 'Drawings · 2019', draw_title: 'From line to form.', draw_p: 'A copy of a drawing by William Bouguereau. Graphite on cotton paper, 30 × 23 cm. Five photos of the same drawing, from the first lines to the signature.', stage: 'Stage',
+    xilo_eyebrow: 'Woodcut · 2017', xilo_title: 'Carving the light.', xilo_p: 'La Mosca: carved in wood and hand-printed on Fabriano paper, 30 × 70 cm. In a woodcut, everything white is wood that was cut away with the gouge.',
+    ilus_eyebrow: 'Illustration · 2018 — 2021', ilus_title: 'One head, six haircuts.', ilus_p: 'A digital self-portrait made in Photoshop, 2018. Then came frogs, comics and After Effects animations.',
+    creat_eyebrow: 'Objects · 2020 — 2022', creat_title: 'Off the canvas', creat_p: 'Glazed ceramics, hand-painted sneakers and other objects from the studio.',
+    enc_eyebrow: 'Commissions', enc_title: 'A portrait of you, or of someone you love.', enc_p: 'How a commission works, from the first conversation to the signature.',
+    contact_eyebrow: 'Contact', contact_title: "Let's talk about a portrait.", contact_p: 'Commissions, exhibitions or collaborations. I answer personally.' }
+};
+
+// Zoom: Karin Goldberg y Marcos 16:16
+ML.zoomScene($('#top'), {
+  base: 'pinturas/karin_goldberg_1', eager: true, alt: 'Karin Goldberg, óleo sobre lino, 2025',
+  layers: [
+    { p: 'pinturas/karin_goldberg_3', rect: [.3038, .1168, .4577], fade: [.30, .40, .80, .90] },
+    { p: 'pinturas/karin_goldberg_4', rect: [.4423, .2388, .1346], fade: [.58, .68, .86, .93] },
+  ],
+  keys: [
+    { p: 0, cam: { cx: .5, cy: .2, z: .62 } }, { p: .12, rect: ML.FULL, fit: 'contain', pad: .92 },
+    { p: .40, rect: [.3038, .1168, .4577, .4321], fit: 'cover' }, { p: .68, rect: [.4423, .2388, .1346, .1262], fit: 'cover' },
+    { p: .84, rect: [.4423, .2388, .1346, .1262], fit: 'cover', pad: 1.06 },
+    { p: .97, rect: ML.FULL, fit: 'contain', pad: .84, dy: -.04 }, { p: 1, rect: ML.FULL, fit: 'contain', pad: .84, dy: -.04 },
+  ],
+  scrim: [[.3, .52], [.62, .84], [.93, 1]],
+});
+ML.zoomScene($('#viaje'), {
+  base: 'pinturas/marcos_16_16_1', alt: 'Marcos 16:16, óleo en proceso',
+  layers: [
+    { p: 'pinturas/marcos_16_16_6', rect: [.2481, .6785, .3423], fade: [.10, .17, .30, .36] },
+    { p: 'pinturas/marcos_16_16_4', rect: [.3538, .2891, .4077], fade: [.41, .48, .60, .66] },
+    { p: 'pinturas/marcos_16_16_5', rect: [.1519, .1062, .3096], fade: [.72, .79, .89, .95] },
+  ],
+  keys: [
+    { p: 0, rect: ML.FULL, fit: 'contain', pad: .82 }, { p: .05, rect: ML.FULL, fit: 'contain', pad: .82 },
+    { p: .17, rect: [.2481, .6785, .3423, .1976] }, { p: .30, rect: [.2481, .6785, .3423, .1976], pad: 1.05 },
+    { p: .48, rect: [.3538, .2891, .4077, .2360] }, { p: .60, rect: [.3538, .2891, .4077, .2360], pad: 1.05 },
+    { p: .79, rect: [.1519, .1062, .3096, .1785] }, { p: .89, rect: [.1519, .1062, .3096, .1785], pad: 1.05 },
+    { p: .98, rect: ML.FULL, fit: 'contain', pad: .88 }, { p: 1, rect: ML.FULL, fit: 'contain', pad: .88 },
+  ],
+  scrim: [[0, .05], [.16, .31], [.47, .61], [.78, .9], [.95, 1]],
+});
+
+// Cita: las palabras se encienden y después firma
+const quoteSig = ML.signature($('#quote-sig'));
+ML.scene($('#cita'), { layout() {}, update(p) {
+  const spans = $$('#quote span'), n = spans.length;
+  const k = RM ? n : clamp((p - .04) / .5) * n;
+  spans.forEach((s, i) => s.classList.toggle('lit', i < k));
+  quoteSig(clamp((p - .56) / .3));
+} });
+const footSig = ML.signature($('#foot-sig'), { ghost: false });
+ML.endScene($('#foot-sig'), footSig, .5);
+
+// Sala horizontal
+(function () {
+  const el = $('#pinturas'), stage = $('.stage', el), track = $('.track', el), bar = $('.h-progress span', el);
+  let dist = 0;
+  const s = ML.scene(el, {
+    layout() { if (RM) { el.style.height = ''; return; } track.style.transform = ''; dist = Math.max(0, track.scrollWidth - stage.clientWidth); el.style.height = (stage.clientHeight + dist) + 'px'; },
+    update(p) { if (RM) return; track.style.transform = `translate3d(${(-p * dist).toFixed(1)}px,0,0)`; bar.style.transform = `scaleX(${p.toFixed(4)})`; }
+  });
+  track.addEventListener('focusin', e => {
+    if (RM) return; const c = e.target.closest('.work'); if (!c) return;
+    const p = clamp((c.offsetLeft - stage.clientWidth * .3) / (dist || 1));
+    scrollTo({ top: el.getBoundingClientRect().top + scrollY + p * (el.offsetHeight - innerHeight), behavior: 'instant' });
+  });
+})();
+
+// Scrubs y cono
+$$('[data-scrub]').forEach(el => {
+  const frames = $$('.frames img', el), n = frames.length, num = $('.n', el), bar = $('.stepper .bar span', el), mode = el.dataset.scrub;
+  ML.scene(el, { layout() {}, update(p) {
+    const f = (RM ? 1 : clamp((p - .08) / .8)) * (n - 1);
+    frames.forEach((img, i) => img.style.opacity = mode === 'step' ? +(i === Math.round(f)) : (i === 0 ? 1 : clamp(f - (i - 1))));
+    num.textContent = Math.round(f) + 1; bar.style.transform = `scaleX(${((Math.round(f) + 1) / n).toFixed(3)})`;
+  } });
+});
+$$('[data-cone]').forEach(el => {
+  const lit = $('.lit', el);
+  ML.scene(el, { layout() {}, update(p) {
+    const q = RM ? 1 : clamp((p - .05) / .75), b = lerp(7, 50, clamp(q / .6)), a = lerp(1.5, 50, clamp((q - .6) / .4));
+    lit.style.clipPath = `polygon(${50 - a}% 0, ${50 + a}% 0, ${50 + b}% 100%, ${50 - b}% 100%)`;
+  } });
+});
+
+// Lupa
+const coarse = matchMedia('(hover: none)').matches;
+const lp = ML.loupe($('#lupa-frame'), ML.W_('pinturas/veteran_george_1'), { start: { x: .53, y: .25 } });
+let touchOn = false;
+const lt = $('#lupa-toggle');
+if (coarse) { lt.hidden = false; lt.addEventListener('click', () => { touchOn = !touchOn; lp.toggleTouch(touchOn); lt.setAttribute('aria-pressed', touchOn); lt.textContent = ML.t(touchOn ? 'lupa_off' : 'lupa_on'); }); }
+
+// Contenido que depende del idioma
+function render() {
+  const L = ML.lang;
+  ['pinturas', 'dibujos', 'xilografia', 'ilustracion', 'creaciones'].forEach(c => { const g = $('#grid-' + c); g.innerHTML = ''; ML.WORKS.filter(w => w.cat === c).forEach(w => g.appendChild(ML.card(w))); });
+  $('#quote').innerHTML = '«' + ML.t('quote').split(' ').map(w => `<span>${w}</span>`).join(' ') + '»';
+  $$('.js-pal').forEach(d => d.innerHTML = ML.paletteHTML(d.dataset.id));
+  $('#color-grid').innerHTML = ['gallagath', 'coti', 'el-conde', 'veteran-george', 'vicente', 'santiago'].map(id => {
+    const w = ML.BY_ID[id];
+    return `<button class="cstudy" type="button" data-open="${id}"><img src="${ML.T_(w.imgs[0].p)}" alt="" loading="lazy"><span><span class="t">${w.name}</span>${ML.paletteHTML(id)}<p>${ML.NOTES[id][L]}</p></span></button>`;
+  }).join('');
+  $('#bio-body').innerHTML = ML.BIO[L].map(p => `<p>${p}</p>`).join('');
+  $('#cv').innerHTML = ML.CV[L].map(([h, rows]) => `<div><h3>${h}</h3><ul>${rows.map(([a, b]) => `<li><span>${a}</span><span>${b}</span></li>`).join('')}</ul></div>`).join('');
+  $('#steps').innerHTML = ML.COMMISSION[L].map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('');
+  $('#lupa-p').textContent = ML.t(coarse ? 'lupa_p_touch' : 'lupa_p');
+  lt.textContent = ML.t(touchOn ? 'lupa_off' : 'lupa_on');
+}
+ML.onLang(render);
+
+// Nav
+const nav = $('#nav'), drawer = $('#drawer'), burger = $('#burger');
+const setDrawer = open => { drawer.hidden = !open; burger.setAttribute('aria-expanded', open); document.documentElement.classList.toggle('lb-open', open); };
+burger.addEventListener('click', () => setDrawer(drawer.hidden));
+drawer.addEventListener('click', e => { if (e.target.closest('a')) setDrawer(false); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) setDrawer(false); });
+ML.onTick(() => nav.classList.toggle('solid', scrollY > 40));
+
+ML.boot({ strings: S });
+</script>
+</body>
+</html>
