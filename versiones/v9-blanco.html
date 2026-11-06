@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Blanco</title>
+<meta name="description" content="Maximiliano Langevin, pintor realista chileno. Retratos al óleo sobre lino.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<link rel="stylesheet" href="sobrio.css">
+<style>
+/* Blanco: una galería clara, como una tienda de Apple. Solo la obra, sus datos y aire. */
+:root {
+  --bg: #ffffff; --bg-2: #f5f5f7; --fg: #1d1d1f; --muted: #6e6e73; --line: rgba(0,0,0,.12); --accent: #0071e3;
+  --f-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; --f-serif: var(--f-sans); --f-mono: var(--f-sans);
+  --lb-bg: rgba(250,250,252,.965); --lb-fg: #1d1d1f; --lb-muted: #6e6e73; --lb-on: #fff; --lb-btn: rgba(0,0,0,.06); --lb-btn-h: rgba(0,0,0,.1);
+  --radius: 4px; --seg-bg: #ececf0; --seg-pill: #fff;
+  --gl: max(22px, env(safe-area-inset-left, 0px)); --gr: max(22px, env(safe-area-inset-right, 0px));
+}
+body { background: var(--bg); color: var(--fg); font: 400 1.0625rem/1.55 var(--f-sans); letter-spacing: -.011em; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
+h1, h2 { font-weight: 600; letter-spacing: -.028em; line-height: 1.06; }
+
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding-top: env(safe-area-inset-top, 0px); transition: background .4s, box-shadow .4s; }
+.nav-in { height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.nav.scrolled { background: rgba(255,255,255,.78); -webkit-backdrop-filter: saturate(1.8) blur(20px); backdrop-filter: saturate(1.8) blur(20px); box-shadow: 0 1px 0 var(--line); }
+.brand { font-weight: 600; font-size: .98rem; text-decoration: none; letter-spacing: -.01em; white-space: nowrap; }
+.links { display: flex; align-items: center; gap: clamp(.9rem, 2.4vw, 1.8rem); }
+.links a, .lang { font-size: .82rem; text-decoration: none; color: var(--fg); opacity: .8; transition: opacity .2s; }
+.links a:hover, .lang:hover { opacity: 1; }
+.lang { min-width: 34px; min-height: 30px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); font-size: .72rem; letter-spacing: .04em; }
+
+.hero { padding-top: calc(52px + env(safe-area-inset-top, 0px) + clamp(2.5rem, 7vh, 5rem)); text-align: center; }
+.hero h1 { font-size: clamp(2.3rem, 5.4vw, 4rem); }
+.hero .sub { color: var(--muted); font-size: clamp(1.05rem, 1.6vw, 1.3rem); margin-top: .5rem; }
+.hero-art { margin: clamp(2rem, 5vh, 3.5rem) auto 0; width: min(100%, calc(74svh * .706)); }
+.hero-art .sb-card { width: 100%; }
+.hero-art .sb-frame { --lift: 0 40px 70px -36px rgba(0,0,0,.45); }
+.hero-cap { margin-top: 1rem; display: grid; gap: .2rem; justify-items: center; }
+.hero-cap b { font-weight: 500; } .hero-cap span { font-size: .85rem; color: var(--muted); }
+.hint { margin-top: .9rem; font-size: .78rem; color: var(--muted); }
+
+section { scroll-margin-top: 60px; }
+.band { padding-block: clamp(5rem, 14vh, 9rem); }
+.head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.2rem 2rem; margin-bottom: clamp(2rem, 5vh, 3rem); }
+.head h2 { font-size: clamp(2rem, 4vw, 3rem); }
+.grid { columns: 3 280px; column-gap: clamp(18px, 3vw, 40px); }
+.grid .sb-card { width: 100%; break-inside: avoid; margin-bottom: clamp(2rem, 4.5vw, 3.2rem); }
+.grid .sb-card.out { display: none; }
+
+.about { background: var(--bg-2); }
+.about-in { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+.about img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 22px; }
+.about h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.2rem; }
+.about p { max-width: 40ch; color: var(--muted); margin-top: .7rem; } .about p:first-of-type { color: var(--fg); font-size: 1.2rem; line-height: 1.45; }
+
+.contact { text-align: center; }
+.contact h2 { font-size: clamp(2rem, 4.4vw, 3.4rem); }
+.contact p { color: var(--muted); max-width: 44ch; margin: .9rem auto 0; }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; margin-top: 2rem; }
+.mail { margin-top: 1.4rem; font-size: .95rem; } .mail a { color: var(--accent); text-decoration: none; }
+.sig { width: 150px; margin: 3.5rem auto 0; color: var(--fg); }
+.socials { display: flex; justify-content: center; gap: 1.6rem; margin-top: 1.6rem; list-style: none; }
+.socials a { font-size: .82rem; color: var(--muted); text-decoration: none; } .socials a:hover { color: var(--fg); }
+footer { border-top: 1px solid var(--line); padding-block: 1.3rem calc(1.3rem + env(safe-area-inset-bottom, 0px)); font-size: .75rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+
+@media (max-width: 720px) {
+  .links a { display: none; }
+  .about-in { grid-template-columns: minmax(0, 1fr); }
+  .about img { max-width: 240px; }
+  .head { align-items: start; }
+}
+</style>
+</head>
+<body>
+<header class="nav" id="nav"><div class="wrap nav-in">
+  <a class="brand" href="#top">Maximiliano Langevin</a>
+  <nav class="links" aria-label="Secciones"><a href="#obra" data-i18n="n_work">Obra</a><a href="#sobre" data-i18n="n_about">Sobre</a><a href="#contacto" data-i18n="n_contact">Contacto</a><button class="lang js-lang" type="button">EN</button></nav>
+</div></header>
+
+<main id="top">
+  <section class="hero wrap">
+    <h1 class="sb-rv">Maximiliano Langevin</h1>
+    <p class="sub sb-rv" style="--d:1" data-i18n="sub">Pintura al óleo · Santiago de Chile</p>
+    <div class="hero-art sb-rv" style="--d:2" data-group="hero"></div>
+    <div class="hero-cap sb-rv" style="--d:3"><b>Karin Goldberg</b><span id="hero-meta"></span></div>
+    <p class="hint sb-rv" style="--d:4" id="hint"></p>
+  </section>
+
+  <section class="band wrap" id="obra" aria-labelledby="obra-h">
+    <div class="head"><h2 id="obra-h" class="sb-rv" data-i18n="n_work">Obra</h2><div id="seg" class="sb-rv"></div></div>
+    <div class="grid" id="grid" data-group="obra"></div>
+  </section>
+
+  <section class="about band" id="sobre" aria-labelledby="sobre-h">
+    <div class="wrap about-in">
+      <img class="sb-rv" src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy">
+      <div class="sb-rv" style="--d:1"><h2 id="sobre-h" data-i18n="n_about">Sobre</h2>
+        <p data-i18n="about_p"></p><p data-i18n="about_train"></p><p data-i18n="about_expo"></p></div>
+    </div>
+  </section>
+
+  <section class="contact band wrap" id="contacto" aria-labelledby="ct-h">
+    <h2 id="ct-h" class="sb-rv" data-i18n="com_t">Retratos por encargo</h2>
+    <p class="sb-rv" style="--d:1" data-i18n="com_p"></p>
+    <div class="actions sb-rv" style="--d:2"><a class="sb-btn js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener" data-i18n="wa">Escribir por WhatsApp</a><button class="sb-btn line js-copy" type="button" data-i18n="mail_copy">Copiar correo</button></div>
+    <p class="mail sb-rv" style="--d:3"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a></p>
+    <div class="sig" id="sig"></div>
+    <ul class="socials"><li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li><li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><span>© 2026 Maximiliano Langevin</span><span>Santiago de Chile</span></footer>
+
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script src="sobrio.js"></script>
+<script>
+const { $, $$ } = ML;
+const S = { es: { sub: 'Pintura al óleo · Santiago de Chile' }, en: { sub: 'Oil painting · Santiago, Chile' } };
+let cat = 'all';
+SB.nav($('#nav'));
+
+function render() {
+  const K = ML.BY_ID['karin-goldberg'];
+  const hero = $('.hero-art'); hero.innerHTML = '';
+  const hc = SB.card(K, { caption: false, sizes: '(max-width: 700px) 92vw, 52svh' }); hero.appendChild(hc);
+  SB.loupe(hc.querySelector('img'), { src: () => ML.W_(K.imgs[0].p) });
+  $('#hero-meta').textContent = SB.meta(K);
+  $('#hint').textContent = SB.FINE ? ML.t('hint_mouse') : '';
+  const g = $('#grid'); g.innerHTML = '';
+  ML.WORKS.filter(w => w.id !== 'karin-goldberg').forEach((w, i) => { const c = SB.card(w, { cls: 'sb-rv' }); c.dataset.cat = w.cat; c.style.setProperty('--d', i % 3); g.appendChild(c); });
+  const cats = ML.t('cats');
+  SB.segmented($('#seg'), [['all', ML.t('all')], ...ML.CATS.map(c => [c, cats[c]])], cat, k => { cat = k; filter(); });
+  filter(true);
+  SB.reveal();
+}
+function filter(first) {
+  $$('#grid .sb-card').forEach(c => {
+    const on = cat === 'all' || c.dataset.cat === cat; c.classList.toggle('out', !on);
+    if (on && !first && !ML.RM) c.animate([{ opacity: 0, transform: 'translateY(12px) scale(.98)' }, { opacity: 1, transform: 'none' }], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  });
+}
+ML.onLang(render);
+SB.sig($('#sig'));
+SB.init({ strings: S });
+</script>
+</body>
+</html>
