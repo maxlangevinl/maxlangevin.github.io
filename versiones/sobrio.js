@@ -26,7 +26,7 @@ const STR = {
         about_train: 'Se formó en el taller de Javier Barriga (2019–2024) y con Francisco Uzabeaga (2024).',
         about_expo: 'Exposición «Polímatas», Estadio Italiano, Santiago, 2024.',
         com_t: 'Retratos por encargo', com_p: 'Cada obra se entrega firmada, con certificado de autenticidad y placa de latón al reverso.',
-        mail_copy: 'Copiar correo' },
+        mail_copy: 'Copiar correo', g_pintura: 'Pintura', g_dibujo: 'Dibujo y grabado', g_otros: 'Ilustración y objetos', other_t: 'Otras técnicas', g_pintura_s: 'Pintura', g_dibujo_s: 'Dibujo', g_otros_s: 'Ilustración' },
   en: { n_work: 'Work', n_about: 'About', n_contact: 'Contact', all: 'All', close: 'Close', in_progress: 'In progress',
         hint_mouse: 'Move over the work to see it up close', hint_touch: 'Press and hold on the work to see it up close',
         zoom: 'Mouse wheel: more or less zoom', views_of: 'of', open_work: 'View the work',
@@ -34,9 +34,13 @@ const STR = {
         about_train: 'He trained in the studio of Javier Barriga (2019–2024) and with Francisco Uzabeaga (2024).',
         about_expo: '"Polímatas" exhibition, Estadio Italiano, Santiago, 2024.',
         com_t: 'Portrait commissions', com_p: 'Every work is delivered signed, with a certificate of authenticity and a brass plaque on the back.',
-        mail_copy: 'Copy email' }
+        mail_copy: 'Copy email', g_pintura: 'Painting', g_dibujo: 'Drawing and printmaking', g_otros: 'Illustration and objects', other_t: 'Other media', g_pintura_s: 'Painting', g_dibujo_s: 'Drawing', g_otros_s: 'Illustration' }
 };
 
+// Grupos curatoriales: primero la pintura; la ilustración y los objetos, aparte
+const GROUPS = { pintura: ['pinturas'], dibujo: ['dibujos', 'xilografia'], otros: ['ilustracion', 'creaciones'] };
+const groupLabel = k => ML.t('g_' + k + (innerWidth < 600 ? '_s' : ''));
+const groupOf = w => Object.keys(GROUPS).find(g => GROUPS[g].includes(w.cat));
 const meta = w => [w.year === 'WIP' ? t('in_progress') : w.year, w.tech[ML.lang], w.dims].filter(Boolean).join(' · ');
 
 // ── Tarjeta de obra: su proporción real, sin recortes ──
@@ -118,15 +122,28 @@ const LB = (() => {
     });
     addEventListener('resize', () => { if (open) placeImg(false); });
     lens = loupe(img, { touch: true, wheel: true, src: () => img.dataset.big, onHold: v => { holding = v; } });
-    // deslizar para pasar de obra en el teléfono
+    // deslizar en el teléfono: la imagen sigue al dedo; al soltar pasa a la otra obra o vuelve a su lugar
     let sw = null;
-    img.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') sw = { x: e.clientX, y: e.clientY, t: performance.now() }; });
-    img.addEventListener('pointerup', e => {
-      if (!sw || holding || lens.active) { sw = null; return; }
-      const dx = e.clientX - sw.x, dy = e.clientY - sw.y, dt = performance.now() - sw.t; sw = null;
-      if (dt < 600 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
-      else if (dt < 600 && dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.4) close();
+    img.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') sw = { x: e.clientX, y: e.clientY, t: performance.now(), drag: false }; });
+    img.addEventListener('pointermove', e => {
+      if (!sw || holding || lens.active) return;
+      const dx = e.clientX - sw.x, dy = e.clientY - sw.y;
+      if (!sw.drag && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) sw.drag = 'x';
+      if (!sw.drag && dy > 12 && dy > Math.abs(dx)) sw.drag = 'y';
+      if (sw.drag === 'x') img.style.transform = `translateX(${dx}px) rotate(${dx / 60}deg)`;
+      if (sw.drag === 'y') { img.style.transform = `translateY(${dy}px) scale(${1 - Math.min(dy, 300) / 1500})`; bg.style.opacity = 1 - Math.min(dy, 300) / 450; }
     });
+    const release = e => {
+      if (!sw) return;
+      const s0 = sw; sw = null;
+      if (!s0.drag || holding) { img.style.transform = ''; bg.style.opacity = ''; return; }
+      const dx = e.clientX - s0.x, dy = e.clientY - s0.y, v = Math.abs(dx) / Math.max(1, performance.now() - s0.t);
+      const from = img.style.transform; img.style.transform = ''; bg.style.opacity = '';
+      if (s0.drag === 'x' && (Math.abs(dx) > innerWidth * .22 || v > .5) && list.length > 1) { step(dx < 0 ? 1 : -1); return; }
+      if (s0.drag === 'y' && dy > 110) { close(); return; }
+      if (!RM) img.animate([{ transform: from }, { transform: 'none' }], { duration: 520, easing: SPRING });
+    };
+    img.addEventListener('pointerup', release); img.addEventListener('pointercancel', release);
     ML.onLang(() => { if (open) fill(); });
   }
   const work = () => BY_ID[list[idx]];
@@ -144,6 +161,8 @@ const LB = (() => {
     img.src = from || T_(p); img.dataset.big = W_(p);
     const hi = new Image(); hi.decoding = 'async'; hi.src = W_(p);
     hi.onload = () => { if (work().imgs[view].p === p) img.src = W_(p); };
+    // precarga la obra anterior y la siguiente para que deslizar sea instantáneo
+    [1, -1].forEach(d => { const n = BY_ID[list[(idx + d + list.length) % list.length]]; if (n && list.length > 1) { const q = new Image(); q.decoding = 'async'; q.src = T_(n.imgs[0].p); } });
   }
   function fill() {
     const w = work(), L = ML.lang;
@@ -156,7 +175,7 @@ const LB = (() => {
     const th = $('.sb-lb-thumbs', el);
     th.innerHTML = w.imgs.length > 1 ? w.imgs.map((m, i) => `<button type="button" data-v="${i}" aria-label="${i + 1} / ${w.imgs.length}" ${i === view ? 'aria-current="true"' : ''}><img src="${T_(m.p)}" alt="" loading="lazy"></button>`).join('') : '';
     $$('button', th).forEach(b => b.addEventListener('click', () => showView(+b.dataset.v)));
-    const ask = $('.sb-lb-ask', el); ask.textContent = t('ask'); ask.href = ML.waLink(t('ask_msg').replace('{w}', w.name));
+    const ask = $('.sb-lb-ask', el); ask.hidden = !!w.noAsk; ask.textContent = t('ask'); ask.href = ML.waLink(t('ask_msg').replace('{w}', w.name));
     $('.sb-lb-close', el).setAttribute('aria-label', t('close'));
     $$('.sb-lb-nav', el).forEach(b => b.hidden = list.length < 2);
   }
@@ -226,8 +245,10 @@ document.addEventListener('click', e => {
   const c = e.target.closest('[data-work]'); if (!c) return;
   e.preventDefault();
   const group = c.closest('[data-group]');
-  const list = group ? $$('[data-work]', group).filter(x => x.offsetParent).map(x => x.dataset.work) : [c.dataset.work];
-  LB.open(c.dataset.work, { from: c, list: [...new Set(list)] });
+  // data-list="pinturas": la lista del visor es esa técnica completa, aunque en pantalla haya una sola obra
+  const list = group && group.dataset.list ? WORKS.filter(w => group.dataset.list.split(',').includes(w.cat)).map(w => w.id)
+    : group ? $$('[data-work]', group).filter(x => x.offsetParent).map(x => x.dataset.work) : [c.dataset.work];
+  LB.open(c.dataset.work, { from: c, list: [...new Set(list)], view: +(c.dataset.v || 0) });
 });
 
 // ── Aparecer al entrar en pantalla, una sola vez ──
@@ -299,5 +320,16 @@ function init(opts = {}) {
   if (h && BY_ID[h[1]]) setTimeout(() => LB.open(h[1]), 300);
 }
 
-window.SB = { card, loupe, LB, reveal, segmented, justify, sig, nav, init, meta, SPRING, FINE };
+// ── La entrega: fotos reales del sobre, el certificado y la placa ──
+const ENT = { es: ['Sobre lacrado con el sello ML', 'Certificado de autenticidad, firmado a mano', 'Firma y sello en relieve', 'Placa de latón al reverso'],
+              en: ['Envelope sealed with the ML wax seal', 'Certificate of authenticity, signed by hand', 'Signature and embossed seal', 'Brass plaque on the back'] };
+const ENT_P = ['entrega/sobre_lacrado', 'entrega/certificado_ventana', 'entrega/certificado_sobre', 'entrega/placa_reverso'];
+BY_ID.entrega = { id: 'entrega', name: 'Karin Goldberg', cat: 'entrega', year: '2026', noAsk: true, dims: '',
+  tech: { es: 'Así se entregó', en: 'How it was delivered' }, desc: { es: '', en: '' },
+  imgs: ENT_P.map((p, i) => ({ p, cap: { es: ENT.es[i], en: ENT.en[i] } })) };
+function delivery(host) {
+  host.innerHTML = ENT_P.map((p, i) => `<button type="button" class="sb-card sb-rv" style="--d:${i}" data-work="entrega" data-v="${i}"><span class="sb-frame" style="aspect-ratio:.75"><img src="${T_(p)}" alt="" loading="lazy" decoding="async"></span><span class="sb-cap"><span class="sb-cap-m">${ENT[ML.lang][i]}</span></span></button>`).join('');
+}
+
+window.SB = { card, loupe, LB, reveal, segmented, justify, sig, nav, init, meta, delivery, GROUPS, groupOf, groupLabel, SPRING, FINE };
 })();

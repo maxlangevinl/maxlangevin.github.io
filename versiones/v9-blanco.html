@@ -48,9 +48,10 @@ section { scroll-margin-top: 60px; }
 .band { padding-block: clamp(5rem, 14vh, 9rem); }
 .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.2rem 2rem; margin-bottom: clamp(2rem, 5vh, 3rem); }
 .head h2 { font-size: clamp(2rem, 4vw, 3rem); }
-.grid { columns: 3 280px; column-gap: clamp(18px, 3vw, 40px); }
-.grid .sb-card { width: 100%; break-inside: avoid; margin-bottom: clamp(2rem, 4.5vw, 3.2rem); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3rem) clamp(14px, 2.2vw, 28px); }
+.grid .sb-card { width: 100%; justify-items: center; text-align: center; }
 .grid .sb-card.out { display: none; }
+.deliv-wrap { max-width: 900px; margin: clamp(2.4rem, 6vh, 3.5rem) auto 0; text-align: left; }
 
 .about { background: var(--bg-2); }
 .about-in { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: center; }
@@ -73,6 +74,8 @@ footer { border-top: 1px solid var(--line); padding-block: 1.3rem calc(1.3rem + 
   .about-in { grid-template-columns: minmax(0, 1fr); }
   .about img { max-width: 240px; }
   .head { align-items: start; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid .sb-cap-m { font-size: .72rem; }
 }
 </style>
 </head>
@@ -86,7 +89,7 @@ footer { border-top: 1px solid var(--line); padding-block: 1.3rem calc(1.3rem + 
   <section class="hero wrap">
     <h1 class="sb-rv">Maximiliano Langevin</h1>
     <p class="sub sb-rv" style="--d:1" data-i18n="sub">Pintura al óleo · Santiago de Chile</p>
-    <div class="hero-art sb-rv" style="--d:2" data-group="hero"></div>
+    <div class="hero-art sb-rv" style="--d:2" data-group="hero" data-list="pinturas"></div>
     <div class="hero-cap sb-rv" style="--d:3"><b>Karin Goldberg</b><span id="hero-meta"></span></div>
     <p class="hint sb-rv" style="--d:4" id="hint"></p>
   </section>
@@ -107,6 +110,7 @@ footer { border-top: 1px solid var(--line); padding-block: 1.3rem calc(1.3rem + 
   <section class="contact band wrap" id="contacto" aria-labelledby="ct-h">
     <h2 id="ct-h" class="sb-rv" data-i18n="com_t">Retratos por encargo</h2>
     <p class="sb-rv" style="--d:1" data-i18n="com_p"></p>
+    <div class="deliv-wrap"><div class="sb-deliv" id="deliv" data-group="entrega"></div></div>
     <div class="actions sb-rv" style="--d:2"><a class="sb-btn js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener" data-i18n="wa">Escribir por WhatsApp</a><button class="sb-btn line js-copy" type="button" data-i18n="mail_copy">Copiar correo</button></div>
     <p class="mail sb-rv" style="--d:3"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a></p>
     <div class="sig" id="sig"></div>
@@ -121,7 +125,7 @@ footer { border-top: 1px solid var(--line); padding-block: 1.3rem calc(1.3rem + 
 <script>
 const { $, $$ } = ML;
 const S = { es: { sub: 'Pintura al óleo · Santiago de Chile' }, en: { sub: 'Oil painting · Santiago, Chile' } };
-let cat = 'all';
+let cat = 'pintura';
 SB.nav($('#nav'));
 
 function render() {
@@ -132,15 +136,16 @@ function render() {
   $('#hero-meta').textContent = SB.meta(K);
   $('#hint').textContent = SB.FINE ? ML.t('hint_mouse') : '';
   const g = $('#grid'); g.innerHTML = '';
-  ML.WORKS.filter(w => w.id !== 'karin-goldberg').forEach((w, i) => { const c = SB.card(w, { cls: 'sb-rv' }); c.dataset.cat = w.cat; c.style.setProperty('--d', i % 3); g.appendChild(c); });
-  const cats = ML.t('cats');
-  SB.segmented($('#seg'), [['all', ML.t('all')], ...ML.CATS.map(c => [c, cats[c]])], cat, k => { cat = k; filter(); });
+  // fichas: la obra entera sobre fondo suave; primero la pintura
+  ML.WORKS.forEach((w, i) => { const c = SB.card(w, { cls: 'sb-rv sb-tile', sizes: '(max-width: 720px) 40vw, 300px' }); c.dataset.cat = SB.groupOf(w); c.style.setProperty('--d', i % 3); g.appendChild(c); });
+  SB.segmented($('#seg'), Object.keys(SB.GROUPS).map(k => [k, SB.groupLabel(k)]), cat, k => { cat = k; filter(); });
+  SB.delivery($('#deliv'));
   filter(true);
   SB.reveal();
 }
 function filter(first) {
   $$('#grid .sb-card').forEach(c => {
-    const on = cat === 'all' || c.dataset.cat === cat; c.classList.toggle('out', !on);
+    const on = c.dataset.cat === cat; c.classList.toggle('out', !on);
     if (on && !first && !ML.RM) c.animate([{ opacity: 0, transform: 'translateY(12px) scale(.98)' }, { opacity: 1, transform: 'none' }], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
   });
 }
