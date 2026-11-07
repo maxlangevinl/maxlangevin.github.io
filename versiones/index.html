@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ocho versiones · Max Langevin</title>
+<title>Versiones · Max Langevin</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" href="../images/logo_ml.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,8 +50,8 @@ h2 i { color: var(--accent); }
 <div class="wrap">
   <header>
     <p class="k">Rediseño · maxlangevin.com</p>
-    <h1>Ocho versiones de tu sitio. La 08 <em>reúne lo mejor</em> de todas.</h1>
-    <p class="lede">Todas comparten las mismas obras, el visor con zoom, español e inglés, WhatsApp y correo, la firma que se escribe sola y las paletas medidas en cada cuadro. Cambia la manera de contar. Ábrelas en el teléfono y en el computador: el scroll es parte de la experiencia.</p>
+    <h1>Ronda 2: tres versiones <em>sobrias</em>, donde manda la obra.</h1>
+    <p class="lede">Las 09, 10 y 11 son más simples: menos texto, sin 3D ni efectos al bajar. Toca cualquier obra: se abre desde donde la tocaste y con la lupa ×3 la ves de cerca (cursor encima, o dedo presionado en el teléfono). Más abajo siguen las ocho de la primera ronda.</p>
   </header>
 
   <section class="list" id="list"></section>
@@ -65,6 +65,12 @@ h2 i { color: var(--accent); }
 </div>
 <script>
 const V = [
+  { n: '09', f: 'v9-blanco.html', t: 'v9', h: 'Blanco', p: 'Una galería clara, estilo Apple. Cada obra va entera en una ficha sobre fondo gris claro, como un producto en vitrina.',
+    b: ['Primero la pintura; dibujo y grabado, e ilustración, en pestañas aparte', 'Lupa ×3 sobre la portada y en todas las obras', 'El visor se abre desde la miniatura; en el teléfono la imagen sigue al dedo', 'Fotos reales de la entrega en la sección de encargos'] },
+  { n: '10', f: 'v10-negro.html', t: 'v10', h: 'Negro', p: 'Una sala oscura con una obra por pantalla. Bajar es pasar a la siguiente pintura; nada más se mueve.',
+    b: ['Once pinturas, una por pantalla, con su contador', 'Lupa ×3 con el cursor sobre cada pintura', 'Otras técnicas en filas que respetan el formato de cada obra', 'Fotos reales de la entrega y firma pequeña al final'] },
+  { n: '11', f: 'v11-papel.html', t: 'v11', h: 'Papel', p: 'Un catálogo de museo en papel cálido. Un índice de títulos: al pasar sobre cada nombre cambia la obra.',
+    b: ['Índice de pinturas que cambia la imagen al pasar el cursor', 'Serif clásica para títulos, sin adornos', 'Lupa ×3 y visor en todas las obras', 'Fotos reales de la entrega; sobre y contacto en pocas líneas'] },
   { n: 'Original', f: 'original.html', t: 'v0', h: 'La primera <i>propuesta</i>', p: 'La versión que te encantó, con el zoom a Karin Goldberg y el viaje por Marcos 16:16. Queda tal cual, solo con la foto corregida.',
     b: ['Zoom que entra al velo de Karin Goldberg', 'Viaje en tres paradas por Marcos 16:16', 'Sala horizontal de pinturas'] },
   { n: '08', f: 'v8-sello.html', t: 'v8', h: 'Sello <i>(lo mejor de todas)</i>', p: 'Reúne lo mejor de las siete y suma tu entrega real. La identidad sale de tu propio sobre: verde, lacre rojo, papel de algodón y latón.',
@@ -81,7 +87,7 @@ const V = [
     b: ['Muro verde museo, luz cálida y piso de roble', 'Obras a escala entre sí, con su cartela', 'Sala I: retratos · Sala II: dibujo y grabado', 'Mapa de la sala para saltar entre salas'] },
   { n: '06', f: 'v6-materia.html', t: 'v6', h: 'Materia <i>3D</i>', p: 'El cuadro como objeto, en 3D real. Lino tensado, bastidor de madera y relieve de óleo que giran e iluminan a medida que bajas.',
     b: ['Karin Goldberg gira y muestra su reverso: bastidor, lino crudo y etiqueta con tu firma', 'Luz rasante que recorre Veteran George y hace aparecer la pincelada', 'Las 16 obras en un anillo que rota con el scroll; toca una para abrirla', 'Un lino que ondea y se pinta: primero el dibujo, después el color'] },
-  { n: '07', f: 'v7/index.html', t: 'v7', h: 'Estudio <i>(la guía)</i>', p: 'Hecha con el stack de la guía que compartiste: React, React Three Fiber, Drei, GSAP con ScrollTrigger, scroll suave y Tailwind. Un estudio claro, con el 3D al servicio de la historia.',
+  { n: '07', f: 'original.html', t: 'v7', h: 'Estudio <i>(la guía)</i>', p: 'Hecha con el stack de la guía que compartiste: React, React Three Fiber, Drei, GSAP con ScrollTrigger, scroll suave y Tailwind. Un estudio claro, con el 3D al servicio de la historia.',
     b: ['La firma se escribe con el porcentaje real de carga', 'Estudio modelado en Blender: caballete, lienzo con bastidor, paleta con óleo, pinceles y banqueta; arrástralo para girarlo', 'Pigmento: 40.000 partículas con los colores de Coti se ordenan hasta formar el cuadro', 'Galería horizontal con efecto de pintura líquida, cursor propio y botones magnéticos'] },
 ];
 document.getElementById('list').innerHTML = V.map(v => `

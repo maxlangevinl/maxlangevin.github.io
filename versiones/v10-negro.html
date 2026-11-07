@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maximiliano Langevin — Negro</title>
+<meta name="description" content="Maximiliano Langevin, pintor realista chileno. Retratos al óleo sobre lino.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" href="../images/logo_ml.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<link rel="stylesheet" href="sobrio.css">
+<style>
+/* Negro: una sala oscura y una obra por pantalla. Bajar es pasar a la siguiente; nada más se mueve. */
+:root {
+  --bg: #000; --bg-2: #0d0d0d; --fg: #f5f5f7; --muted: #8e8e93; --line: rgba(255,255,255,.14); --accent: #f5f5f7;
+  --f-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; --f-serif: var(--f-sans); --f-mono: var(--f-sans);
+  --lb-bg: rgba(0,0,0,.94); --lb-fg: #f5f5f7; --lb-muted: #8e8e93; --lb-on: #000;
+  --seg-bg: rgba(255,255,255,.1); --seg-pill: rgba(255,255,255,.22); --ph: #111; --lift: 0 30px 60px -30px rgba(0,0,0,.9);
+  --gl: max(22px, env(safe-area-inset-left, 0px)); --gr: max(22px, env(safe-area-inset-right, 0px));
+  color-scheme: dark;
+}
+/* el encaje se activa después de armar las obras; si no, el navegador se queda pegado a la sección que estaba arriba */
+html.snap { scroll-snap-type: y proximity; }
+body { background: var(--bg); color: var(--fg); font: 400 1.0625rem/1.55 var(--f-sans); letter-spacing: -.01em; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
+h1, h2 { font-weight: 500; letter-spacing: -.03em; line-height: 1.05; }
+
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding-top: env(safe-area-inset-top, 0px); transition: background .4s, box-shadow .4s; }
+.nav-in { height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.nav.scrolled { background: rgba(0,0,0,.72); -webkit-backdrop-filter: saturate(1.6) blur(20px); backdrop-filter: saturate(1.6) blur(20px); box-shadow: 0 1px 0 var(--line); }
+.brand { font-weight: 500; font-size: .98rem; text-decoration: none; white-space: nowrap; }
+.links { display: flex; align-items: center; gap: clamp(.9rem, 2.4vw, 1.8rem); }
+.links a, .lang { font-size: .82rem; text-decoration: none; color: var(--fg); opacity: .72; transition: opacity .2s; }
+.links a:hover, .lang:hover { opacity: 1; }
+.lang { min-width: 34px; min-height: 30px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); font-size: .72rem; letter-spacing: .04em; }
+
+/* Una obra por pantalla */
+.slide { min-height: 100svh; scroll-snap-align: center; display: grid; place-items: center; padding: calc(52px + env(safe-area-inset-top, 0px) + 2vh) var(--gr) 5vh var(--gl); }
+.slide-in { display: grid; justify-items: center; gap: 1.1rem; }
+.slide .sb-card { justify-items: center; text-align: center; }
+.slide .sb-frame { width: auto; height: min(74svh, 820px); max-width: min(86vw, 1100px); }
+.slide .sb-frame img { object-fit: contain; }
+.slide .sb-cap-t { font-size: 1.05rem; } .slide .sb-cap-m { font-size: .82rem; }
+.slide .art { opacity: .45; transform: scale(.965); transition: opacity 1.1s var(--out), transform 1.4s var(--out); }
+.slide.on .art { opacity: 1; transform: none; }
+.intro { display: grid; justify-items: center; text-align: center; gap: .5rem; margin-bottom: 1.4rem; }
+.intro h1 { font-size: clamp(1.9rem, 4vw, 3rem); }
+.intro p { color: var(--muted); font-size: .95rem; }
+.count { position: fixed; z-index: 90; right: var(--gr); top: 50%; translate: 0 -50%; display: grid; gap: .5rem; justify-items: end; font-size: .72rem; color: var(--muted); font-variant-numeric: tabular-nums; transition: opacity .4s; }
+.count b { color: var(--fg); font-weight: 500; }
+.count i { display: block; width: 1px; height: 64px; background: var(--line); position: relative; }
+.count i::after { content: ""; position: absolute; left: 0; top: 0; width: 1px; height: var(--k, 0%); background: var(--fg); transition: height .5s var(--out); }
+.count.hide { opacity: 0; pointer-events: none; }
+
+section { scroll-margin-top: 60px; }
+.band { padding-block: clamp(5rem, 14vh, 9rem); }
+.head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.2rem 2rem; margin-bottom: clamp(2rem, 5vh, 3rem); }
+.head h2 { font-size: clamp(1.8rem, 3.6vw, 2.8rem); }
+#more { scroll-snap-align: start; }
+.sb-just { --jgap: 20px; }
+.sb-just .sb-cap { width: 100%; } .sb-just .sb-cap-t { font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .sb-just .sb-cap-m { display: none; }
+.slide.first .sb-frame { height: min(60svh, 700px); }
+
+.about-in { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+.about img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 20px; }
+.about h2 { font-size: clamp(1.8rem, 3.6vw, 2.8rem); margin-bottom: 1.1rem; }
+.about p { max-width: 40ch; color: var(--muted); margin-top: .7rem; } .about p:first-of-type { color: var(--fg); font-size: 1.15rem; line-height: 1.45; }
+.contact { text-align: center; border-top: 1px solid var(--line); }
+.contact h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
+.contact p { color: var(--muted); max-width: 44ch; margin: .9rem auto 0; }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; margin-top: 2rem; }
+.mail { margin-top: 1.4rem; font-size: .95rem; } .mail a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line); }
+.deliv-wrap { max-width: 900px; margin: clamp(2.4rem, 6vh, 3.5rem) auto 0; text-align: left; }
+.sig { width: 150px; margin: 3.5rem auto 0; color: var(--fg); }
+.socials { display: flex; justify-content: center; gap: 1.6rem; margin-top: 1.6rem; list-style: none; }
+.socials a { font-size: .82rem; color: var(--muted); text-decoration: none; } .socials a:hover { color: var(--fg); }
+footer { border-top: 1px solid var(--line); padding-block: 1.3rem calc(1.3rem + env(safe-area-inset-bottom, 0px)); font-size: .75rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+
+@media (max-width: 720px) {
+  .links a { display: none; }
+  .slide .sb-frame { height: auto; width: min(100%, calc(62svh * var(--a, .75))); max-width: 100%; }
+  .count { top: auto; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); translate: none; grid-auto-flow: column; align-items: center; }
+  .count i { width: 40px; height: 1px; } .count i::after { height: 1px; width: var(--k, 0%); transition: width .5s var(--out); }
+  .about-in { grid-template-columns: minmax(0, 1fr); } .about img { max-width: 220px; }
+}
+@media (prefers-reduced-motion: reduce) { html.snap { scroll-snap-type: none; } .slide .art { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<header class="nav" id="nav"><div class="wrap nav-in">
+  <a class="brand" href="#top">Maximiliano Langevin</a>
+  <nav class="links" aria-label="Secciones"><a href="#pinturas" data-i18n="n_paint">Pinturas</a><a href="#more" data-i18n="n_more">Más obra</a><a href="#sobre" data-i18n="n_about">Sobre</a><a href="#contacto" data-i18n="n_contact">Contacto</a><button class="lang js-lang" type="button">EN</button></nav>
+</div></header>
+<div class="count" id="count" aria-hidden="true"><b id="count-n">01</b><i></i><span id="count-t">11</span></div>
+
+<main id="top">
+  <div id="pinturas" data-group="pinturas"></div>
+
+  <section class="band wrap" id="more" aria-labelledby="more-h">
+    <div class="head"><h2 id="more-h" class="sb-rv" data-i18n="more_t">Otras técnicas</h2><div id="seg" class="sb-rv"></div></div>
+    <div class="sb-just" id="just" data-group="more"></div>
+  </section>
+
+  <section class="about band" id="sobre" aria-labelledby="sobre-h">
+    <div class="wrap about-in">
+      <img class="sb-rv" src="../images/w/maximiliano_langevin.webp" alt="Retrato de Maximiliano Langevin" width="2000" height="2000" loading="lazy">
+      <div class="sb-rv" style="--d:1"><h2 id="sobre-h" data-i18n="n_about">Sobre</h2><p data-i18n="about_p"></p><p data-i18n="about_train"></p><p data-i18n="about_expo"></p></div>
+    </div>
+  </section>
+
+  <section class="contact band wrap" id="contacto" aria-labelledby="ct-h">
+    <h2 id="ct-h" class="sb-rv" data-i18n="com_t">Retratos por encargo</h2>
+    <p class="sb-rv" style="--d:1" data-i18n="com_p"></p>
+    <div class="deliv-wrap"><div class="sb-deliv" id="deliv" data-group="entrega"></div></div>
+    <div class="actions sb-rv" style="--d:2"><a class="sb-btn js-wa" href="https://wa.me/56987658226" target="_blank" rel="noopener" data-i18n="wa">Escribir por WhatsApp</a><button class="sb-btn line js-copy" type="button" data-i18n="mail_copy">Copiar correo</button></div>
+    <p class="mail sb-rv" style="--d:3"><a class="js-mail" href="mailto:maxlangevinl@gmail.com">maxlangevinl@gmail.com</a></p>
+    <div class="sig" id="sig"></div>
+    <ul class="socials"><li><a href="https://www.instagram.com/max_langevinci/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.behance.net/maximilianolangevin" target="_blank" rel="noopener">Behance</a></li><li><a href="https://www.linkedin.com/in/maximilianolangevin/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><span>© 2026 Maximiliano Langevin</span><span>Santiago de Chile</span></footer>
+
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script src="sobrio.js"></script>
+<script>
+const { $, $$ } = ML;
+const S = {
+  es: { n_paint: 'Pinturas', n_more: 'Más obra', more_t: 'Otras técnicas', sub: 'Pintura al óleo · Santiago de Chile' },
+  en: { n_paint: 'Paintings', n_more: 'More work', more_t: 'Other media', sub: 'Oil painting · Santiago, Chile' }
+};
+const PAINT = ML.WORKS.filter(w => w.cat === 'pinturas');
+const MORE = ML.WORKS.filter(w => w.cat !== 'pinturas');
+let cat = 'dibujo';
+SB.nav($('#nav'));
+
+function render() {
+  const host = $('#pinturas'); host.innerHTML = '';
+  PAINT.forEach((w, i) => {
+    const s = document.createElement('section'); s.className = 'slide' + (i === 0 ? ' first' : ''); s.dataset.i = i;
+    s.innerHTML = `<div class="slide-in">${i === 0 ? `<div class="intro"><h1>Maximiliano Langevin</h1><p>${ML.t('sub')}</p></div>` : ''}<div class="art"></div></div>`;
+    const c = SB.card(w, { sizes: '(max-width: 700px) 92vw, 60vw' }); c.querySelector('.sb-frame').style.setProperty('--a', ML.ratio(w.imgs[0].p));
+    $('.art', s).appendChild(c); host.appendChild(s);
+    SB.loupe(c.querySelector('img'), { src: () => ML.W_(w.imgs[0].p) });
+  });
+  $('#count-t').textContent = String(PAINT.length).padStart(2, '0');
+  const j = $('#just'); j.innerHTML = '';
+  MORE.forEach(w => { const c = SB.card(w, { sizes: '(max-width: 700px) 50vw, 25vw' }); c.dataset.cat = SB.groupOf(w); j.appendChild(c); });
+  SB.segmented($('#seg'), ['dibujo', 'otros'].map(k => [k, SB.groupLabel(k)]), cat, k => { cat = k; filter(true); });
+  SB.delivery($('#deliv'));
+  filter(false); watch(); SB.reveal();
+  if (!render.done) { render.done = true; if (!location.hash) scrollTo(0, 0); requestAnimationFrame(() => document.documentElement.classList.add('snap')); }
+}
+const rowH = W => W < 560 ? 190 : W < 900 ? 220 : 260;
+function filter(animate) {
+  $$('#just .sb-card').forEach(c => c.style.display = c.dataset.cat === cat ? '' : 'none');
+  SB.justify($('#just'), rowH);
+  if (animate && !ML.RM) $$('#just .sb-card').filter(c => c.style.display !== 'none').forEach((c, i) => c.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 500, delay: i * 25, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' }));
+}
+addEventListener('resize', () => SB.justify($('#just'), rowH));
+// la obra que está al centro se enciende; el contador dice cuál es
+let io;
+function watch() {
+  if (io) io.disconnect();
+  const n = $('#count-n'), cnt = $('#count');
+  io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); const i = +e.target.dataset.i; n.textContent = String(i + 1).padStart(2, '0'); cnt.style.setProperty('--k', ((i + 1) / PAINT.length * 100) + '%'); } else e.target.classList.remove('on'); }), { threshold: .55 });
+  $$('.slide').forEach(s => io.observe(s));
+}
+ML.onTick(() => {});
+addEventListener('scroll', () => { const r = $('#more').getBoundingClientRect(); $('#count').classList.toggle('hide', r.top < innerHeight * .6); }, { passive: true });
+ML.onLang(render);
+SB.sig($('#sig'));
+SB.init({ strings: S });
+</script>
+</body>
+</html>
